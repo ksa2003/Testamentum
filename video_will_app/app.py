@@ -1,4 +1,3 @@
-pip install -r requirements.txt.\.venv\Scripts\Activate.ps1
 import streamlit as st
 from supabase import create_client
 import hashlib, secrets
@@ -178,3 +177,4 @@ with tab3:
 
         except Exception as e:
             st.error(f"Erreur: {e}")
+
