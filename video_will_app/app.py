@@ -5,11 +5,11 @@ st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centere
 st.markdown("""
 <style>
 
-/* --------- Background : Brume / Horizon --------- */
+/* --------- Background : Silhouette / Souvenir --------- */
 .stApp {
   background:
-    linear-gradient(rgba(0,0,0,0.90), rgba(0,0,0,0.92)),
-    url("https://images.unsplash.com/photo-1493244040629-496f6d136cc3?q=80&w=1920&auto=format&fit=crop");
+    linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.78)),
+    url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1920&auto=format&fit=crop");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -17,13 +17,13 @@ st.markdown("""
 
 /* --------- Variables --------- */
 :root{
-  --card: rgba(14,18,22,0.82);
-  --border: rgba(255,255,255,0.10);
-  --text: #F5F7FA;
-  --muted: #C5CBD3;
-  --muted2: #9AA3AF;
-  --accent: #D6D9DE;
-  --accentHover: #BEC5CE;
+  --card: rgba(12,16,20,0.75);
+  --border: rgba(255,255,255,0.12);
+  --text: #FFFFFF;
+  --muted: #D1D5DB;
+  --muted2: #9CA3AF;
+  --accent: #E5E7EB;
+  --accentHover: #F3F4F6;
 }
 
 /* --------- Base --------- */
@@ -43,23 +43,23 @@ section.main > div{
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 26px;
-  backdrop-filter: blur(16px);
-  box-shadow: 0 20px 80px rgba(0,0,0,0.65);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 20px 90px rgba(0,0,0,0.7);
   animation: fadeIn 0.6s ease-out;
 }
 
 @keyframes fadeIn{
-  from {opacity:0; transform: translateY(10px);}
+  from {opacity:0; transform: translateY(12px);}
   to {opacity:1; transform: translateY(0);}
 }
 
 /* --------- Typography --------- */
 .tm-title{
-  font-size: 44px;
+  font-size: 46px;
   margin: 0;
   font-weight: 700;
   letter-spacing: -0.03em;
-  background: linear-gradient(90deg, #FFFFFF 0%, #DADFE6 45%, #FFFFFF 100%);
+  background: linear-gradient(90deg, #FFFFFF 0%, #E5E7EB 50%, #FFFFFF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -111,7 +111,7 @@ section.main > div{
   border-radius: 999px;
   font-size: 12px;
   color: var(--muted);
-  background: rgba(255,255,255,0.04);
+  background: rgba(255,255,255,0.05);
 }
 
 /* --------- Inputs --------- */
@@ -120,8 +120,8 @@ section.main > div{
 }
 
 .stTextInput input{
-  background: rgba(10,12,15,0.85) !important;
-  border: 1px solid rgba(255,255,255,0.15) !important;
+  background: rgba(0,0,0,0.45) !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
   color: var(--text) !important;
   border-radius: 12px !important;
   padding: 0.8rem 1rem !important;
@@ -129,18 +129,18 @@ section.main > div{
 }
 
 .stTextInput input::placeholder{
-  color: rgba(197,203,211,0.55) !important;
+  color: rgba(255,255,255,0.45) !important;
 }
 
 .stTextInput input:focus{
   border: 1px solid var(--accent) !important;
-  box-shadow: 0 0 0 3px rgba(214,217,222,0.15) !important;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.15) !important;
   outline: none !important;
 }
 
 /* remove red invalid */
 input:invalid{
-  border: 1px solid rgba(255,255,255,0.15) !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
   box-shadow: none !important;
 }
 
@@ -148,20 +148,20 @@ input:invalid{
 .stButton button{
   width: 100%;
   border-radius: 999px !important;
-  padding: 0.85rem 1.1rem !important;
-  border: 1px solid rgba(255,255,255,0.15) !important;
-  background: rgba(255,255,255,0.07) !important;
+  padding: 0.9rem 1.2rem !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
+  background: rgba(255,255,255,0.10) !important;
   color: var(--text) !important;
   font-weight: 600 !important;
 }
 
 .stButton button:hover{
-  background: rgba(255,255,255,0.14) !important;
+  background: rgba(255,255,255,0.20) !important;
 }
 
 .tm-primary button{
   background: var(--accent) !important;
-  color: #0b0f14 !important;
+  color: black !important;
   border: none !important;
 }
 
@@ -172,10 +172,9 @@ input:invalid{
 .tm-muted{
   margin-top: 12px;
   font-size: 12px;
-  color: rgba(197,203,211,0.75);
+  color: rgba(255,255,255,0.65);
 }
 
-/* --------- Mobile --------- */
 @media (max-width: 520px){
   .tm-title{ font-size: 38px; }
   .tm-card{ padding: 22px; }
