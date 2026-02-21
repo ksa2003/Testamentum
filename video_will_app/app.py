@@ -164,4 +164,143 @@ if "user_id" not in st.session_state:
                 st.session_state["user_email"] = auth.user.email
                 st.rerun()
             except Exception as e:
-                st.error("Identifiants invalid
+                st.error("Identifiants invalides ou compte non confirmé.")
+                st.caption(str(e)[:200])
+
+    st.stop()
+
+# ---------------------------------------------------
+# Utilisateur connecté + Déconnexion
+# ---------------------------------------------------
+
+st.success("Connexion réussie.")
+st.sidebar.write(f"Connecté : {st.session_state['user_email']}")
+
+if st.sidebar.button("Se déconnecter"):
+    try:
+        sb.auth.sign_out()
+    except Exception:
+        pass
+    st.session_state.clear()
+    st.rerun()
+
+user_id = st.session_state["user_id"]
+vault = get_or_create_vault(user_id)
+
+# ---------------------------------------------------
+# UI - Tabs
+# ---------------------------------------------------
+
+tab1, tab2, tab3 = st.tabs(["Téléversement", "Bénéficiaires", "Accès par jeton"])
+
+# ---------------------------------------------------
+# Tab 1 - Upload vidéo
+# ---------------------------------------------------
+
+with tab1:
+    st.subheader("Téléverser une vidéo")
+    title = st.text_input("Titre", value="Mon message", key="vid_title")
+    file = st.file_uploader("Sélectionner une vidéo", type=["mp4", "mov", "m4v", "webm"])
+
+    if st.button("Téléverser", disabled=(file is None)):
+        try:
+            object_key = f"{vault['id']}/{uuid.uuid4().hex}_{file.name}"
+            bucket = sb.storage.from_("video-wills")
+            bucket.upload(object_key, file.getvalue(), {"content-type": file.type or "video/mp4"})
+
+            sb.table("videos").insert({
+                "vault_id": vault["id"],
+                "title": title,
+                "storage_path": object_key,
+                "released": False
+            }).execute()
+
+            st.success("Vidéo téléversée avec succès.")
+        except Exception as e:
+            st.error("Impossible de téléverser la vidéo.")
+            st.caption(str(e)[:200])
+
+    st.markdown("### Vos vidéos")
+    vids = sb.table("videos").select("*").eq("vault_id", vault["id"]).order("created_at", desc=True).execute().data
+    if not vids:
+        st.info("Aucune vidéo pour l’instant.")
+    else:
+        for v in vids:
+            st.write(f"- {v.get('title','(sans titre)')} | libérée={v.get('released')} | id={v.get('id')}")
+
+# ---------------------------------------------------
+# Tab 2 - Bénéficiaires + génération de jeton
+# ---------------------------------------------------
+
+with tab2:
+    st.subheader("Bénéficiaires")
+    ben_email = st.text_input("Adresse email du bénéficiaire", key="ben_email")
+
+    if st.button("Ajouter un bénéficiaire", disabled=(not ben_email)):
+        try:
+            sb.table("beneficiaries").insert({"vault_id": vault["id"], "email": ben_email}).execute()
+            st.success("Bénéficiaire ajouté.")
+        except Exception as e:
+            st.error("Impossible d’ajouter ce bénéficiaire (déjà présent ou erreur).")
+            st.caption(str(e)[:200])
+
+    bens = sb.table("beneficiaries").select("*").eq("vault_id", vault["id"]).order("created_at", desc=True).execute().data
+    if bens:
+        st.markdown("### Liste des bénéficiaires")
+        for b in bens:
+            st.write(f"- {b['email']}")
+    else:
+        st.info("Aucun bénéficiaire pour l’instant.")
+
+    st.markdown("---")
+    st.subheader("Générer un jeton d’accès (MVP manuel)")
+
+    vids = sb.table("videos").select("*").eq("vault_id", vault["id"]).order("created_at", desc=True).execute().data
+    if not vids or not bens:
+        st.info("Veuillez d’abord ajouter au moins une vidéo et un bénéficiaire.")
+    else:
+        video_choice = st.selectbox("Sélectionner une vidéo", vids, format_func=lambda x: f"{x.get('title','(sans titre)')} ({x['id']})")
+        ben_choice = st.selectbox("Sélectionner un bénéficiaire", bens, format_func=lambda x: x["email"])
+
+        if st.button("Générer le jeton (7 jours)"):
+            try:
+                # Marquer la vidéo comme libérée (MVP)
+                sb.table("videos").update({"released": True, "released_at": now_utc().isoformat()}).eq("id", video_choice["id"]).execute()
+
+                token = create_access_token(video_choice["id"], ben_choice["email"], days_valid=7)
+                st.success("Jeton généré. Veuillez le transmettre au bénéficiaire :")
+                st.code(token)
+            except Exception as e:
+                st.error("Impossible de générer le jeton.")
+                st.caption(str(e)[:200])
+
+# ---------------------------------------------------
+# Tab 3 - Accès par jeton
+# ---------------------------------------------------
+
+with tab3:
+    st.subheader("Accès bénéficiaire")
+    raw_token = st.text_input("Veuillez coller le jeton reçu", key="access_token")
+
+    if st.button("Accéder", disabled=(not raw_token)):
+        try:
+            video, status = verify_access_token(raw_token)
+
+            if status == "invalid":
+                st.error("Jeton invalide.")
+            elif status == "expired":
+                st.error("Jeton expiré.")
+            elif status != "ok":
+                st.error("Impossible de retrouver la vidéo.")
+            else:
+                if not video.get("released"):
+                    st.error("Contenu non libéré.")
+                else:
+                    bucket = sb.storage.from_("video-wills")
+                    signed = bucket.create_signed_url(video["storage_path"], 3600)
+                    st.success("Accès autorisé. Lecture en cours.")
+                    st.video(signed["signedURL"])
+
+        except Exception as e:
+            st.error("Erreur lors de l’accès.")
+            st.caption(str(e)[:200])
