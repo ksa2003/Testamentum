@@ -3,6 +3,9 @@ import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Testamentum", page_icon="🔒", layout="wide")
 
+# ------------------------------------------------------------
+# THEME GLOBAL X (noir)
+# ------------------------------------------------------------
 st.markdown(
     """
     <style>
@@ -13,8 +16,7 @@ st.markdown(
 
       :root{
         --bg:#000000;
-        --surface:#0b0f14;
-        --surface2:#0f1419;
+        --surface:#0f1419;
         --border:#2f3336;
         --text:#e7e9ea;
         --muted:#8b98a5;
@@ -24,19 +26,26 @@ st.markdown(
       .stApp{ background: var(--bg) !important; }
       section.main > div{
         max-width: 980px !important;
-        padding-top: 1.0rem !important;
+        padding-top: 1rem !important;
       }
 
       .stTextInput input{
-        background: var(--surface2) !important;
+        background: var(--surface) !important;
         border: 1px solid var(--border) !important;
         color: var(--text) !important;
         caret-color: var(--text) !important;
         border-radius: 14px !important;
         padding: 0.95rem 1rem !important;
       }
-      .stTextInput input::placeholder{ color: var(--muted) !important; }
-      .stTextInput label{ color: var(--muted) !important; font-weight: 800 !important; }
+
+      .stTextInput input::placeholder{
+        color: var(--muted) !important;
+      }
+
+      .stTextInput label{
+        color: var(--muted) !important;
+        font-weight: 800 !important;
+      }
 
       .stButton button{
         background: var(--accent) !important;
@@ -51,7 +60,6 @@ st.markdown(
       .fine{
         color: var(--muted);
         font-size: 0.86rem;
-        line-height: 1.4;
         margin-top: 10px;
       }
     </style>
@@ -59,62 +67,89 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# HERO : fond identique au bg global (#000)
-hero = """
-<div style="
-  border:1px solid #2f3336;
-  background:
-    radial-gradient(900px circle at 15% 10%, rgba(29,155,240,0.14), transparent 42%),
-    radial-gradient(700px circle at 85% 30%, rgba(255,255,255,0.04), transparent 45%),
-    #000000;
-  border-radius: 18px;
-  padding: 18px;
-">
-  <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-    <div style="color:#e7e9ea; font-weight:900; letter-spacing:.02em; font-size:1.05rem;">Testamentum</div>
-    <div style="display:flex; gap:8px; flex-wrap:wrap;">
-      <span style="border:1px solid #2f3336; padding:7px 12px; border-radius:999px; color:#8b98a5; font-weight:800; font-size:.9rem; background:rgba(255,255,255,0.02);">Sécurité</span>
-      <span style="border:1px solid #2f3336; padding:7px 12px; border-radius:999px; color:#8b98a5; font-weight:800; font-size:.9rem; background:rgba(255,255,255,0.02);">Confidentialité</span>
-      <span style="border:1px solid #2f3336; padding:7px 12px; border-radius:999px; color:#8b98a5; font-weight:800; font-size:.9rem; background:rgba(255,255,255,0.02);">Traçabilité</span>
+# ------------------------------------------------------------
+# Sélecteur de mode
+# ------------------------------------------------------------
+mode = st.radio(
+    "Mode d'affichage",
+    ["Flat (100% noir)", "Card X (effet carte floutée)"],
+    horizontal=True
+)
+
+# ------------------------------------------------------------
+# HERO - VERSION FLAT
+# ------------------------------------------------------------
+if mode == "Flat (100% noir)":
+
+    hero = """
+    <div style="
+      border:1px solid #2f3336;
+      background:#000000;
+      border-radius:18px;
+      padding:18px;
+    ">
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+        <div style="color:#e7e9ea; font-weight:900; font-size:1.05rem;">Testamentum</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="border:1px solid #2f3336; padding:6px 12px; border-radius:999px; color:#8b98a5;">Sécurité</span>
+          <span style="border:1px solid #2f3336; padding:6px 12px; border-radius:999px; color:#8b98a5;">Confidentialité</span>
+          <span style="border:1px solid #2f3336; padding:6px 12px; border-radius:999px; color:#8b98a5;">Traçabilité</span>
+        </div>
+      </div>
+
+      <div style="margin-top:14px; color:#e7e9ea; font-weight:950; font-size:2.3rem; line-height:1.1;">
+        Un message vidéo, transmis au bon moment.
+      </div>
+
+      <div style="margin-top:10px; color:#e7e9ea; opacity:.9; line-height:1.6;">
+        Enregistrez un message vidéo destiné à vos proches, puis contrôlez l’accès des bénéficiaires
+        lorsque le décès est déclaré. Le tout avec des règles strictes.
+      </div>
     </div>
-  </div>
+    """
 
-  <div style="margin-top:14px; color:#e7e9ea; font-weight:950; font-size:clamp(1.8rem, 4.2vw, 2.5rem); line-height:1.08;">
-    Un message vidéo, transmis au bon moment.
-  </div>
+# ------------------------------------------------------------
+# HERO - VERSION CARD X
+# ------------------------------------------------------------
+else:
 
-  <div style="margin-top:10px; color:#e7e9ea; opacity:.92; font-size:1.04rem; line-height:1.55; max-width:68ch;">
-    Enregistrez un message vidéo destiné à vos proches, puis contrôlez l’accès des bénéficiaires lorsque le décès est déclaré.
-    Le tout avec des règles strictes (jeton, expiration, journalisation).
-  </div>
+    hero = """
+    <div style="
+      border:1px solid #2f3336;
+      background: rgba(15,20,25,0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius:18px;
+      padding:18px;
+    ">
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+        <div style="color:#e7e9ea; font-weight:900; font-size:1.05rem;">Testamentum</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="border:1px solid #2f3336; padding:6px 12px; border-radius:999px; color:#8b98a5; background:rgba(255,255,255,0.02);">Sécurité</span>
+          <span style="border:1px solid #2f3336; padding:6px 12px; border-radius:999px; color:#8b98a5; background:rgba(255,255,255,0.02);">Confidentialité</span>
+          <span style="border:1px solid #2f3336; padding:6px 12px; border-radius:999px; color:#8b98a5; background:rgba(255,255,255,0.02);">Traçabilité</span>
+        </div>
+      </div>
 
-  <div style="margin-top:12px; color:#e7e9ea; opacity:.88; line-height:1.65;">
-    • Accès bénéficiaires par jeton temporaire et sécurisé<br/>
-    • Option de validation par notaire (workflow métier)<br/>
-    • Historique des actions pour la traçabilité (MVP)
-  </div>
+      <div style="margin-top:14px; color:#e7e9ea; font-weight:950; font-size:2.3rem; line-height:1.1;">
+        Un message vidéo, transmis au bon moment.
+      </div>
 
-  <div style="height:12px;"></div>
+      <div style="margin-top:10px; color:#e7e9ea; opacity:.9; line-height:1.6;">
+        Enregistrez un message vidéo destiné à vos proches, puis contrôlez l’accès des bénéficiaires
+        lorsque le décès est déclaré. Le tout avec des règles strictes.
+      </div>
+    </div>
+    """
 
-  <div style="
-    border:1px solid #2f3336;
-    background: rgba(15,20,25,0.65);
-    backdrop-filter: blur(6px);
-    border-radius: 16px;
-    padding: 12px;
-    color:#8b98a5;
-    font-size:.92rem;
-    line-height:1.5;
-  ">
-    Version MVP : la mise en production internationale implique des exigences juridiques par pays
-    (succession, notariat, protection des données).
-  </div>
-</div>
-"""
-components.html(hero, height=330, scrolling=False)
+# Render HERO
+components.html(hero, height=260, scrolling=False)
 
 st.write("")
 
+# ------------------------------------------------------------
+# SECTION COMMENCER
+# ------------------------------------------------------------
 st.subheader("Commencer")
 st.caption("Saisissez votre adresse e-mail pour créer un compte ou vous connecter.")
 
