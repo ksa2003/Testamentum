@@ -2,19 +2,14 @@ import streamlit as st
 
 st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centered")
 
-# =========================================================
-# THEME : noir sobre + image non religieuse + lisible mobile
-# =========================================================
 st.markdown("""
 <style>
 
-/* --------- Background image (non religieux) ---------
-   Thème : mémoire / deuil / recueillement (silhouette, brume, cimetière flou, nature)
-*/
+/* --------- Background : Brume / Horizon --------- */
 .stApp {
   background:
-    linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.92)),
-    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1920&auto=format&fit=crop");
+    linear-gradient(rgba(0,0,0,0.90), rgba(0,0,0,0.92)),
+    url("https://images.unsplash.com/photo-1493244040629-496f6d136cc3?q=80&w=1920&auto=format&fit=crop");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -22,13 +17,13 @@ st.markdown("""
 
 /* --------- Variables --------- */
 :root{
-  --card: rgba(15, 18, 22, 0.82);
+  --card: rgba(14,18,22,0.82);
   --border: rgba(255,255,255,0.10);
-  --text: #F7F8FA;       /* texte principal : très lisible */
-  --muted: #C6CBD3;      /* texte secondaire : clair */
-  --muted2: #9AA3AF;     /* encore plus discret, mais lisible */
-  --accent: #D6D9DE;     /* gris “silver” */
-  --accent2: #B9C0CA;    /* hover */
+  --text: #F5F7FA;
+  --muted: #C5CBD3;
+  --muted2: #9AA3AF;
+  --accent: #D6D9DE;
+  --accentHover: #BEC5CE;
 }
 
 /* --------- Base --------- */
@@ -48,9 +43,9 @@ section.main > div{
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 26px;
-  backdrop-filter: blur(14px);
-  box-shadow: 0 18px 70px rgba(0,0,0,0.55);
-  animation: fadeIn 0.55s ease-out;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 80px rgba(0,0,0,0.65);
+  animation: fadeIn 0.6s ease-out;
 }
 
 @keyframes fadeIn{
@@ -58,15 +53,13 @@ section.main > div{
   to {opacity:1; transform: translateY(0);}
 }
 
-/* --------- Typo --------- */
+/* --------- Typography --------- */
 .tm-title{
   font-size: 44px;
   margin: 0;
   font-weight: 700;
   letter-spacing: -0.03em;
-  line-height: 1.02;
-  /* dégradé subtil sur le texte */
-  background: linear-gradient(90deg, #FFFFFF 0%, #D7DCE3 45%, #FFFFFF 100%);
+  background: linear-gradient(90deg, #FFFFFF 0%, #DADFE6 45%, #FFFFFF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -85,10 +78,9 @@ section.main > div{
 }
 
 .tm-h2{
-  margin-top: 18px;
+  margin-top: 20px;
   font-size: 24px;
   font-weight: 650;
-  color: var(--text);
 }
 
 .tm-p{
@@ -122,22 +114,22 @@ section.main > div{
   background: rgba(255,255,255,0.04);
 }
 
-/* --------- Inputs (no red, strong readability) --------- */
+/* --------- Inputs --------- */
 .stTextInput label{
   color: var(--muted) !important;
 }
 
 .stTextInput input{
   background: rgba(10,12,15,0.85) !important;
-  border: 1px solid rgba(255,255,255,0.14) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
   color: var(--text) !important;
   border-radius: 12px !important;
-  padding: 0.75rem 0.9rem !important;
+  padding: 0.8rem 1rem !important;
   caret-color: var(--text) !important;
 }
 
 .stTextInput input::placeholder{
-  color: rgba(198,203,211,0.55) !important;
+  color: rgba(197,203,211,0.55) !important;
 }
 
 .stTextInput input:focus{
@@ -146,25 +138,25 @@ section.main > div{
   outline: none !important;
 }
 
-/* supprime les styles “invalid” (rouge) du navigateur */
-input:invalid, textarea:invalid{
+/* remove red invalid */
+input:invalid{
+  border: 1px solid rgba(255,255,255,0.15) !important;
   box-shadow: none !important;
-  border: 1px solid rgba(255,255,255,0.14) !important;
 }
 
-/* --------- Buttons (silver, no blue/red) --------- */
+/* --------- Buttons --------- */
 .stButton button{
   width: 100%;
   border-radius: 999px !important;
   padding: 0.85rem 1.1rem !important;
-  border: 1px solid rgba(255,255,255,0.14) !important;
-  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  background: rgba(255,255,255,0.07) !important;
   color: var(--text) !important;
   font-weight: 600 !important;
 }
 
 .stButton button:hover{
-  background: rgba(255,255,255,0.12) !important;
+  background: rgba(255,255,255,0.14) !important;
 }
 
 .tm-primary button{
@@ -174,16 +166,16 @@ input:invalid, textarea:invalid{
 }
 
 .tm-primary button:hover{
-  background: var(--accent2) !important;
+  background: var(--accentHover) !important;
 }
 
 .tm-muted{
   margin-top: 12px;
   font-size: 12px;
-  color: rgba(198,203,211,0.70);
+  color: rgba(197,203,211,0.75);
 }
 
-/* --------- Mobile spacing --------- */
+/* --------- Mobile --------- */
 @media (max-width: 520px){
   .tm-title{ font-size: 38px; }
   .tm-card{ padding: 22px; }
@@ -192,9 +184,7 @@ input:invalid, textarea:invalid{
 </style>
 """, unsafe_allow_html=True)
 
-# =========================================================
 # HERO
-# =========================================================
 st.markdown("""
 <div class="tm-card">
   <h1 class="tm-title">Testamentum</h1>
@@ -202,44 +192,42 @@ st.markdown("""
   <div class="tm-latin">Verba manent. Memoria custoditur.</div>
 
   <div class="tm-chiprow">
-    <span class="tm-chip">LegalTech</span>
+    <span class="tm-chip">Mémoire</span>
+    <span class="tm-chip">Transmission</span>
     <span class="tm-chip">Confidentialité</span>
     <span class="tm-chip">Traçabilité</span>
-    <span class="tm-chip">Accès contrôlé</span>
   </div>
 
   <div class="tm-h2">Un message vidéo, transmis au bon moment.</div>
 
   <div class="tm-p">
     Enregistrez un message destiné à vos proches, puis contrôlez précisément l’accès des bénéficiaires lorsque le décès est déclaré.
-    Le service est conçu pour une transmission respectueuse, avec une gouvernance adaptée aux enjeux successoraux.
+    Le service est conçu pour une transmission respectueuse et structurée.
   </div>
 
   <div class="tm-bullets">
     • Accès bénéficiaires par jeton temporaire sécurisé<br/>
-    • Validation notariale (selon juridiction)<br/>
-    • Journalisation des actions pour la traçabilité (MVP)
+    • Validation notariale<br/>
+    • Journalisation des actions
   </div>
 </div>
 """, unsafe_allow_html=True)
 
 st.write("")
 
-# =========================================================
 # COMMENCER
-# =========================================================
 st.markdown("## Commencer")
 st.caption("Saisissez votre adresse e-mail pour créer un compte ou vous connecter.")
 
 email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
 
-c1, c2 = st.columns([1, 1])
+c1, c2 = st.columns(2)
 
 with c1:
     st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
     if st.button("Continuer"):
         st.success("Redirection (MVP)")
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 with c2:
     if st.button("Accès bénéficiaire"):
