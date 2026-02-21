@@ -5,33 +5,33 @@ st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centere
 st.markdown("""
 <style>
 
-/* --------- Background : Forêt / Cimetière brumeux --------- */
+/* --------- Background : Chemin brumeux (sans personne) --------- */
 .stApp {
   background:
-    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.65)),
-    url("https://images.unsplash.com/photo-1475189778702-5ec9941484ae?q=80&w=1920&auto=format&fit=crop");
+    linear-gradient(rgba(0,0,0,0.68), rgba(0,0,0,0.75)),
+    url("https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1920&auto=format&fit=crop");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }
 
-/* Vignette subtile */
+/* Légère vignette cinéma */
 .stApp::after{
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.55) 85%);
-  pointer-events: none;
+  content:"";
+  position:fixed;
+  inset:0;
+  background: radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 85%);
+  pointer-events:none;
 }
 
 /* --------- Variables --------- */
 :root{
-  --card: rgba(18,22,26,0.78);
-  --border: rgba(255,255,255,0.15);
+  --card: rgba(14,18,22,0.78);
+  --border: rgba(255,255,255,0.14);
   --text: #FFFFFF;
-  --muted: #E2E5EA;
-  --muted2: #B7BDC7;
-  --accent: #F0F2F5;
+  --muted: #E4E7EB;
+  --muted2: #B8C0CC;
+  --accent: #F1F3F6;
   --accentHover: #FFFFFF;
 }
 
@@ -43,7 +43,7 @@ html, body, [class*="css"]{
 
 section.main > div{
   max-width: 920px;
-  padding-top: 2.3rem;
+  padding-top: 2.4rem;
 }
 
 /* --------- Card --------- */
@@ -52,8 +52,8 @@ section.main > div{
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 28px;
-  backdrop-filter: blur(16px);
-  box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 25px 100px rgba(0,0,0,0.65);
   animation: fadeIn 0.5s ease-out;
 }
 
@@ -68,7 +68,7 @@ section.main > div{
   margin: 0;
   font-weight: 700;
   letter-spacing: -0.03em;
-  background: linear-gradient(90deg, #FFFFFF 0%, #EAECEF 50%, #FFFFFF 100%);
+  background: linear-gradient(90deg, #FFFFFF 0%, #E6EBF2 50%, #FFFFFF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -133,7 +133,7 @@ section.main > div{
   border: 1px solid rgba(255,255,255,0.30) !important;
   color: var(--text) !important;
   border-radius: 12px !important;
-  padding: 0.8rem 1rem !important;
+  padding: 0.85rem 1rem !important;
   caret-color: var(--text) !important;
 }
 
@@ -147,7 +147,6 @@ section.main > div{
   outline: none !important;
 }
 
-/* remove red invalid */
 input:invalid{
   border: 1px solid rgba(255,255,255,0.30) !important;
   box-shadow: none !important;
@@ -157,7 +156,7 @@ input:invalid{
 .stButton button{
   width: 100%;
   border-radius: 999px !important;
-  padding: 0.9rem 1.2rem !important;
+  padding: 0.95rem 1.2rem !important;
   border: 1px solid rgba(255,255,255,0.30) !important;
   background: rgba(255,255,255,0.12) !important;
   color: var(--text) !important;
@@ -181,7 +180,7 @@ input:invalid{
 .tm-muted{
   margin-top: 12px;
   font-size: 12px;
-  color: rgba(255,255,255,0.70);
+  color: rgba(255,255,255,0.75);
 }
 
 @media (max-width: 520px){
