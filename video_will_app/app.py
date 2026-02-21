@@ -1,41 +1,60 @@
 import streamlit as st
 
-st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centered")
+st.set_page_config(
+    page_title="Testamentum",
+    page_icon="⚖️",
+    layout="centered"
+)
+
+# ==============================
+# CSS GLOBAL
+# ==============================
 
 st.markdown("""
 <style>
 
-/* --------- Background : Chemin brumeux (sans personne) --------- */
+/* ==============================
+   BACKGROUND — MÉMOIRE UNIVERSELLE
+   ============================== */
+
 .stApp {
   background:
-    linear-gradient(rgba(0,0,0,0.68), rgba(0,0,0,0.75)),
-    url("https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1920&auto=format&fit=crop");
+    linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.82)),
+    url("https://images.unsplash.com/photo-1528825871115-3581a5387919?q=80&w=1920&auto=format&fit=crop");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }
 
-/* Légère vignette cinéma */
+/* Vignette subtile */
 .stApp::after{
   content:"";
   position:fixed;
   inset:0;
-  background: radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 85%);
+  background: radial-gradient(circle at center,
+              rgba(0,0,0,0.15) 0%,
+              rgba(0,0,0,0.55) 85%);
   pointer-events:none;
 }
 
-/* --------- Variables --------- */
+/* ==============================
+   VARIABLES
+   ============================== */
+
 :root{
-  --card: rgba(14,18,22,0.78);
-  --border: rgba(255,255,255,0.14);
+  --card: rgba(20,24,28,0.78);
+  --border: rgba(255,255,255,0.12);
   --text: #FFFFFF;
-  --muted: #E4E7EB;
+  --muted: #E6E9EE;
   --muted2: #B8C0CC;
-  --accent: #F1F3F6;
+  --accent: #F2F4F7;
   --accentHover: #FFFFFF;
 }
 
-/* --------- Base --------- */
+/* ==============================
+   BASE
+   ============================== */
+
 html, body, [class*="css"]{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
   color: var(--text);
@@ -43,32 +62,41 @@ html, body, [class*="css"]{
 
 section.main > div{
   max-width: 920px;
-  padding-top: 2.4rem;
+  padding-top: 2.5rem;
 }
 
-/* --------- Card --------- */
+/* ==============================
+   HERO CARD
+   ============================== */
+
 .tm-card{
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 28px;
+  border-radius: 20px;
+  padding: 30px;
   backdrop-filter: blur(18px);
-  box-shadow: 0 25px 100px rgba(0,0,0,0.65);
-  animation: fadeIn 0.5s ease-out;
+  box-shadow: 0 30px 120px rgba(0,0,0,0.65);
+  animation: fadeIn 0.6s ease-out;
 }
 
 @keyframes fadeIn{
-  from {opacity:0; transform: translateY(10px);}
+  from {opacity:0; transform: translateY(12px);}
   to {opacity:1; transform: translateY(0);}
 }
 
-/* --------- Typography --------- */
+/* ==============================
+   TYPOGRAPHY
+   ============================== */
+
 .tm-title{
-  font-size: 46px;
+  font-size: 48px;
   margin: 0;
   font-weight: 700;
   letter-spacing: -0.03em;
-  background: linear-gradient(90deg, #FFFFFF 0%, #E6EBF2 50%, #FFFFFF 100%);
+  background: linear-gradient(90deg,
+              #FFFFFF 0%,
+              #E6EBF2 50%,
+              #FFFFFF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -87,7 +115,7 @@ section.main > div{
 }
 
 .tm-h2{
-  margin-top: 22px;
+  margin-top: 24px;
   font-size: 24px;
   font-weight: 650;
 }
@@ -95,18 +123,21 @@ section.main > div{
 .tm-p{
   margin-top: 10px;
   color: var(--muted);
-  line-height: 1.65;
+  line-height: 1.7;
   font-size: 15px;
 }
 
 .tm-bullets{
-  margin-top: 14px;
+  margin-top: 16px;
   color: var(--muted);
-  line-height: 1.85;
+  line-height: 1.9;
   font-size: 14px;
 }
 
-/* --------- Chips --------- */
+/* ==============================
+   CHIPS
+   ============================== */
+
 .tm-chiprow{
   margin-top: 14px;
   display:flex;
@@ -123,7 +154,10 @@ section.main > div{
   background: rgba(255,255,255,0.06);
 }
 
-/* --------- Inputs --------- */
+/* ==============================
+   INPUTS
+   ============================== */
+
 .stTextInput label{
   color: var(--muted) !important;
 }
@@ -132,8 +166,8 @@ section.main > div{
   background: rgba(0,0,0,0.45) !important;
   border: 1px solid rgba(255,255,255,0.30) !important;
   color: var(--text) !important;
-  border-radius: 12px !important;
-  padding: 0.85rem 1rem !important;
+  border-radius: 14px !important;
+  padding: 0.9rem 1rem !important;
   caret-color: var(--text) !important;
 }
 
@@ -152,11 +186,14 @@ input:invalid{
   box-shadow: none !important;
 }
 
-/* --------- Buttons --------- */
+/* ==============================
+   BUTTONS
+   ============================== */
+
 .stButton button{
   width: 100%;
   border-radius: 999px !important;
-  padding: 0.95rem 1.2rem !important;
+  padding: 1rem 1.2rem !important;
   border: 1px solid rgba(255,255,255,0.30) !important;
   background: rgba(255,255,255,0.12) !important;
   color: var(--text) !important;
@@ -178,10 +215,14 @@ input:invalid{
 }
 
 .tm-muted{
-  margin-top: 12px;
+  margin-top: 14px;
   font-size: 12px;
   color: rgba(255,255,255,0.75);
 }
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
 
 @media (max-width: 520px){
   .tm-title{ font-size: 38px; }
@@ -191,12 +232,21 @@ input:invalid{
 </style>
 """, unsafe_allow_html=True)
 
+# ==============================
 # HERO
+# ==============================
+
 st.markdown("""
 <div class="tm-card">
   <h1 class="tm-title">Testamentum</h1>
-  <div class="tm-sub">Coffre numérique sécurisé pour transmission vidéo posthume</div>
-  <div class="tm-latin">Verba manent. Memoria custoditur.</div>
+
+  <div class="tm-sub">
+    Coffre numérique sécurisé pour transmission vidéo posthume
+  </div>
+
+  <div class="tm-latin">
+    Verba manent. Memoria custoditur.
+  </div>
 
   <div class="tm-chiprow">
     <span class="tm-chip">Mémoire</span>
@@ -205,39 +255,49 @@ st.markdown("""
     <span class="tm-chip">Traçabilité</span>
   </div>
 
-  <div class="tm-h2">Un message vidéo, transmis au bon moment.</div>
+  <div class="tm-h2">
+    Un message vidéo, transmis au bon moment.
+  </div>
 
   <div class="tm-p">
-    Enregistrez un message destiné à vos proches, puis contrôlez précisément l’accès des bénéficiaires lorsque le décès est déclaré.
-    Le service est conçu pour une transmission respectueuse et structurée.
+    Enregistrez un message destiné à vos proches, puis contrôlez précisément
+    l’accès des bénéficiaires lorsque le décès est déclaré.
+    Le service est conçu pour une transmission respectueuse,
+    sécurisée et conforme aux exigences internationales.
   </div>
 
   <div class="tm-bullets">
     • Accès bénéficiaires par jeton temporaire sécurisé<br/>
-    • Validation notariale<br/>
-    • Journalisation des actions
+    • Validation notariale selon juridiction<br/>
+    • Journalisation complète des actions
   </div>
 </div>
 """, unsafe_allow_html=True)
 
 st.write("")
 
-# COMMENCER
+# ==============================
+# SECTION CONNEXION
+# ==============================
+
 st.markdown("## Commencer")
 st.caption("Saisissez votre adresse e-mail pour créer un compte ou vous connecter.")
 
 email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
 
-c1, c2 = st.columns(2)
+col1, col2 = st.columns(2)
 
-with c1:
+with col1:
     st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
     if st.button("Continuer"):
         st.success("Redirection (MVP)")
     st.markdown("</div>", unsafe_allow_html=True)
 
-with c2:
+with col2:
     if st.button("Accès bénéficiaire"):
         st.info("Accès bénéficiaire (MVP)")
 
-st.markdown('<div class="tm-muted">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité.</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="tm-muted">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité.</div>',
+    unsafe_allow_html=True
+)
