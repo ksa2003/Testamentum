@@ -1,11 +1,7 @@
 import streamlit as st
-import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Testamentum", page_icon="🔒", layout="wide")
 
-# -----------------------------
-# Style X-like (sobriété)
-# -----------------------------
 st.markdown(
     """
     <style>
@@ -13,154 +9,169 @@ st.markdown(
       footer {visibility:hidden;}
       header {visibility:hidden;}
 
-      /* Garder la sidebar visible si vous voulez la navigation, sinon commentez la ligne suivante */
-      /* [data-testid="stSidebar"] {display:none;} */
+      /* Cache la sidebar Streamlit pour un rendu "site" */
+      [data-testid="stSidebar"] {display:none;}
 
       :root{
-        --bg:#000000;
-        --surface:#0b0f14;
-        --border:#2f3336;
-        --text:#e7e9ea;
-        --muted:#71767b;
-        --accent:#1d9bf0; /* bleu X */
+        --bg:#f3f2ef;         /* LinkedIn background */
+        --card:#ffffff;
+        --text:#191919;
+        --muted:#5f6368;
+        --border:#e0e0e0;
+        --blue:#0a66c2;       /* LinkedIn blue */
       }
 
       .stApp{ background: var(--bg) !important; }
-      section.main > div{ padding: 0 !important; max-width: 100% !important; }
+      section.main > div{ max-width: 1100px !important; padding-top: 1.2rem !important; }
 
-      /* Inputs Streamlit */
-      .stTextInput input{
-        background: var(--surface) !important;
-        border: 1px solid var(--border) !important;
-        color: var(--text) !important;           /* IMPORTANT: texte visible */
-        caret-color: var(--text) !important;     /* curseur visible */
-        border-radius: 14px !important;
-        padding: 0.9rem 1rem !important;
+      .topbar{
+        display:flex; align-items:center; justify-content:space-between;
+        margin-bottom: 16px;
       }
-      .stTextInput input::placeholder{ color: var(--muted) !important; }
-      .stTextInput label{ color: var(--muted) !important; font-weight: 700 !important; }
+      .brand{ font-weight: 900; letter-spacing: .02em; font-size: 1.2rem; color: var(--text); }
+      .pill{
+        border:1px solid var(--border);
+        background: var(--card);
+        padding: 8px 12px;
+        border-radius: 999px;
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 0.92rem;
+      }
 
+      .grid{
+        display:grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 16px;
+      }
+      @media (max-width: 900px){
+        .grid{ grid-template-columns: 1fr; }
+      }
+
+      .card{
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 16px;
+      }
+
+      .h1{
+        margin: 0 0 8px 0;
+        font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+        line-height: 1.15;
+        font-weight: 900;
+        color: var(--text);
+      }
+      .lead{
+        margin: 0 0 10px 0;
+        color: var(--muted);
+        font-size: 1.02rem;
+        line-height: 1.55;
+      }
+      .list{
+        color: var(--text);
+        font-size: 0.98rem;
+        line-height: 1.65;
+      }
+      .sub{
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.45;
+      }
+
+      /* Inputs & boutons */
+      .stTextInput input{
+        background: #fff !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text) !important;
+        border-radius: 10px !important;
+        padding: 0.85rem 0.9rem !important;
+      }
+      .stTextInput label{
+        color: var(--muted) !important;
+        font-weight: 700 !important;
+      }
       .stButton button{
-        background: var(--accent) !important;
-        color: #001018 !important;
-        border-radius: 999px !important;
+        background: var(--blue) !important;
+        color: #fff !important;
         border: none !important;
-        padding: 0.9rem 1rem !important;
+        border-radius: 999px !important;
+        padding: 0.85rem 1rem !important;
         font-weight: 900 !important;
         width: 100%;
       }
 
-      .stButton button:hover{ filter: brightness(1.05); }
-
-      /* Sections */
-      .wrap{ min-height: 100vh; padding: 22px 16px; }
-      .container{ max-width: 1080px; margin: 0 auto; }
-
-      .topbar{
-        display:flex; justify-content:space-between; align-items:center;
-        padding: 12px 4px 18px 4px;
-      }
-      .brand{ color: var(--text); font-weight: 900; font-size: 1.2rem; letter-spacing: .02em; }
-      .badge{
-        color: var(--muted); border:1px solid var(--border);
-        padding: 7px 12px; border-radius:999px; font-weight:700; font-size:0.9rem;
-        background: rgba(255,255,255,0.02);
-      }
-
-      .hero{
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        padding: 22px;
-        background:
-          radial-gradient(900px circle at 20% 10%, rgba(29,155,240,0.20), transparent 35%),
-          radial-gradient(700px circle at 80% 30%, rgba(255,255,255,0.06), transparent 40%),
-          var(--surface);
-      }
-
-      .grid{
-        display:grid; grid-template-columns: 1.15fr 0.85fr;
-        gap: 18px; align-items:start;
-      }
-      @media (max-width: 900px){ .grid{ grid-template-columns: 1fr; } }
-
-      .h1{
-        margin: 0 0 10px 0;
-        color: var(--text);
+      .section-title{
         font-weight: 900;
-        font-size: clamp(2.0rem, 4vw, 2.8rem);
-        line-height: 1.08;
-      }
-      .lead{
-        margin: 0 0 12px 0;
         color: var(--text);
-        opacity: 0.92;
-        font-size: 1.05rem;
-        line-height: 1.55;
-        max-width: 62ch;
+        margin: 10px 0 6px 0;
       }
-      .muted{ color: var(--muted); font-size: 0.95rem; line-height: 1.5; }
-      .list{ color: var(--text); opacity: 0.90; line-height: 1.65; font-size: 1.0rem; }
-
-      .card{
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        padding: 18px;
-        background: rgba(255,255,255,0.02);
+      .hr{
+        height: 1px; background: var(--border);
+        margin: 14px 0;
       }
-      .card h3{ margin:0 0 8px 0; color: var(--text); font-weight: 900; }
-      .fine{ color: var(--muted); font-size: 0.86rem; margin-top: 10px; line-height: 1.45; }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-hero_html = """
-<div class="wrap">
-  <div class="container">
+st.markdown(
+    """
     <div class="topbar">
       <div class="brand">Testamentum</div>
       <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <div class="badge">Sécurité</div>
-        <div class="badge">Confidentialité</div>
-        <div class="badge">Traçabilité</div>
+        <div class="pill">Sécurité</div>
+        <div class="pill">Confidentialité</div>
+        <div class="pill">Traçabilité</div>
       </div>
     </div>
 
     <div class="grid">
-      <div class="hero">
+      <div class="card">
         <div class="h1">Transmettez un message vidéo à vos proches, de manière encadrée.</div>
         <div class="lead">
-          Un coffre numérique pour enregistrer un message vidéo et gérer l’accès des bénéficiaires
+          Testamentum est un coffre numérique pour enregistrer un message vidéo et gérer l’accès des bénéficiaires
           selon des règles strictes (jeton, expiration, journalisation), lorsque le décès est déclaré.
         </div>
+
         <div class="list">
-          • Accès bénéficiaires par jeton temporaire<br/>
-          • Option de validation notaire (workflow métier)<br/>
-          • Historique des actions (MVP)
+          • Accès bénéficiaires par jeton temporaire et sécurisé<br/>
+          • Option de validation par notaire (workflow métier)<br/>
+          • Historique des actions pour traçabilité (MVP)
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="section-title">Pourquoi c’est utile</div>
+        <div class="lead">
+          Pour laisser un message clair, humain et structuré, avec une transmission respectueuse et contrôlée.
+        </div>
+
+        <div class="sub">
+          Version MVP : la mise en production internationale implique des exigences juridiques par pays
+          (succession, notariat, protection des données).
         </div>
       </div>
 
       <div class="card">
-        <h3>Commencer</h3>
-        <div class="muted">Saisissez votre e-mail pour créer un compte ou vous connecter.</div>
-        <div class="fine">
-          Version MVP : la conformité juridique dépend des pays (succession, notariat, protection des données).
-        </div>
+        <div class="section-title">Commencer</div>
+        <div class="lead">Saisissez votre adresse e-mail pour créer un compte ou vous connecter.</div>
+    """,
+    unsafe_allow_html=True,
+)
+
+email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
+
+if st.button("Continuer"):
+    st.session_state["prefill_email"] = email.strip()
+    st.switch_page("pages/1_Connexion.py")
+
+st.markdown(
+    """
+        <div class="sub">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité (MVP).</div>
       </div>
     </div>
-  </div>
-</div>
-"""
-components.html(hero_html, height=420, scrolling=False)
-
-# CTA Streamlit (à droite sur desktop / en dessous sur mobile)
-_, col = st.columns([1.2, 0.8])
-with col:
-    email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
-    if st.button("Continuer"):
-        st.session_state["prefill_email"] = email.strip()
-        st.switch_page("pages/1_Connexion.py")
-    st.markdown(
-        '<div class="fine">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité (MVP).</div>',
-        unsafe_allow_html=True,
-    )
+    """,
+    unsafe_allow_html=True,
+)
