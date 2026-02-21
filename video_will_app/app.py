@@ -7,161 +7,154 @@ from datetime import datetime, timedelta, timezone
 # ---------------------------------------------------
 # Configuration
 # ---------------------------------------------------
-
-st.set_page_config(
-    page_title="Testamentum",
-    page_icon="🔐",
-    layout="centered"
-)
+st.set_page_config(page_title="Testamentum", page_icon="🔐", layout="centered")
 
 # ---------------------------------------------------
-# UI "style X" (sombre, net, très lisible)
+# THEME sombre lisible (style X, mais avec contraste fort)
 # ---------------------------------------------------
-
 st.markdown(
     """
     <style>
-      /* Base */
-      .stApp {
-        background: #000000;
+      :root{
+        --bg: #000000;
+        --surface: #0b0f14;     /* légèrement plus clair que le fond */
+        --border: #2f3336;
+        --text: #ffffff;
+        --muted: #b6bcc2;       /* gris clair (lisible) */
+        --muted2:#8b98a5;
+        --accent:#1d9bf0;
+        --input:#0f1419;        /* fond champs */
       }
 
-      html, body, [class*="css"]  {
+      /* Fond global */
+      .stApp{ background: var(--bg) !important; }
+
+      /* Texte par défaut */
+      html, body, [class*="css"]{
+        color: var(--text) !important;
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
-        color: #E7E9EA; /* X-like text */
       }
 
-      /* Limit width & spacing */
-      section.main > div {
-        max-width: 720px;
-        padding-top: 1.2rem;
+      /* Container */
+      section.main > div{
+        max-width: 760px;
+        padding-top: 1.0rem;
       }
 
-      /* Main surface (like X panels) */
-      .block-container {
-        background: #000000;
-        padding: 12px 14px 18px 14px;
+      /* Enlever la carte blanche Streamlit */
+      .block-container{
+        background: transparent !important;
+        padding: 12px 14px 18px 14px !important;
       }
 
-      /* Panel / Card */
-      .panel {
-        background: #000000;
-        border: 1px solid #2F3336; /* X border */
+      /* Panels */
+      .panel{
+        background: var(--surface);
+        border: 1px solid var(--border);
         border-radius: 16px;
         padding: 14px;
         margin-bottom: 12px;
       }
 
-      /* Titles */
-      h1, h2, h3 {
-        color: #E7E9EA;
+      /* Titres */
+      h1, h2, h3{
+        color: var(--text) !important;
         letter-spacing: -0.01em;
       }
 
-      /* Muted */
-      .muted {
-        color: #71767B;
-        font-size: 0.95rem;
+      /* Muted text */
+      .muted{ color: var(--muted) !important; font-size: 0.98rem; }
+      .muted2{ color: var(--muted2) !important; font-size: 0.92rem; }
+
+      /* Labels des inputs (Streamlit) */
+      label, .stTextInput label, .stTextArea label, .stFileUploader label{
+        color: var(--muted) !important;
+        font-weight: 600 !important;
       }
 
       /* Inputs */
-      .stTextInput input, .stTextArea textarea {
+      .stTextInput input, .stTextArea textarea{
+        background: var(--input) !important;
+        color: var(--text) !important;
+        border: 1px solid var(--border) !important;
         border-radius: 14px !important;
-        border: 1px solid #2F3336 !important;
-        background: #000000 !important;
-        color: #E7E9EA !important;
-        padding: 0.65rem 0.8rem !important;
+        padding: 0.65rem 0.85rem !important;
       }
-      .stTextInput input:focus, .stTextArea textarea:focus {
+      .stTextInput input:focus, .stTextArea textarea:focus{
+        border: 1px solid var(--accent) !important;
+        box-shadow: 0 0 0 3px rgba(29,155,240,0.20) !important;
         outline: none !important;
-        border: 1px solid #1D9BF0 !important; /* X blue */
-        box-shadow: 0 0 0 2px rgba(29,155,240,0.15) !important;
       }
 
       /* File uploader */
-      [data-testid="stFileUploader"] {
-        border: 1px dashed #2F3336;
-        border-radius: 14px;
-        padding: 10px;
+      [data-testid="stFileUploader"]{
+        background: var(--input) !important;
+        border: 1px dashed var(--border) !important;
+        border-radius: 14px !important;
+        padding: 10px !important;
       }
-
-      /* Buttons */
-      .stButton button {
-        border-radius: 999px;
-        padding: 0.55rem 1.05rem;
-        border: 1px solid #2F3336;
-        background: #E7E9EA;
-        color: #0F1419;
-        font-weight: 700;
-      }
-      .stButton button:hover {
-        background: #D7DBDC;
-        border: 1px solid #3A3F43;
-      }
-
-      /* Secondary buttons (we'll mark via a CSS class below if needed) */
-      .btn-secondary .stButton button {
-        background: transparent;
-        color: #E7E9EA;
-        border: 1px solid #2F3336;
-        font-weight: 600;
-      }
-      .btn-secondary .stButton button:hover {
-        border: 1px solid #3A3F43;
-        background: rgba(231,233,234,0.06);
+      [data-testid="stFileUploader"] *{
+        color: var(--muted) !important;
       }
 
       /* Tabs */
-      button[role="tab"] {
+      button[role="tab"]{
         border-radius: 999px !important;
-        border: 1px solid #2F3336 !important;
+        border: 1px solid var(--border) !important;
         background: transparent !important;
-        color: #E7E9EA !important;
+        color: var(--muted) !important;
         padding: 6px 12px !important;
         margin-right: 6px !important;
+        font-weight: 700 !important;
       }
-      button[role="tab"][aria-selected="true"] {
-        border: 1px solid #1D9BF0 !important;
-        box-shadow: 0 0 0 2px rgba(29,155,240,0.12) !important;
+      button[role="tab"][aria-selected="true"]{
+        color: var(--text) !important;
+        border: 1px solid var(--accent) !important;
+        box-shadow: 0 0 0 3px rgba(29,155,240,0.15) !important;
       }
 
-      /* Alerts readability */
-      .stAlert {
-        border-radius: 14px;
-        border: 1px solid #2F3336;
+      /* Buttons */
+      .stButton button{
+        border-radius: 999px !important;
+        padding: 0.60rem 1.10rem !important;
+        border: 1px solid var(--border) !important;
+        background: var(--text) !important;
+        color: #0f1419 !important;
+        font-weight: 800 !important;
       }
+      .stButton button:hover{
+        background: #e6e6e6 !important;
+      }
+
+      /* Secondary buttons (class wrapper) */
+      .btn-secondary .stButton button{
+        background: transparent !important;
+        color: var(--text) !important;
+        border: 1px solid var(--border) !important;
+        font-weight: 700 !important;
+      }
+      .btn-secondary .stButton button:hover{
+        background: rgba(255,255,255,0.06) !important;
+      }
+
+      /* Alerts */
+      .stAlert{
+        border-radius: 14px !important;
+        border: 1px solid var(--border) !important;
+        background: rgba(255,255,255,0.04) !important;
+        color: var(--text) !important;
+      }
+      .stAlert *{ color: var(--text) !important; }
 
       /* Sidebar */
-      section[data-testid="stSidebar"] > div {
-        background: #000000;
-        border-right: 1px solid #2F3336;
+      section[data-testid="stSidebar"] > div{
+        background: var(--bg) !important;
+        border-right: 1px solid var(--border);
       }
-
-      /* Links */
-      a { color: #1D9BF0 !important; }
-
-      /* Remove extra top padding sometimes */
-      .st-emotion-cache-1y4p8pa { padding-top: 0.5rem; }
+      section[data-testid="stSidebar"] *{
+        color: var(--text) !important;
+      }
     </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-# ---------------------------------------------------
-# Header
-# ---------------------------------------------------
-
-st.markdown(
-    """
-    <div class="panel">
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
-        <div>
-          <div style="font-size:1.25rem; font-weight:800; line-height:1.2;">Testamentum</div>
-          <div class="muted">Coffre vidéo sécurisé — accès contrôlé par jeton</div>
-        </div>
-        <div style="color:#71767B; font-weight:600;">MVP</div>
-      </div>
-    </div>
     """,
     unsafe_allow_html=True,
 )
@@ -169,16 +162,11 @@ st.markdown(
 # ---------------------------------------------------
 # Supabase client
 # ---------------------------------------------------
-
-sb = create_client(
-    st.secrets["supabase"]["url"],
-    st.secrets["supabase"]["key"]
-)
+sb = create_client(st.secrets["supabase"]["url"], st.secrets["supabase"]["key"])
 
 # ---------------------------------------------------
 # Helpers
 # ---------------------------------------------------
-
 def now_utc():
     return datetime.now(timezone.utc)
 
@@ -188,15 +176,11 @@ def sha256(s: str) -> str:
 # ---------------------------------------------------
 # DB functions
 # ---------------------------------------------------
-
 def get_or_create_vault(owner_user_id: str):
     res = sb.table("vaults").select("*").eq("owner_user_id", owner_user_id).execute()
     if res.data:
         return res.data[0]
-    created = sb.table("vaults").insert({
-        "owner_user_id": owner_user_id,
-        "title": "Coffre principal"
-    }).execute()
+    created = sb.table("vaults").insert({"owner_user_id": owner_user_id, "title": "Coffre principal"}).execute()
     return created.data[0]
 
 def create_access_token(video_id: str, beneficiary_email: str, days_valid: int = 7) -> str:
@@ -231,12 +215,29 @@ def verify_access_token(raw_token: str):
     return v_rows[0], "ok"
 
 # ---------------------------------------------------
+# Header (lisible)
+# ---------------------------------------------------
+st.markdown(
+    """
+    <div class="panel">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+        <div>
+          <div style="font-size:1.25rem; font-weight:900; line-height:1.2;">Testamentum</div>
+          <div class="muted">Coffre vidéo sécurisé — accès contrôlé pour les bénéficiaires</div>
+        </div>
+        <div class="muted2" style="font-weight:800;">MVP</div>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ---------------------------------------------------
 # Auth
 # ---------------------------------------------------
-
 if "user_id" not in st.session_state:
     st.markdown('<div class="panel">', unsafe_allow_html=True)
-    st.subheader("Accès")
+    st.header("Accès")
     st.markdown('<div class="muted">Veuillez créer un compte ou vous connecter.</div>', unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -275,16 +276,15 @@ if "user_id" not in st.session_state:
     st.stop()
 
 # ---------------------------------------------------
-# Connected header + logout
+# Connected + Logout
 # ---------------------------------------------------
-
 st.markdown(
     f"""
     <div class="panel">
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <div style="display:flex; align-items:center; justify-content:space-between;">
         <div>
-          <div style="font-weight:800;">Tableau de bord</div>
-          <div class="muted">Connecté : {st.session_state['user_email']}</div>
+          <div style="font-weight:900; font-size:1.05rem;">Tableau de bord</div>
+          <div class="muted2">Connecté : {st.session_state['user_email']}</div>
         </div>
       </div>
     </div>
@@ -292,31 +292,31 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-with st.container():
-    st.markdown('<div class="btn-secondary">', unsafe_allow_html=True)
-    if st.button("Se déconnecter"):
-        try:
-            sb.auth.sign_out()
-        except Exception:
-            pass
-        st.session_state.clear()
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
+st.markdown('<div class="btn-secondary">', unsafe_allow_html=True)
+if st.button("Se déconnecter"):
+    try:
+        sb.auth.sign_out()
+    except Exception:
+        pass
+    st.session_state.clear()
+    st.rerun()
+st.markdown("</div>", unsafe_allow_html=True)
 
 user_id = st.session_state["user_id"]
 vault = get_or_create_vault(user_id)
 
-tab1, tab2, tab3 = st.tabs(["Téléversement", "Bénéficiaires", "Accès par jeton"])
+tabs = st.tabs(["Téléversement", "Bénéficiaires", "Accès par jeton"])
+tab1, tab2, tab3 = tabs
 
 # ---------------------------------------------------
 # Tab 1 - Upload
 # ---------------------------------------------------
-
 with tab1:
     st.markdown('<div class="panel">', unsafe_allow_html=True)
     st.subheader("Téléverser une vidéo")
-    st.markdown('<div class="muted">Ajoutez un message vidéo à votre coffre.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="muted2">Ajoutez un message vidéo à votre coffre.</div>', unsafe_allow_html=True)
     st.write("")
+
     title = st.text_input("Titre", value="Mon message", key="vid_title")
     file = st.file_uploader("Sélectionner une vidéo", type=["mp4", "mov", "m4v", "webm"])
 
@@ -350,25 +350,23 @@ with tab1:
 # ---------------------------------------------------
 # Tab 2 - Beneficiaries + Token generation (MVP)
 # ---------------------------------------------------
-
 with tab2:
     st.markdown('<div class="panel">', unsafe_allow_html=True)
     st.subheader("Bénéficiaires")
-    st.markdown('<div class="muted">Ajoutez vos proches puis générez un jeton d’accès.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="muted2">Ajoutez vos proches puis générez un jeton d’accès.</div>', unsafe_allow_html=True)
     st.write("")
 
     ben_email = st.text_input("Adresse email du bénéficiaire", key="ben_email")
 
-    with st.container():
-        st.markdown('<div class="btn-secondary">', unsafe_allow_html=True)
-        if st.button("Ajouter un bénéficiaire", disabled=(not ben_email)):
-            try:
-                sb.table("beneficiaries").insert({"vault_id": vault["id"], "email": ben_email}).execute()
-                st.success("Bénéficiaire ajouté.")
-            except Exception as e:
-                st.error("Impossible d’ajouter ce bénéficiaire (déjà présent ou erreur).")
-                st.caption(str(e)[:200])
-        st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown('<div class="btn-secondary">', unsafe_allow_html=True)
+    if st.button("Ajouter un bénéficiaire", disabled=(not ben_email)):
+        try:
+            sb.table("beneficiaries").insert({"vault_id": vault["id"], "email": ben_email}).execute()
+            st.success("Bénéficiaire ajouté.")
+        except Exception as e:
+            st.error("Impossible d’ajouter ce bénéficiaire (déjà présent ou erreur).")
+            st.caption(str(e)[:200])
+    st.markdown("</div>", unsafe_allow_html=True)
 
     bens = sb.table("beneficiaries").select("*").eq("vault_id", vault["id"]).order("created_at", desc=True).execute().data
     if bens:
@@ -379,8 +377,8 @@ with tab2:
         st.info("Aucun bénéficiaire pour l’instant.")
 
     st.markdown("---")
-    st.subheader("Jeton d’accès (MVP)")
-    st.markdown('<div class="muted">Ce jeton est valable 7 jours.</div>', unsafe_allow_html=True)
+    st.subheader("Jeton d’accès")
+    st.markdown('<div class="muted2">Ce jeton est valable 7 jours (MVP).</div>', unsafe_allow_html=True)
     st.write("")
 
     vids = sb.table("videos").select("*").eq("vault_id", vault["id"]).order("created_at", desc=True).execute().data
@@ -405,11 +403,10 @@ with tab2:
 # ---------------------------------------------------
 # Tab 3 - Token access
 # ---------------------------------------------------
-
 with tab3:
     st.markdown('<div class="panel">', unsafe_allow_html=True)
     st.subheader("Accès bénéficiaire")
-    st.markdown('<div class="muted">Collez le jeton reçu pour accéder au contenu.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="muted2">Collez le jeton reçu pour accéder au contenu.</div>', unsafe_allow_html=True)
     st.write("")
 
     raw_token = st.text_input("Jeton d’accès", key="access_token")
@@ -432,7 +429,6 @@ with tab3:
                     signed = bucket.create_signed_url(video["storage_path"], 3600)
                     st.success("Accès autorisé. Lecture en cours.")
                     st.video(signed["signedURL"])
-
         except Exception as e:
             st.error("Erreur lors de l’accès.")
             st.caption(str(e)[:200])
