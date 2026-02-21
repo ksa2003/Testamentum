@@ -3,43 +3,44 @@ import streamlit as st
 st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centered")
 
 # =========================================================
-# THEME GRIS PREMIUM
+# THEME GRIS PREMIUM + FOND IMAGE
 # =========================================================
 st.markdown("""
 <style>
 
-/* ---------- Base ---------- */
+/* ---------- Background image ---------- */
+.stApp {
+  background: 
+    linear-gradient(rgba(242,244,247,0.88), rgba(242,244,247,0.88)),
+    url("https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1920&auto=format&fit=crop");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* ---------- Variables ---------- */
 :root{
-  --bg:#F2F4F7;              /* fond général */
-  --card:#FFFFFF;            /* carte principale */
-  --border:#E4E7EC;          /* bordures fines */
-  --text:#1F2937;            /* texte principal */
-  --muted:#667085;           /* texte secondaire */
-  --accent:#475467;          /* gris acier */
-  --accentSoft:#D0D5DD;      /* bouton soft */
+  --card:#FFFFFF;
+  --border:#E4E7EC;
+  --text:#1F2937;
+  --muted:#667085;
+  --accent:#475467;
+  --accentSoft:#D0D5DD;
 }
 
-.stApp{
-  background: var(--bg) !important;
-}
-
-html, body, [class*="css"]{
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  color: var(--text);
-}
-
+/* ---------- Layout ---------- */
 section.main > div{
   max-width: 900px;
   padding-top: 2rem;
 }
 
-/* ---------- Hero ---------- */
+/* ---------- Card ---------- */
 .tm-card{
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 28px;
-  box-shadow: 0 6px 20px rgba(16,24,40,0.06);
+  box-shadow: 0 8px 30px rgba(16,24,40,0.08);
   animation: fadeIn 0.4s ease-out;
 }
 
@@ -118,13 +119,12 @@ section.main > div{
   outline: none !important;
 }
 
-/* Supprime rouge */
 input:invalid{
   border: 1px solid var(--border) !important;
   box-shadow: none !important;
 }
 
-/* ---------- Boutons ---------- */
+/* ---------- Buttons ---------- */
 .stButton button{
   border-radius: 999px !important;
   padding: 0.7rem 1.2rem !important;
@@ -132,14 +132,12 @@ input:invalid{
   background: var(--accentSoft) !important;
   color: var(--text) !important;
   font-weight: 600 !important;
-  transition: all .15s ease;
 }
 
 .stButton button:hover{
   background: #E4E7EC !important;
 }
 
-/* Bouton principal */
 .tm-primary button{
   background: var(--accent) !important;
   color: #FFFFFF !important;
@@ -175,13 +173,13 @@ st.markdown("""
 
   <div class="tm-p">
     Enregistrez un message destiné à vos proches, puis contrôlez précisément l’accès des bénéficiaires lorsque le décès est déclaré.
-    Le service est conçu pour une transmission respectueuse, avec des règles strictes (jeton, expiration, journalisation).
+    Le service est conçu pour une transmission respectueuse, avec des règles strictes.
   </div>
 
   <div class="tm-bullets">
     • Accès bénéficiaires par jeton temporaire sécurisé<br/>
-    • Validation notariale (workflow métier, selon juridiction)<br/>
-    • Journalisation des actions pour la traçabilité (MVP)
+    • Validation notariale (workflow métier)<br/>
+    • Journalisation des actions pour la traçabilité
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -189,7 +187,7 @@ st.markdown("""
 st.write("")
 
 # =========================================================
-# SECTION COMMENCER
+# COMMENCER
 # =========================================================
 st.markdown("## Commencer")
 st.caption("Saisissez votre adresse e-mail pour créer un compte ou vous connecter.")
@@ -201,11 +199,11 @@ col1, col2 = st.columns([1,1])
 with col1:
     st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
     if st.button("Continuer"):
-        st.success("Redirection vers connexion (MVP).")
+        st.success("Redirection (MVP)")
     st.markdown("</div>", unsafe_allow_html=True)
 
 with col2:
     if st.button("Accès bénéficiaire"):
-        st.info("Redirection bénéficiaire (MVP).")
+        st.info("Accès bénéficiaire (MVP)")
 
-st.markdown('<div class="tm-muted">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité (MVP).</div>', unsafe_allow_html=True)
+st.markdown('<div class="tm-muted">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité.</div>', unsafe_allow_html=True)
