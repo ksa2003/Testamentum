@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 st.set_page_config(page_title="Testamentum", page_icon="🔒", layout="wide")
 
 # ------------------------------------------------------------
-# THEME: Legal Tech / Fonds d'investissement (noir + argent)
+# THEME: Legal Tech / Premium sombre (noir + gris froids + argent)
 # ------------------------------------------------------------
 st.markdown(
     """
@@ -15,35 +15,49 @@ st.markdown(
       [data-testid="stSidebar"] {display:none;}
 
       :root{
+        /* Fond */
         --bg:#000000;
 
-        /* Surfaces "X-like" */
-        --surface:#0b0f14;
-        --surface2:#0f1419;
+        /* Surfaces */
+        --surface:#0b0f14;     /* carte */
+        --surface2:#0f1419;    /* inputs */
 
-        /* Bordures / texte */
+        /* Bordures */
         --border:#2f3336;
-        --text:#e7e9ea;
-        --muted:#8b98a5;
+        --borderSoft:rgba(255,255,255,0.10);
 
-        /* Accent "deuil" : argent / gris froid, pas de bleu */
-        --accent:#c7cbd1;         /* argent clair */
-        --accent2:#9aa3ad;        /* argent plus sombre */
-        --accentText:#0b0f14;     /* texte sur bouton */
+        /* Textes (nuancés, pas seulement blanc) */
+        --text:#e7e9ea;        /* principal */
+        --text2:#d3d7dd;       /* secondaire clair */
+        --muted:#8b98a5;       /* infos */
+        --muted2:#6b7785;      /* micro-texte */
+
+        /* Accent deuil (argent froid) */
+        --accent:#c7cbd1;
+        --accent2:#9aa3ad;
+        --accent3:#5c6673;     /* gris acier */
 
         --shadow: 0 18px 60px rgba(0,0,0,.55);
       }
 
-      .stApp{ background: var(--bg) !important; }
+      .stApp{
+        background:
+          radial-gradient(900px circle at 12% 8%, rgba(199,203,209,0.06), transparent 45%),
+          radial-gradient(700px circle at 88% 12%, rgba(155,165,173,0.05), transparent 42%),
+          radial-gradient(650px circle at 50% 95%, rgba(92,102,115,0.05), transparent 48%),
+          var(--bg) !important;
+      }
 
       section.main > div{
-        max-width: 980px !important;
-        padding-top: 1.2rem !important;
+        max-width: 1040px !important;
+        padding-top: 1.1rem !important;
+        padding-left: 0.4rem !important;
+        padding-right: 0.4rem !important;
       }
 
       /* Inputs lisibles */
       .stTextInput input{
-        background: var(--surface2) !important;
+        background: linear-gradient(180deg, rgba(15,20,25,0.98), rgba(11,15,20,0.98)) !important;
         border: 1px solid var(--border) !important;
         color: var(--text) !important;
         caret-color: var(--text) !important;
@@ -51,17 +65,17 @@ st.markdown(
         padding: 0.95rem 1rem !important;
       }
       .stTextInput input::placeholder{
-        color: var(--muted) !important;
+        color: rgba(139,152,165,0.85) !important;
       }
       .stTextInput label{
-        color: var(--muted) !important;
+        color: rgba(139,152,165,0.95) !important;
         font-weight: 800 !important;
       }
 
       /* Bouton principal (sans bleu) */
       .stButton button{
-        background: linear-gradient(180deg, var(--accent) 0%, var(--accent2) 100%) !important;
-        color: var(--accentText) !important;
+        background: linear-gradient(180deg, rgba(199,203,209,0.98) 0%, rgba(154,163,173,0.98) 100%) !important;
+        color: #0b0f14 !important;
         border: 1px solid rgba(255,255,255,0.12) !important;
         border-radius: 999px !important;
         padding: 0.9rem 1rem !important;
@@ -74,7 +88,7 @@ st.markdown(
       }
 
       .fine{
-        color: var(--muted);
+        color: rgba(107,119,133,0.92);
         font-size: 0.86rem;
         margin-top: 10px;
       }
@@ -84,128 +98,24 @@ st.markdown(
 )
 
 # ------------------------------------------------------------
-# HERO: marque forte + monogramme + gradient + latin + fade-in
+# HERO: marque gauche + dégradé subtil + latin + fade-in
 # ------------------------------------------------------------
 hero = """
 <style>
-  /* Fade-in doux pour le hero */
   @keyframes fadeUp {
     0% { opacity:0; transform: translateY(10px); }
     100% { opacity:1; transform: translateY(0); }
   }
-  .tm-hero {
-    animation: fadeUp .55s ease-out both;
-  }
-
-  /* Logo monogramme T */
-  .tm-mark {
-    display:flex;
-    align-items:center;
-    gap:14px;
-  }
-  .tm-logo {
-    width:44px;
-    height:44px;
-    border-radius:14px;
-    border:1px solid rgba(255,255,255,0.14);
-    background: radial-gradient(120px circle at 25% 15%, rgba(231,233,234,0.12), rgba(255,255,255,0.02) 42%),
-                linear-gradient(180deg, rgba(15,20,25,0.95), rgba(11,15,20,0.95));
-    box-shadow: 0 14px 40px rgba(0,0,0,.55);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position: relative;
-    overflow:hidden;
-  }
-  .tm-logo::after{
-    content:"";
-    position:absolute;
-    inset:-60px;
-    background: radial-gradient(160px circle at 50% 20%, rgba(199,203,209,0.18), transparent 55%);
-    transform: rotate(12deg);
-  }
-  .tm-logo span{
-    position:relative;
-    font-weight:1000;
-    letter-spacing:0.02em;
-    color: rgba(231,233,234,0.95);
-    font-size: 1.25rem;
-    line-height: 1;
-  }
-
-  /* Dégradé subtil sur le nom */
-  .tm-brand {
-    font-size: clamp(2.7rem, 6vw, 4.0rem);
-    font-weight: 1000;
-    letter-spacing: 0.02em;
-    line-height: 1;
-    margin: 0;
-    background: linear-gradient(90deg, #ffffff 0%, #d7dbe0 35%, #aeb6bf 70%, #ffffff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .tm-sub {
-    margin-top: 6px;
-    color: rgba(139,152,165,0.95);
-    font-weight: 650;
-    font-size: 1.02rem;
-  }
-
-  .tm-latin {
-    margin-top: 10px;
-    color: rgba(139,152,165,0.85);
-    font-size: 0.95rem;
-    font-style: italic;
-    letter-spacing: 0.01em;
-  }
+  .tm-hero { animation: fadeUp .55s ease-out both; }
 
   .tm-card {
-    border: 1px solid #2f3336;
-    background: rgba(0,0,0,1);
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(15,20,25,0.68);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 18px;
-    padding: 28px;
+    padding: 26px 24px;
     box-shadow: 0 18px 60px rgba(0,0,0,.55);
-  }
-
-  .tm-title {
-    margin-top: 20px;
-    color: #e7e9ea;
-    font-weight: 950;
-    font-size: clamp(1.5rem, 3.6vw, 2.25rem);
-    line-height: 1.16;
-  }
-
-  .tm-body {
-    margin-top: 12px;
-    color: rgba(231,233,234,0.92);
-    line-height: 1.68;
-    font-size: 1.04rem;
-    max-width: 72ch;
-  }
-
-  .tm-bullets {
-    margin-top: 14px;
-    color: rgba(231,233,234,0.86);
-    line-height: 1.75;
-    font-size: 1.0rem;
-  }
-
-  .tm-pills {
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    justify-content:flex-end;
-  }
-  .tm-pill{
-    border:1px solid #2f3336;
-    background: rgba(255,255,255,0.02);
-    padding: 6px 12px;
-    border-radius: 999px;
-    color: #8b98a5;
-    font-weight: 850;
-    font-size: .88rem;
   }
 
   .tm-top {
@@ -216,7 +126,79 @@ hero = """
     flex-wrap:wrap;
   }
 
-  /* Petit bandeau "legal tech" discret */
+  /* Brand: plus à gauche, plus présent */
+  .tm-brand {
+    font-size: clamp(2.9rem, 7vw, 4.2rem);
+    font-weight: 1000;
+    letter-spacing: 0.02em;
+    line-height: 1.02;
+    margin: 0;
+    text-align: left;
+    background: linear-gradient(90deg,
+      rgba(255,255,255,0.98) 0%,
+      rgba(211,215,221,0.96) 30%,
+      rgba(199,203,209,0.92) 55%,
+      rgba(255,255,255,0.96) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .tm-sub {
+    margin-top: 8px;
+    color: rgba(211,215,221,0.92);
+    font-weight: 650;
+    font-size: 1.02rem;
+  }
+
+  .tm-latin {
+    margin-top: 10px;
+    color: rgba(139,152,165,0.88);
+    font-size: 0.95rem;
+    font-style: italic;
+    letter-spacing: 0.01em;
+  }
+
+  .tm-title {
+    margin-top: 18px;
+    color: rgba(231,233,234,0.98);
+    font-weight: 950;
+    font-size: clamp(1.55rem, 3.9vw, 2.35rem);
+    line-height: 1.16;
+  }
+
+  /* Texte non coupé + largeur confortable */
+  .tm-body {
+    margin-top: 12px;
+    color: rgba(211,215,221,0.92);
+    line-height: 1.72;
+    font-size: 1.05rem;
+    max-width: 78ch;
+  }
+
+  .tm-bullets {
+    margin-top: 14px;
+    color: rgba(231,233,234,0.86);
+    line-height: 1.78;
+    font-size: 1.0rem;
+  }
+
+  .tm-pills {
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+  .tm-pill{
+    border:1px solid rgba(255,255,255,0.10);
+    background: rgba(0,0,0,0.20);
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: rgba(139,152,165,0.95);
+    font-weight: 850;
+    font-size: .88rem;
+  }
+
   .tm-tag {
     margin-top: 10px;
     display:inline-flex;
@@ -225,29 +207,25 @@ hero = """
     border:1px solid rgba(255,255,255,0.10);
     border-radius: 999px;
     padding: 6px 12px;
-    color: rgba(231,233,234,0.88);
+    color: rgba(211,215,221,0.92);
     font-size: .88rem;
-    background: rgba(255,255,255,0.02);
+    background: rgba(0,0,0,0.18);
   }
   .tm-dot{
-    width:6px;height:6px;border-radius:999px;background: rgba(199,203,209,0.95);
-    box-shadow: 0 0 0 4px rgba(199,203,209,0.12);
+    width:6px;height:6px;border-radius:999px;
+    background: rgba(199,203,209,0.95);
+    box-shadow: 0 0 0 4px rgba(199,203,209,0.10);
   }
 
 </style>
 
 <div class="tm-hero tm-card">
   <div class="tm-top">
-    <div>
-      <div class="tm-mark">
-        <div class="tm-logo"><span>T</span></div>
-        <div>
-          <div class="tm-brand">Testamentum</div>
-          <div class="tm-sub">Coffre numérique sécurisé pour transmission vidéo posthume</div>
-          <div class="tm-latin">Verba manent. Memoria custoditur.</div>
-          <div class="tm-tag"><span class="tm-dot"></span> Legal Tech • Confidentialité • Traçabilité</div>
-        </div>
-      </div>
+    <div style="min-width: 260px;">
+      <div class="tm-brand">Testamentum</div>
+      <div class="tm-sub">Coffre numérique sécurisé pour transmission vidéo posthume</div>
+      <div class="tm-latin">Verba manent. Memoria custoditur.</div>
+      <div class="tm-tag"><span class="tm-dot"></span> Legal Tech • Confidentialité • Traçabilité</div>
     </div>
     <div class="tm-pills">
       <span class="tm-pill">Sécurité</span>
@@ -259,9 +237,8 @@ hero = """
   <div class="tm-title">Un message vidéo, transmis au bon moment.</div>
 
   <div class="tm-body">
-    Enregistrez un message destiné à vos proches, puis contrôlez précisément l’accès des bénéficiaires
-    lorsque le décès est déclaré. Le service est conçu pour une transmission respectueuse, avec des règles strictes
-    et une gouvernance adaptée aux enjeux successoraux.
+    Enregistrez un message destiné à vos proches, puis contrôlez précisément l’accès des bénéficiaires lorsque le décès est déclaré.
+    Le service est conçu pour une transmission respectueuse, avec des règles strictes et une gouvernance adaptée aux enjeux successoraux.
   </div>
 
   <div class="tm-bullets">
@@ -271,8 +248,8 @@ hero = """
   </div>
 </div>
 """
-
-components.html(hero, height=460, scrolling=False)
+# Plus haut pour éviter toute coupe sur mobile
+components.html(hero, height=560, scrolling=False)
 
 st.write("")
 
@@ -285,7 +262,8 @@ st.caption("Saisissez votre adresse e-mail pour créer un compte ou vous connect
 email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
 
 if st.button("Continuer"):
-    st.session_state["prefill_email"] = email.strip()
+    st.session_state["prefill_email"] = (email or "").strip()
+    # Page de connexion : adaptez au nom réel de votre fichier
     st.switch_page("pages/1_Connexion.py")
 
 st.markdown(
