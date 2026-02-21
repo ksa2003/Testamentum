@@ -6,27 +6,69 @@ st.set_page_config(page_title="Testamentum — Connexion", page_icon="🔐", lay
 st.markdown(
     """
     <style>
-      .stApp { background: #0b0f14; }
-      section.main > div { max-width: 720px; padding-top: 1.2rem; }
+      #MainMenu {visibility:hidden;}
+      footer {visibility:hidden;}
+      header {visibility:hidden;}
+
+      :root{
+        --bg:#000000;
+        --surface:#0b0f14;
+        --border:#2f3336;
+        --text:#e7e9ea;
+        --muted:#71767b;
+        --accent:#1d9bf0; /* bleu X */
+      }
+
+      .stApp{ background: var(--bg) !important; }
+      section.main > div{ max-width: 720px; padding-top: 1.2rem; }
+
       .panel{
-        background:#0b0f14; border:1px solid #2f3336; border-radius:16px;
-        padding:16px; margin-bottom:12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 16px;
+        margin-bottom: 12px;
       }
-      h1,h2,h3,p,div,span,label { color:#fff !important; }
-      .muted { color:#b6bcc2 !important; }
+
+      h1,h2,h3,p,div,span,label{ color: var(--text) !important; }
+      .muted{ color: var(--muted) !important; }
+
       .stTextInput input{
-        background:#0f1419 !important; border:1px solid #2f3336 !important;
-        color:#fff !important; border-radius:12px !important; padding:0.75rem 0.9rem !important;
+        background: #0f1419 !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text) !important;       /* IMPORTANT */
+        caret-color: var(--text) !important; /* IMPORTANT */
+        border-radius: 14px !important;
+        padding: 0.9rem 1rem !important;
       }
+      .stTextInput input::placeholder{ color: var(--muted) !important; }
+      .stTextInput label{ color: var(--muted) !important; font-weight: 700 !important; }
+
+      /* Boutons */
       .stButton button{
-        background:#E50914 !important; color:#fff !important; border:none !important;
-        border-radius:12px !important; font-weight:900 !important; padding:0.75rem 1.0rem !important;
-        width:100%;
+        background: var(--accent) !important;
+        color: #001018 !important;
+        border: none !important;
+        border-radius: 999px !important;
+        font-weight: 900 !important;
+        padding: 0.9rem 1rem !important;
+        width: 100%;
       }
+      .stButton button:hover{ filter: brightness(1.05); }
+
       .btn-secondary .stButton button{
-        background:transparent !important; border:1px solid #2f3336 !important; color:#fff !important;
+        background: transparent !important;
+        color: var(--text) !important;
+        border: 1px solid var(--border) !important;
       }
-      #MainMenu {visibility:hidden;} footer{visibility:hidden;} header{visibility:hidden;}
+
+      /* Tabs */
+      button[data-baseweb="tab"]{
+        color: var(--muted) !important;
+      }
+      button[data-baseweb="tab"][aria-selected="true"]{
+        color: var(--text) !important;
+      }
     </style>
     """,
     unsafe_allow_html=True,
@@ -34,12 +76,12 @@ st.markdown(
 
 sb = create_client(st.secrets["supabase"]["url"], st.secrets["supabase"]["key"])
 
+prefill = st.session_state.get("prefill_email", "")
+
 st.markdown('<div class="panel">', unsafe_allow_html=True)
 st.title("Connexion")
 st.caption("Veuillez vous identifier pour accéder à votre coffre.")
 st.markdown("</div>", unsafe_allow_html=True)
-
-prefill = st.session_state.get("prefill_email", "")
 
 tab_login, tab_signup = st.tabs(["Se connecter", "Créer un compte"])
 
@@ -55,9 +97,8 @@ with tab_login:
             st.session_state["user_email"] = auth.user.email
             st.success("Connexion réussie.")
             st.switch_page("pages/2_Tableau_de_bord.py")
-        except Exception as e:
+        except Exception:
             st.error("Identifiants invalides ou compte non confirmé.")
-            st.caption(str(e)[:200])
     st.markdown("</div>", unsafe_allow_html=True)
 
 with tab_signup:
@@ -69,9 +110,8 @@ with tab_signup:
         try:
             sb.auth.sign_up({"email": email, "password": pwd})
             st.success("Compte créé. Veuillez vous connecter.")
-        except Exception as e:
+        except Exception:
             st.error("Impossible de créer le compte.")
-            st.caption(str(e)[:200])
     st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown('<div class="btn-secondary">', unsafe_allow_html=True)
