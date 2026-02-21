@@ -5,7 +5,7 @@ st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centere
 st.markdown("""
 <style>
 
-/* --------- Background : Cimetière flou (sans croix visibles) --------- */
+/* --------- Background : Cimetière flou --------- */
 .stApp {
   background:
     linear-gradient(rgba(0,0,0,0.70), rgba(0,0,0,0.78)),
@@ -17,13 +17,17 @@ st.markdown("""
 
 /* --------- Variables --------- */
 :root{
-  --card: rgba(15,18,22,0.78);
-  --border: rgba(255,255,255,0.12);
+  --card: rgba(15,18,22,0.82);
+  --border: rgba(255,255,255,0.18);
+
   --text: #FFFFFF;
-  --muted: #D6D9DE;
-  --muted2: #9CA3AF;
-  --accent: #E5E7EB;
-  --accentHover: #F3F4F6;
+
+  /* GRIS ÉCLAIRCIS */
+  --muted: #F1F3F6;
+  --muted2: #D1D5DB;
+
+  --accent: #F3F4F6;
+  --accentHover: #FFFFFF;
 }
 
 /* --------- Base --------- */
@@ -43,8 +47,8 @@ section.main > div{
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 26px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 22px 100px rgba(0,0,0,0.7);
+  backdrop-filter: blur(22px);
+  box-shadow: 0 25px 110px rgba(0,0,0,0.75);
   animation: fadeIn 0.6s ease-out;
 }
 
@@ -84,16 +88,16 @@ section.main > div{
 }
 
 .tm-p{
-  margin-top: 10px;
+  margin-top: 12px;
   color: var(--muted);
-  line-height: 1.65;
+  line-height: 1.7;
   font-size: 15px;
 }
 
 .tm-bullets{
-  margin-top: 14px;
+  margin-top: 16px;
   color: var(--muted);
-  line-height: 1.85;
+  line-height: 1.9;
   font-size: 14px;
 }
 
@@ -111,7 +115,7 @@ section.main > div{
   border-radius: 999px;
   font-size: 12px;
   color: var(--muted);
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.07);
 }
 
 /* --------- Inputs --------- */
@@ -120,27 +124,27 @@ section.main > div{
 }
 
 .stTextInput input{
-  background: rgba(0,0,0,0.45) !important;
-  border: 1px solid rgba(255,255,255,0.25) !important;
+  background: rgba(0,0,0,0.50) !important;
+  border: 1px solid rgba(255,255,255,0.35) !important;
   color: var(--text) !important;
   border-radius: 12px !important;
-  padding: 0.8rem 1rem !important;
+  padding: 0.85rem 1rem !important;
   caret-color: var(--text) !important;
 }
 
 .stTextInput input::placeholder{
-  color: rgba(255,255,255,0.45) !important;
+  color: rgba(255,255,255,0.60) !important;
 }
 
 .stTextInput input:focus{
   border: 1px solid var(--accent) !important;
-  box-shadow: 0 0 0 3px rgba(255,255,255,0.15) !important;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.18) !important;
   outline: none !important;
 }
 
 /* remove red invalid */
 input:invalid{
-  border: 1px solid rgba(255,255,255,0.25) !important;
+  border: 1px solid rgba(255,255,255,0.35) !important;
   box-shadow: none !important;
 }
 
@@ -148,15 +152,15 @@ input:invalid{
 .stButton button{
   width: 100%;
   border-radius: 999px !important;
-  padding: 0.9rem 1.2rem !important;
-  border: 1px solid rgba(255,255,255,0.25) !important;
-  background: rgba(255,255,255,0.10) !important;
+  padding: 0.95rem 1.2rem !important;
+  border: 1px solid rgba(255,255,255,0.30) !important;
+  background: rgba(255,255,255,0.12) !important;
   color: var(--text) !important;
   font-weight: 600 !important;
 }
 
 .stButton button:hover{
-  background: rgba(255,255,255,0.20) !important;
+  background: rgba(255,255,255,0.22) !important;
 }
 
 .tm-primary button{
@@ -170,9 +174,9 @@ input:invalid{
 }
 
 .tm-muted{
-  margin-top: 12px;
+  margin-top: 14px;
   font-size: 12px;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255,255,255,0.75);
 }
 
 @media (max-width: 520px){
@@ -232,4 +236,7 @@ with c2:
     if st.button("Accès bénéficiaire"):
         st.info("Accès bénéficiaire (MVP)")
 
-st.markdown('<div class="tm-muted">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité.</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="tm-muted">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité.</div>',
+    unsafe_allow_html=True
+)
