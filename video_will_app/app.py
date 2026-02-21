@@ -5,11 +5,11 @@ st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centere
 st.markdown("""
 <style>
 
-/* --------- Background : Silhouette / Souvenir --------- */
+/* --------- Background : Cimetière flou (sans croix visibles) --------- */
 .stApp {
   background:
-    linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.78)),
-    url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1920&auto=format&fit=crop");
+    linear-gradient(rgba(0,0,0,0.70), rgba(0,0,0,0.78)),
+    url("https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?q=80&w=1920&auto=format&fit=crop");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -17,10 +17,10 @@ st.markdown("""
 
 /* --------- Variables --------- */
 :root{
-  --card: rgba(12,16,20,0.75);
+  --card: rgba(15,18,22,0.78);
   --border: rgba(255,255,255,0.12);
   --text: #FFFFFF;
-  --muted: #D1D5DB;
+  --muted: #D6D9DE;
   --muted2: #9CA3AF;
   --accent: #E5E7EB;
   --accentHover: #F3F4F6;
@@ -34,7 +34,7 @@ html, body, [class*="css"]{
 
 section.main > div{
   max-width: 920px;
-  padding-top: 2.2rem;
+  padding-top: 2.3rem;
 }
 
 /* --------- Card --------- */
@@ -43,8 +43,8 @@ section.main > div{
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 26px;
-  backdrop-filter: blur(18px);
-  box-shadow: 0 20px 90px rgba(0,0,0,0.7);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 22px 100px rgba(0,0,0,0.7);
   animation: fadeIn 0.6s ease-out;
 }
 
@@ -78,7 +78,7 @@ section.main > div{
 }
 
 .tm-h2{
-  margin-top: 20px;
+  margin-top: 22px;
   font-size: 24px;
   font-weight: 650;
 }
@@ -91,7 +91,7 @@ section.main > div{
 }
 
 .tm-bullets{
-  margin-top: 12px;
+  margin-top: 14px;
   color: var(--muted);
   line-height: 1.85;
   font-size: 14px;
