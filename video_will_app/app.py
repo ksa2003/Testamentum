@@ -5,14 +5,16 @@ st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centere
 st.markdown("""
 <style>
 
-/* --------- Background : Cimetière flou (sans croix visibles) --------- */
+/* --------- Background : Décor cimetière (sans personne) --------- */
 .stApp {
   background:
+    radial-gradient(circle at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.85) 75%),
     linear-gradient(rgba(0,0,0,0.70), rgba(0,0,0,0.78)),
-    url("https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?q=80&w=1920&auto=format&fit=crop");
+    url("https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1920&auto=format&fit=crop");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  filter: grayscale(20%);
 }
 
 /* --------- Variables --------- */
@@ -43,8 +45,8 @@ section.main > div{
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 26px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 22px 100px rgba(0,0,0,0.7);
+  backdrop-filter: blur(22px);
+  box-shadow: 0 25px 110px rgba(0,0,0,0.7);
   animation: fadeIn 0.6s ease-out;
 }
 
@@ -138,7 +140,6 @@ section.main > div{
   outline: none !important;
 }
 
-/* remove red invalid */
 input:invalid{
   border: 1px solid rgba(255,255,255,0.25) !important;
   box-shadow: none !important;
