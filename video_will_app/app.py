@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 st.set_page_config(page_title="Testamentum", page_icon="🔒", layout="wide")
 
 # ------------------------------------------------------------
-# THEME GLOBAL X (noir)
+# THEME X NOIR PROPRE
 # ------------------------------------------------------------
 st.markdown(
     """
@@ -24,9 +24,10 @@ st.markdown(
       }
 
       .stApp{ background: var(--bg) !important; }
+
       section.main > div{
         max-width: 980px !important;
-        padding-top: 1rem !important;
+        padding-top: 1.5rem !important;
       }
 
       .stTextInput input{
@@ -68,82 +69,77 @@ st.markdown(
 )
 
 # ------------------------------------------------------------
-# Sélecteur de mode
+# HERO SECTION AVEC MARQUE FORTE
 # ------------------------------------------------------------
-mode = st.radio(
-    "Mode d'affichage",
-    ["Flat (100% noir)", "Card X (effet carte floutée)"],
-    horizontal=True
-)
+hero = """
+<div style="
+  border:1px solid #2f3336;
+  background:#000000;
+  border-radius:18px;
+  padding:32px;
+">
 
-# ------------------------------------------------------------
-# HERO - VERSION FLAT
-# ------------------------------------------------------------
-if mode == "Flat (100% noir)":
+  <!-- NOM DU SITE -->
+  <div style="
+      font-size:clamp(3rem, 6vw, 4.2rem);
+      font-weight:1000;
+      letter-spacing:0.02em;
+      color:#ffffff;
+      line-height:1;
+  ">
+      Testamentum
+  </div>
 
-    hero = """
-    <div style="
-      border:1px solid #2f3336;
-      background:#000000;
-      border-radius:18px;
-      padding:18px;
-    ">
-      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;">
-        <div style="color:#e7e9ea; font-weight:900; font-size:1.05rem;">Testamentum</div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <span style="border:1px solid #2f3336; padding:6px 12px; border-radius:999px; color:#8b98a5;">Sécurité</span>
-          <span style="border:1px solid #2f3336; padding:6px 12px; border-radius:999px; color:#8b98a5;">Confidentialité</span>
-          <span style="border:1px solid #2f3336; padding:6px 12px; border-radius:999px; color:#8b98a5;">Traçabilité</span>
-        </div>
-      </div>
+  <!-- Sous-titre institutionnel -->
+  <div style="
+      margin-top:8px;
+      font-size:1.1rem;
+      color:#8b98a5;
+      font-weight:600;
+  ">
+      Coffre numérique sécurisé pour transmission vidéo posthume
+  </div>
 
-      <div style="margin-top:14px; color:#e7e9ea; font-weight:950; font-size:2.3rem; line-height:1.1;">
-        Un message vidéo, transmis au bon moment.
-      </div>
+  <div style="height:28px;"></div>
 
-      <div style="margin-top:10px; color:#e7e9ea; opacity:.9; line-height:1.6;">
-        Enregistrez un message vidéo destiné à vos proches, puis contrôlez l’accès des bénéficiaires
-        lorsque le décès est déclaré. Le tout avec des règles strictes.
-      </div>
-    </div>
-    """
+  <!-- Phrase forte -->
+  <div style="
+      color:#e7e9ea;
+      font-weight:900;
+      font-size:clamp(1.6rem, 3.8vw, 2.4rem);
+      line-height:1.2;
+  ">
+      Un message vidéo, transmis au bon moment.
+  </div>
 
-# ------------------------------------------------------------
-# HERO - VERSION CARD X
-# ------------------------------------------------------------
-else:
+  <div style="
+      margin-top:14px;
+      color:#e7e9ea;
+      opacity:.9;
+      line-height:1.65;
+      font-size:1.05rem;
+      max-width:70ch;
+  ">
+      Enregistrez un message destiné à vos proches, puis contrôlez précisément
+      l’accès des bénéficiaires lorsque le décès est déclaré.
+      Le tout avec des règles strictes (jeton, expiration, journalisation).
+  </div>
 
-    hero = """
-    <div style="
-      border:1px solid #2f3336;
-      background: rgba(15,20,25,0.72);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius:18px;
-      padding:18px;
-    ">
-      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;">
-        <div style="color:#e7e9ea; font-weight:900; font-size:1.05rem;">Testamentum</div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <span style="border:1px solid #2f3336; padding:6px 12px; border-radius:999px; color:#8b98a5; background:rgba(255,255,255,0.02);">Sécurité</span>
-          <span style="border:1px solid #2f3336; padding:6px 12px; border-radius:999px; color:#8b98a5; background:rgba(255,255,255,0.02);">Confidentialité</span>
-          <span style="border:1px solid #2f3336; padding:6px 12px; border-radius:999px; color:#8b98a5; background:rgba(255,255,255,0.02);">Traçabilité</span>
-        </div>
-      </div>
+  <div style="
+      margin-top:16px;
+      color:#e7e9ea;
+      opacity:.85;
+      line-height:1.7;
+  ">
+      • Accès bénéficiaires par jeton temporaire sécurisé<br/>
+      • Option de validation notariale (workflow métier)<br/>
+      • Historique des actions pour la traçabilité (MVP)
+  </div>
 
-      <div style="margin-top:14px; color:#e7e9ea; font-weight:950; font-size:2.3rem; line-height:1.1;">
-        Un message vidéo, transmis au bon moment.
-      </div>
+</div>
+"""
 
-      <div style="margin-top:10px; color:#e7e9ea; opacity:.9; line-height:1.6;">
-        Enregistrez un message vidéo destiné à vos proches, puis contrôlez l’accès des bénéficiaires
-        lorsque le décès est déclaré. Le tout avec des règles strictes.
-      </div>
-    </div>
-    """
-
-# Render HERO
-components.html(hero, height=260, scrolling=False)
+components.html(hero, height=420, scrolling=False)
 
 st.write("")
 
