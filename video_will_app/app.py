@@ -3,17 +3,12 @@ import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Testamentum", page_icon="🔒", layout="wide")
 
-# ------------------------------------------------------------
-# THEME X (noir, blanc, bleu) + layout mobile-first
-# ------------------------------------------------------------
 st.markdown(
     """
     <style>
       #MainMenu {visibility:hidden;}
       footer {visibility:hidden;}
       header {visibility:hidden;}
-
-      /* Pour éviter l'effet "app Streamlit", on peut cacher la sidebar */
       [data-testid="stSidebar"] {display:none;}
 
       :root{
@@ -23,7 +18,7 @@ st.markdown(
         --border:#2f3336;
         --text:#e7e9ea;
         --muted:#8b98a5;
-        --accent:#1d9bf0; /* bleu X */
+        --accent:#1d9bf0;
       }
 
       .stApp{ background: var(--bg) !important; }
@@ -32,7 +27,6 @@ st.markdown(
         padding-top: 1.0rem !important;
       }
 
-      /* Inputs Streamlit - IMPORTANT pour voir le texte tapé */
       .stTextInput input{
         background: var(--surface2) !important;
         border: 1px solid var(--border) !important;
@@ -42,10 +36,7 @@ st.markdown(
         padding: 0.95rem 1rem !important;
       }
       .stTextInput input::placeholder{ color: var(--muted) !important; }
-      .stTextInput label{
-        color: var(--muted) !important;
-        font-weight: 800 !important;
-      }
+      .stTextInput label{ color: var(--muted) !important; font-weight: 800 !important; }
 
       .stButton button{
         background: var(--accent) !important;
@@ -56,7 +47,6 @@ st.markdown(
         font-weight: 900 !important;
         width: 100%;
       }
-      .stButton button:hover{ filter: brightness(1.05); }
 
       .fine{
         color: var(--muted);
@@ -69,21 +59,19 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ------------------------------------------------------------
-# HERO (HTML rendu, donc aucun code n'apparaît)
-# ------------------------------------------------------------
+# HERO : fond identique au bg global (#000)
 hero = """
 <div style="
   border:1px solid #2f3336;
   background:
-    radial-gradient(900px circle at 15% 10%, rgba(29,155,240,0.22), transparent 38%),
-    radial-gradient(700px circle at 85% 30%, rgba(255,255,255,0.06), transparent 40%),
-    #0b0f14;
+    radial-gradient(900px circle at 15% 10%, rgba(29,155,240,0.14), transparent 42%),
+    radial-gradient(700px circle at 85% 30%, rgba(255,255,255,0.04), transparent 45%),
+    #000000;
   border-radius: 18px;
   padding: 18px;
 ">
   <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-    <div style="color:#e7e9ea; font-weight:900; letter-spacing:.02em; font-size:1.1rem;">Testamentum</div>
+    <div style="color:#e7e9ea; font-weight:900; letter-spacing:.02em; font-size:1.05rem;">Testamentum</div>
     <div style="display:flex; gap:8px; flex-wrap:wrap;">
       <span style="border:1px solid #2f3336; padding:7px 12px; border-radius:999px; color:#8b98a5; font-weight:800; font-size:.9rem; background:rgba(255,255,255,0.02);">Sécurité</span>
       <span style="border:1px solid #2f3336; padding:7px 12px; border-radius:999px; color:#8b98a5; font-weight:800; font-size:.9rem; background:rgba(255,255,255,0.02);">Confidentialité</span>
@@ -91,11 +79,11 @@ hero = """
     </div>
   </div>
 
-  <div style="margin-top:14px; color:#e7e9ea; font-weight:950; font-size:clamp(1.8rem, 4.2vw, 2.6rem); line-height:1.08;">
+  <div style="margin-top:14px; color:#e7e9ea; font-weight:950; font-size:clamp(1.8rem, 4.2vw, 2.5rem); line-height:1.08;">
     Un message vidéo, transmis au bon moment.
   </div>
 
-  <div style="margin-top:10px; color:#e7e9ea; opacity:.92; font-size:1.05rem; line-height:1.55; max-width:68ch;">
+  <div style="margin-top:10px; color:#e7e9ea; opacity:.92; font-size:1.04rem; line-height:1.55; max-width:68ch;">
     Enregistrez un message vidéo destiné à vos proches, puis contrôlez l’accès des bénéficiaires lorsque le décès est déclaré.
     Le tout avec des règles strictes (jeton, expiration, journalisation).
   </div>
@@ -106,13 +94,14 @@ hero = """
     • Historique des actions pour la traçabilité (MVP)
   </div>
 
-  <div style="height:14px;"></div>
+  <div style="height:12px;"></div>
 
   <div style="
     border:1px solid #2f3336;
-    background:#0f1419;
+    background: rgba(15,20,25,0.65);
+    backdrop-filter: blur(6px);
     border-radius: 16px;
-    padding: 14px;
+    padding: 12px;
     color:#8b98a5;
     font-size:.92rem;
     line-height:1.5;
@@ -122,13 +111,10 @@ hero = """
   </div>
 </div>
 """
-components.html(hero, height=360, scrolling=False)
+components.html(hero, height=330, scrolling=False)
 
 st.write("")
 
-# ------------------------------------------------------------
-# CTA (Streamlit, donc fonctionnel + lisible)
-# ------------------------------------------------------------
 st.subheader("Commencer")
 st.caption("Saisissez votre adresse e-mail pour créer un compte ou vous connecter.")
 
