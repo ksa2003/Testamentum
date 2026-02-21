@@ -9,65 +9,54 @@ st.markdown(
       #MainMenu {visibility:hidden;}
       footer {visibility:hidden;}
       header {visibility:hidden;}
+      [data-testid="stSidebar"] {display:none;}
 
       :root{
-        --bg:#000000;
-        --surface:#0b0f14;
-        --border:#2f3336;
-        --text:#e7e9ea;
-        --muted:#71767b;
-        --accent:#1d9bf0; /* bleu X */
+        --bg:#f3f2ef;
+        --card:#ffffff;
+        --text:#191919;
+        --muted:#5f6368;
+        --border:#e0e0e0;
+        --blue:#0a66c2;
       }
 
       .stApp{ background: var(--bg) !important; }
-      section.main > div{ max-width: 720px; padding-top: 1.2rem; }
+      section.main > div{ max-width: 640px !important; padding-top: 1.2rem !important; }
 
-      .panel{
-        background: var(--surface);
+      .card{
+        background: var(--card);
         border: 1px solid var(--border);
-        border-radius: 18px;
+        border-radius: 14px;
         padding: 16px;
         margin-bottom: 12px;
       }
 
-      h1,h2,h3,p,div,span,label{ color: var(--text) !important; }
-      .muted{ color: var(--muted) !important; }
+      .title{ font-weight: 900; font-size: 1.6rem; color: var(--text); margin: 0 0 6px 0; }
+      .lead{ color: var(--muted); margin: 0 0 10px 0; line-height: 1.5; }
 
       .stTextInput input{
-        background: #0f1419 !important;
+        background: #fff !important;
         border: 1px solid var(--border) !important;
-        color: var(--text) !important;       /* IMPORTANT */
-        caret-color: var(--text) !important; /* IMPORTANT */
-        border-radius: 14px !important;
-        padding: 0.9rem 1rem !important;
+        color: var(--text) !important;
+        border-radius: 10px !important;
+        padding: 0.85rem 0.9rem !important;
       }
-      .stTextInput input::placeholder{ color: var(--muted) !important; }
       .stTextInput label{ color: var(--muted) !important; font-weight: 700 !important; }
 
-      /* Boutons */
       .stButton button{
-        background: var(--accent) !important;
-        color: #001018 !important;
+        background: var(--blue) !important;
+        color: #fff !important;
         border: none !important;
         border-radius: 999px !important;
+        padding: 0.85rem 1rem !important;
         font-weight: 900 !important;
-        padding: 0.9rem 1rem !important;
         width: 100%;
       }
-      .stButton button:hover{ filter: brightness(1.05); }
 
       .btn-secondary .stButton button{
         background: transparent !important;
         color: var(--text) !important;
         border: 1px solid var(--border) !important;
-      }
-
-      /* Tabs */
-      button[data-baseweb="tab"]{
-        color: var(--muted) !important;
-      }
-      button[data-baseweb="tab"][aria-selected="true"]{
-        color: var(--text) !important;
       }
     </style>
     """,
@@ -75,18 +64,17 @@ st.markdown(
 )
 
 sb = create_client(st.secrets["supabase"]["url"], st.secrets["supabase"]["key"])
-
 prefill = st.session_state.get("prefill_email", "")
 
-st.markdown('<div class="panel">', unsafe_allow_html=True)
-st.title("Connexion")
-st.caption("Veuillez vous identifier pour accéder à votre coffre.")
+st.markdown('<div class="card">', unsafe_allow_html=True)
+st.markdown('<div class="title">Connexion</div>', unsafe_allow_html=True)
+st.markdown('<div class="lead">Veuillez vous identifier pour accéder à votre coffre.</div>', unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
 tab_login, tab_signup = st.tabs(["Se connecter", "Créer un compte"])
 
 with tab_login:
-    st.markdown('<div class="panel">', unsafe_allow_html=True)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     email = st.text_input("Adresse e-mail", value=prefill, key="login_email")
     pwd = st.text_input("Mot de passe", type="password", key="login_pwd")
 
@@ -102,7 +90,7 @@ with tab_login:
     st.markdown("</div>", unsafe_allow_html=True)
 
 with tab_signup:
-    st.markdown('<div class="panel">', unsafe_allow_html=True)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     email = st.text_input("Adresse e-mail", value=prefill, key="reg_email")
     pwd = st.text_input("Mot de passe", type="password", key="reg_pwd")
 
