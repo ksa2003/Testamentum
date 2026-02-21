@@ -5,27 +5,34 @@ st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centere
 st.markdown("""
 <style>
 
-/* --------- Background : Décor cimetière (sans personne) --------- */
+/* --------- Background : Forêt / Cimetière brumeux --------- */
 .stApp {
   background:
-    radial-gradient(circle at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.85) 75%),
-    linear-gradient(rgba(0,0,0,0.70), rgba(0,0,0,0.78)),
-    url("https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1920&auto=format&fit=crop");
+    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.65)),
+    url("https://images.unsplash.com/photo-1475189778702-5ec9941484ae?q=80&w=1920&auto=format&fit=crop");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  filter: grayscale(20%);
+}
+
+/* Vignette subtile */
+.stApp::after{
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.55) 85%);
+  pointer-events: none;
 }
 
 /* --------- Variables --------- */
 :root{
-  --card: rgba(15,18,22,0.78);
-  --border: rgba(255,255,255,0.12);
+  --card: rgba(18,22,26,0.78);
+  --border: rgba(255,255,255,0.15);
   --text: #FFFFFF;
-  --muted: #D6D9DE;
-  --muted2: #9CA3AF;
-  --accent: #E5E7EB;
-  --accentHover: #F3F4F6;
+  --muted: #E2E5EA;
+  --muted2: #B7BDC7;
+  --accent: #F0F2F5;
+  --accentHover: #FFFFFF;
 }
 
 /* --------- Base --------- */
@@ -44,14 +51,14 @@ section.main > div{
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 18px;
-  padding: 26px;
-  backdrop-filter: blur(22px);
-  box-shadow: 0 25px 110px rgba(0,0,0,0.7);
-  animation: fadeIn 0.6s ease-out;
+  padding: 28px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+  animation: fadeIn 0.5s ease-out;
 }
 
 @keyframes fadeIn{
-  from {opacity:0; transform: translateY(12px);}
+  from {opacity:0; transform: translateY(10px);}
   to {opacity:1; transform: translateY(0);}
 }
 
@@ -61,7 +68,7 @@ section.main > div{
   margin: 0;
   font-weight: 700;
   letter-spacing: -0.03em;
-  background: linear-gradient(90deg, #FFFFFF 0%, #E5E7EB 50%, #FFFFFF 100%);
+  background: linear-gradient(90deg, #FFFFFF 0%, #EAECEF 50%, #FFFFFF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -113,7 +120,7 @@ section.main > div{
   border-radius: 999px;
   font-size: 12px;
   color: var(--muted);
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.06);
 }
 
 /* --------- Inputs --------- */
@@ -123,7 +130,7 @@ section.main > div{
 
 .stTextInput input{
   background: rgba(0,0,0,0.45) !important;
-  border: 1px solid rgba(255,255,255,0.25) !important;
+  border: 1px solid rgba(255,255,255,0.30) !important;
   color: var(--text) !important;
   border-radius: 12px !important;
   padding: 0.8rem 1rem !important;
@@ -131,7 +138,7 @@ section.main > div{
 }
 
 .stTextInput input::placeholder{
-  color: rgba(255,255,255,0.45) !important;
+  color: rgba(255,255,255,0.55) !important;
 }
 
 .stTextInput input:focus{
@@ -140,8 +147,9 @@ section.main > div{
   outline: none !important;
 }
 
+/* remove red invalid */
 input:invalid{
-  border: 1px solid rgba(255,255,255,0.25) !important;
+  border: 1px solid rgba(255,255,255,0.30) !important;
   box-shadow: none !important;
 }
 
@@ -150,14 +158,14 @@ input:invalid{
   width: 100%;
   border-radius: 999px !important;
   padding: 0.9rem 1.2rem !important;
-  border: 1px solid rgba(255,255,255,0.25) !important;
-  background: rgba(255,255,255,0.10) !important;
+  border: 1px solid rgba(255,255,255,0.30) !important;
+  background: rgba(255,255,255,0.12) !important;
   color: var(--text) !important;
   font-weight: 600 !important;
 }
 
 .stButton button:hover{
-  background: rgba(255,255,255,0.20) !important;
+  background: rgba(255,255,255,0.22) !important;
 }
 
 .tm-primary button{
@@ -173,7 +181,7 @@ input:invalid{
 .tm-muted{
   margin-top: 12px;
   font-size: 12px;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255,255,255,0.70);
 }
 
 @media (max-width: 520px){
