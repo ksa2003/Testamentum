@@ -15,63 +15,115 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------
-# Branding / UI professionnel
+# UI claire, sérieuse, lisible (style SaaS)
 # ---------------------------------------------------
 
 st.markdown(
     """
     <style>
+      /* Background - light, neutral */
       .stApp {
-        background: radial-gradient(1200px circle at 10% 10%, rgba(66,133,244,0.12), transparent 40%),
-                    radial-gradient(900px circle at 90% 20%, rgba(0,200,150,0.10), transparent 35%),
-                    radial-gradient(900px circle at 50% 90%, rgba(155,81,224,0.10), transparent 35%),
-                    linear-gradient(180deg, #0b1220 0%, #0a0f1a 100%);
+        background: linear-gradient(180deg, #f6f8fb 0%, #eef2f7 100%);
       }
 
+      /* Typography */
       html, body, [class*="css"]  {
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+        color: #111827;
       }
 
+      /* Main container width */
       section.main > div {
-        max-width: 900px;
-        padding-top: 2rem;
+        max-width: 980px;
+        padding-top: 1.5rem;
       }
 
+      /* Make Streamlit container look like a real product card */
       .block-container {
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.07);
-        border-radius: 18px;
-        padding: 24px;
-        box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+        background: rgba(255,255,255,0.92);
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 22px;
+        box-shadow: 0 10px 25px rgba(17,24,39,0.08);
       }
 
+      /* Titles */
+      h1, h2, h3 {
+        letter-spacing: -0.02em;
+        color: #0f172a;
+      }
+
+      /* Inputs */
+      .stTextInput input, .stTextArea textarea {
+        border-radius: 12px !important;
+        border: 1px solid #d1d5db !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+      }
+
+      /* Buttons */
       .stButton button {
         border-radius: 12px;
         padding: 0.6rem 1rem;
-        border: 1px solid rgba(255,255,255,0.10);
+        border: 1px solid #d1d5db;
+        background: #111827;   /* near-black */
+        color: white;
+      }
+      .stButton button:hover {
+        background: #0b1220;
+        border: 1px solid #cbd5e1;
       }
 
-      .stTextInput input, .stTextArea textarea {
-        border-radius: 12px !important;
-      }
-
+      /* Tabs */
       button[role="tab"] {
         border-radius: 12px !important;
       }
 
+      /* Sidebar */
+      section[data-testid="stSidebar"] > div {
+        background: #ffffff;
+        border-right: 1px solid #e5e7eb;
+      }
+
+      /* Make success/error readable */
       .stAlert {
         border-radius: 14px;
+      }
+
+      /* Small muted text */
+      .muted {
+        color: #6b7280;
+        font-size: 0.95rem;
+      }
+
+      /* Header bar */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 10px 14px;
+        margin: 0 0 16px 0;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+      }
+      .brand {
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: #0f172a;
+      }
+      .tagline {
+        color: #6b7280;
+        font-size: 0.95rem;
       }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-st.title("Testamentum")
-st.caption("Coffre vidéo sécurisé — Accès contrôlé par jeton pour les bénéficiaires")
-
 # ---------------------------------------------------
-# Connexion Supabase
+# Supabase client
 # ---------------------------------------------------
 
 sb = create_client(
@@ -90,7 +142,7 @@ def sha256(s: str) -> str:
     return hashlib.sha256(s.encode("utf-8")).hexdigest()
 
 # ---------------------------------------------------
-# DB Fonctions
+# DB functions
 # ---------------------------------------------------
 
 def get_or_create_vault(owner_user_id: str):
@@ -104,7 +156,7 @@ def get_or_create_vault(owner_user_id: str):
     return created.data[0]
 
 def create_access_token(video_id: str, beneficiary_email: str, days_valid: int = 7) -> str:
-    raw = uuid.uuid4().hex + uuid.uuid4().hex  # token lisible + long
+    raw = uuid.uuid4().hex + uuid.uuid4().hex
     token_hash = sha256(raw)
     expires = now_utc() + timedelta(days=days_valid)
 
@@ -118,7 +170,7 @@ def create_access_token(video_id: str, beneficiary_email: str, days_valid: int =
     return raw
 
 def verify_access_token(raw_token: str):
-    token_hash = sha256(raw_token)
+    token_hash = sha256(raw_token.strip())
     rows = sb.table("access_tokens").select("*").eq("token_hash", token_hash).execute().data
     if not rows:
         return None, "invalid"
@@ -135,28 +187,50 @@ def verify_access_token(raw_token: str):
     return v_rows[0], "ok"
 
 # ---------------------------------------------------
-# Auth (Supabase Auth)
+# Top header (marketing light)
+# ---------------------------------------------------
+
+st.markdown(
+    """
+    <div class="topbar">
+      <div>
+        <div class="brand">Testamentum</div>
+        <div class="tagline">Coffre vidéo sécurisé — accès contrôlé pour les bénéficiaires</div>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ---------------------------------------------------
+# Auth
 # ---------------------------------------------------
 
 if "user_id" not in st.session_state:
+    st.title("Accès")
+    st.markdown('<div class="muted">Veuillez créer un compte ou vous connecter.</div>', unsafe_allow_html=True)
+    st.write("")
+
     col1, col2 = st.columns(2)
 
     with col1:
         st.subheader("Créer un compte")
         email_reg = st.text_input("Adresse email", key="reg_email")
         password_reg = st.text_input("Mot de passe", type="password", key="reg_pass")
+
         if st.button("Créer mon compte"):
             try:
                 sb.auth.sign_up({"email": email_reg, "password": password_reg})
                 st.success("Compte créé avec succès. Vous pouvez maintenant vous connecter.")
             except Exception as e:
-                st.error("Une erreur est survenue lors de la création du compte.")
+                st.error("Impossible de créer le compte.")
                 st.caption(str(e)[:200])
 
     with col2:
         st.subheader("Connexion")
         email = st.text_input("Adresse email", key="login_email")
         password = st.text_input("Mot de passe", type="password", key="login_pass")
+
         if st.button("Se connecter"):
             try:
                 auth = sb.auth.sign_in_with_password({"email": email, "password": password})
@@ -170,11 +244,11 @@ if "user_id" not in st.session_state:
     st.stop()
 
 # ---------------------------------------------------
-# Utilisateur connecté + Déconnexion
+# Connected
 # ---------------------------------------------------
 
-st.success("Connexion réussie.")
-st.sidebar.write(f"Connecté : {st.session_state['user_email']}")
+st.sidebar.write("Session")
+st.sidebar.write(f"Utilisateur : {st.session_state['user_email']}")
 
 if st.sidebar.button("Se déconnecter"):
     try:
@@ -187,14 +261,14 @@ if st.sidebar.button("Se déconnecter"):
 user_id = st.session_state["user_id"]
 vault = get_or_create_vault(user_id)
 
-# ---------------------------------------------------
-# UI - Tabs
-# ---------------------------------------------------
+st.title("Tableau de bord")
+st.markdown('<div class="muted">Gérez vos vidéos, vos bénéficiaires et l’accès par jeton.</div>', unsafe_allow_html=True)
+st.write("")
 
 tab1, tab2, tab3 = st.tabs(["Téléversement", "Bénéficiaires", "Accès par jeton"])
 
 # ---------------------------------------------------
-# Tab 1 - Upload vidéo
+# Tab 1 - Upload
 # ---------------------------------------------------
 
 with tab1:
@@ -226,47 +300,48 @@ with tab1:
         st.info("Aucune vidéo pour l’instant.")
     else:
         for v in vids:
-            st.write(f"- {v.get('title','(sans titre)')} | libérée={v.get('released')} | id={v.get('id')}")
+            st.write(f"- {v.get('title','(sans titre)')} | libérée={v.get('released')}")
 
 # ---------------------------------------------------
-# Tab 2 - Bénéficiaires + génération de jeton
+# Tab 2 - Beneficiaries + Token generation (MVP)
 # ---------------------------------------------------
 
 with tab2:
     st.subheader("Bénéficiaires")
+
     ben_email = st.text_input("Adresse email du bénéficiaire", key="ben_email")
 
-    if st.button("Ajouter un bénéficiaire", disabled=(not ben_email)):
-        try:
-            sb.table("beneficiaries").insert({"vault_id": vault["id"], "email": ben_email}).execute()
-            st.success("Bénéficiaire ajouté.")
-        except Exception as e:
-            st.error("Impossible d’ajouter ce bénéficiaire (déjà présent ou erreur).")
-            st.caption(str(e)[:200])
+    c1, c2 = st.columns([1, 1])
+    with c1:
+        if st.button("Ajouter un bénéficiaire", disabled=(not ben_email)):
+            try:
+                sb.table("beneficiaries").insert({"vault_id": vault["id"], "email": ben_email}).execute()
+                st.success("Bénéficiaire ajouté.")
+            except Exception as e:
+                st.error("Impossible d’ajouter ce bénéficiaire (déjà présent ou erreur).")
+                st.caption(str(e)[:200])
 
     bens = sb.table("beneficiaries").select("*").eq("vault_id", vault["id"]).order("created_at", desc=True).execute().data
     if bens:
-        st.markdown("### Liste des bénéficiaires")
+        st.markdown("### Liste")
         for b in bens:
             st.write(f"- {b['email']}")
     else:
         st.info("Aucun bénéficiaire pour l’instant.")
 
     st.markdown("---")
-    st.subheader("Générer un jeton d’accès (MVP manuel)")
+    st.subheader("Générer un jeton d’accès (MVP)")
 
     vids = sb.table("videos").select("*").eq("vault_id", vault["id"]).order("created_at", desc=True).execute().data
     if not vids or not bens:
         st.info("Veuillez d’abord ajouter au moins une vidéo et un bénéficiaire.")
     else:
-        video_choice = st.selectbox("Sélectionner une vidéo", vids, format_func=lambda x: f"{x.get('title','(sans titre)')} ({x['id']})")
+        video_choice = st.selectbox("Sélectionner une vidéo", vids, format_func=lambda x: x.get("title", "(sans titre)"))
         ben_choice = st.selectbox("Sélectionner un bénéficiaire", bens, format_func=lambda x: x["email"])
 
-        if st.button("Générer le jeton (7 jours)"):
+        if st.button("Générer le jeton (valide 7 jours)"):
             try:
-                # Marquer la vidéo comme libérée (MVP)
                 sb.table("videos").update({"released": True, "released_at": now_utc().isoformat()}).eq("id", video_choice["id"]).execute()
-
                 token = create_access_token(video_choice["id"], ben_choice["email"], days_valid=7)
                 st.success("Jeton généré. Veuillez le transmettre au bénéficiaire :")
                 st.code(token)
@@ -275,11 +350,12 @@ with tab2:
                 st.caption(str(e)[:200])
 
 # ---------------------------------------------------
-# Tab 3 - Accès par jeton
+# Tab 3 - Token access
 # ---------------------------------------------------
 
 with tab3:
     st.subheader("Accès bénéficiaire")
+
     raw_token = st.text_input("Veuillez coller le jeton reçu", key="access_token")
 
     if st.button("Accéder", disabled=(not raw_token)):
