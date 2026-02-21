@@ -3,111 +3,115 @@ import streamlit as st
 st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centered")
 
 # =========================================================
-# THEME GRIS PREMIUM + FOND IMAGE
+# THEME NOIR + IMAGE RECUEILLEMENT
 # =========================================================
 st.markdown("""
 <style>
 
-/* ---------- Background image ---------- */
+/* --------- Background image (recueillement) --------- */
 .stApp {
-  background: 
-    linear-gradient(rgba(242,244,247,0.88), rgba(242,244,247,0.88)),
-    url("https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1920&auto=format&fit=crop");
+  background:
+    linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)),
+    url("https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=1920&auto=format&fit=crop");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }
 
-/* ---------- Variables ---------- */
+/* --------- Variables --------- */
 :root{
-  --card:#FFFFFF;
-  --border:#E4E7EC;
-  --text:#1F2937;
-  --muted:#667085;
-  --accent:#475467;
-  --accentSoft:#D0D5DD;
+  --card: rgba(15,15,18,0.75);
+  --border: rgba(255,255,255,0.08);
+  --text: #F2F4F7;
+  --muted: #A0A6B0;
+  --accent: #C7CBD1;
 }
 
-/* ---------- Layout ---------- */
+/* --------- Layout --------- */
 section.main > div{
   max-width: 900px;
-  padding-top: 2rem;
+  padding-top: 2.5rem;
 }
 
-/* ---------- Card ---------- */
+html, body, [class*="css"]{
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  color: var(--text);
+}
+
+/* --------- Card --------- */
 .tm-card{
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 28px;
-  box-shadow: 0 8px 30px rgba(16,24,40,0.08);
-  animation: fadeIn 0.4s ease-out;
+  border-radius: 18px;
+  padding: 30px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 50px rgba(0,0,0,0.6);
+  animation: fadeIn 0.5s ease-out;
 }
 
 @keyframes fadeIn{
-  from {opacity:0; transform: translateY(6px);}
+  from {opacity:0; transform: translateY(8px);}
   to {opacity:1; transform: translateY(0);}
 }
 
 .tm-title{
-  font-size: 42px;
+  font-size: 44px;
   margin: 0;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.02em;
-  color: var(--text);
 }
 
 .tm-sub{
-  margin-top: 6px;
+  margin-top: 8px;
   font-size: 14px;
   color: var(--muted);
 }
 
 .tm-latin{
-  margin-top: 4px;
+  margin-top: 6px;
   font-size: 13px;
   font-style: italic;
-  color: #98A2B3;
+  color: #8A9099;
 }
 
 .tm-h2{
-  margin-top: 18px;
+  margin-top: 22px;
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .tm-p{
-  margin-top: 8px;
+  margin-top: 10px;
   color: var(--muted);
   line-height: 1.6;
 }
 
 .tm-bullets{
-  margin-top: 10px;
+  margin-top: 14px;
   color: var(--muted);
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
-/* ---------- Chips ---------- */
+/* --------- Chips --------- */
 .tm-chiprow{
-  margin-top: 12px;
+  margin-top: 14px;
   display:flex;
   gap:8px;
   flex-wrap:wrap;
 }
 
 .tm-chip{
-  background: #F9FAFB;
   border: 1px solid var(--border);
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 999px;
   font-size: 12px;
   color: var(--muted);
+  background: rgba(255,255,255,0.03);
 }
 
-/* ---------- Inputs ---------- */
+/* --------- Inputs --------- */
 .stTextInput input{
-  background: #FFFFFF !important;
+  background: rgba(20,20,25,0.85) !important;
   border: 1px solid var(--border) !important;
   color: var(--text) !important;
   border-radius: 10px !important;
@@ -115,39 +119,40 @@ section.main > div{
 
 .stTextInput input:focus{
   border: 1px solid var(--accent) !important;
-  box-shadow: 0 0 0 2px rgba(71,84,103,0.12) !important;
+  box-shadow: 0 0 0 2px rgba(199,203,209,0.15) !important;
   outline: none !important;
 }
 
+/* Supprime rouge */
 input:invalid{
   border: 1px solid var(--border) !important;
   box-shadow: none !important;
 }
 
-/* ---------- Buttons ---------- */
+/* --------- Buttons --------- */
 .stButton button{
   border-radius: 999px !important;
-  padding: 0.7rem 1.2rem !important;
+  padding: 0.7rem 1.4rem !important;
   border: 1px solid var(--border) !important;
-  background: var(--accentSoft) !important;
+  background: rgba(255,255,255,0.08) !important;
   color: var(--text) !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
 }
 
 .stButton button:hover{
-  background: #E4E7EC !important;
+  background: rgba(255,255,255,0.15) !important;
 }
 
 .tm-primary button{
   background: var(--accent) !important;
-  color: #FFFFFF !important;
+  color: black !important;
   border: none !important;
 }
 
 .tm-muted{
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: 12px;
-  color: var(--muted);
+  color: #7B818C;
 }
 
 </style>
@@ -163,9 +168,9 @@ st.markdown("""
   <div class="tm-latin">Verba manent. Memoria custoditur.</div>
 
   <div class="tm-chiprow">
-    <span class="tm-chip">LegalTech</span>
+    <span class="tm-chip">Mémoire</span>
+    <span class="tm-chip">Transmission</span>
     <span class="tm-chip">Confidentialité</span>
-    <span class="tm-chip">Traçabilité</span>
     <span class="tm-chip">Accès contrôlé</span>
   </div>
 
@@ -178,8 +183,8 @@ st.markdown("""
 
   <div class="tm-bullets">
     • Accès bénéficiaires par jeton temporaire sécurisé<br/>
-    • Validation notariale (workflow métier)<br/>
-    • Journalisation des actions pour la traçabilité
+    • Validation notariale<br/>
+    • Journalisation des actions
   </div>
 </div>
 """, unsafe_allow_html=True)
