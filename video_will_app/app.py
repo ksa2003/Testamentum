@@ -6,54 +6,49 @@ st.set_page_config(
     layout="centered"
 )
 
-# ==============================
-# CSS GLOBAL
-# ==============================
-
 st.markdown("""
 <style>
 
-/* ==============================
-   BACKGROUND — MÉMOIRE UNIVERSELLE
-   ============================== */
+/* ===========================
+   BACKGROUND — HORIZON SOBRE
+   =========================== */
 
 .stApp {
   background:
-    linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.82)),
-    url("https://images.unsplash.com/photo-1528825871115-3581a5387919?q=80&w=1920&auto=format&fit=crop");
+    linear-gradient(rgba(0,0,0,0.78), rgba(0,0,0,0.85)),
+    url("https://images.unsplash.com/photo-1496307653780-42ee777d4833?q=80&w=1920&auto=format&fit=crop");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }
 
-/* Vignette subtile */
+/* vignette légère */
 .stApp::after{
   content:"";
   position:fixed;
   inset:0;
   background: radial-gradient(circle at center,
-              rgba(0,0,0,0.15) 0%,
-              rgba(0,0,0,0.55) 85%);
+              rgba(0,0,0,0.2) 0%,
+              rgba(0,0,0,0.65) 85%);
   pointer-events:none;
 }
 
-/* ==============================
+/* ===========================
    VARIABLES
-   ============================== */
+   =========================== */
 
 :root{
-  --card: rgba(20,24,28,0.78);
+  --card: rgba(22,26,32,0.78);
   --border: rgba(255,255,255,0.12);
   --text: #FFFFFF;
   --muted: #E6E9EE;
-  --muted2: #B8C0CC;
+  --muted2: #AEB7C2;
   --accent: #F2F4F7;
-  --accentHover: #FFFFFF;
 }
 
-/* ==============================
+/* ===========================
    BASE
-   ============================== */
+   =========================== */
 
 html, body, [class*="css"]{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
@@ -65,44 +60,31 @@ section.main > div{
   padding-top: 2.5rem;
 }
 
-/* ==============================
+/* ===========================
    HERO CARD
-   ============================== */
+   =========================== */
 
 .tm-card{
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 30px;
-  backdrop-filter: blur(18px);
-  box-shadow: 0 30px 120px rgba(0,0,0,0.65);
-  animation: fadeIn 0.6s ease-out;
+  border-radius: 22px;
+  padding: 32px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 30px 120px rgba(0,0,0,0.7);
 }
-
-@keyframes fadeIn{
-  from {opacity:0; transform: translateY(12px);}
-  to {opacity:1; transform: translateY(0);}
-}
-
-/* ==============================
-   TYPOGRAPHY
-   ============================== */
 
 .tm-title{
-  font-size: 48px;
-  margin: 0;
+  font-size: 50px;
   font-weight: 700;
   letter-spacing: -0.03em;
-  background: linear-gradient(90deg,
-              #FFFFFF 0%,
-              #E6EBF2 50%,
-              #FFFFFF 100%);
+  margin: 0;
+  background: linear-gradient(90deg,#FFFFFF,#DDE3EA,#FFFFFF);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .tm-sub{
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: 14px;
   color: var(--muted);
 }
@@ -115,88 +97,53 @@ section.main > div{
 }
 
 .tm-h2{
-  margin-top: 24px;
+  margin-top: 26px;
   font-size: 24px;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .tm-p{
-  margin-top: 10px;
-  color: var(--muted);
+  margin-top: 12px;
   line-height: 1.7;
   font-size: 15px;
+  color: var(--muted);
 }
 
 .tm-bullets{
-  margin-top: 16px;
-  color: var(--muted);
+  margin-top: 18px;
   line-height: 1.9;
   font-size: 14px;
-}
-
-/* ==============================
-   CHIPS
-   ============================== */
-
-.tm-chiprow{
-  margin-top: 14px;
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
-.tm-chip{
-  border: 1px solid var(--border);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 12px;
   color: var(--muted);
-  background: rgba(255,255,255,0.06);
 }
 
-/* ==============================
-   INPUTS
-   ============================== */
-
-.stTextInput label{
-  color: var(--muted) !important;
-}
+/* ===========================
+   INPUT
+   =========================== */
 
 .stTextInput input{
   background: rgba(0,0,0,0.45) !important;
-  border: 1px solid rgba(255,255,255,0.30) !important;
-  color: var(--text) !important;
-  border-radius: 14px !important;
-  padding: 0.9rem 1rem !important;
-  caret-color: var(--text) !important;
-}
-
-.stTextInput input::placeholder{
-  color: rgba(255,255,255,0.55) !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  color: white !important;
+  border-radius: 16px !important;
+  padding: 1rem !important;
 }
 
 .stTextInput input:focus{
-  border: 1px solid var(--accent) !important;
+  border: 1px solid white !important;
   box-shadow: 0 0 0 3px rgba(255,255,255,0.15) !important;
-  outline: none !important;
 }
 
-input:invalid{
-  border: 1px solid rgba(255,255,255,0.30) !important;
-  box-shadow: none !important;
-}
-
-/* ==============================
+/* ===========================
    BUTTONS
-   ============================== */
+   =========================== */
 
 .stButton button{
   width: 100%;
   border-radius: 999px !important;
-  padding: 1rem 1.2rem !important;
-  border: 1px solid rgba(255,255,255,0.30) !important;
+  padding: 1rem !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
   background: rgba(255,255,255,0.12) !important;
-  color: var(--text) !important;
+  color: white !important;
   font-weight: 600 !important;
 }
 
@@ -204,70 +151,39 @@ input:invalid{
   background: rgba(255,255,255,0.22) !important;
 }
 
-.tm-primary button{
-  background: var(--accent) !important;
-  color: black !important;
-  border: none !important;
-}
-
-.tm-primary button:hover{
-  background: var(--accentHover) !important;
-}
-
 .tm-muted{
-  margin-top: 14px;
+  margin-top: 15px;
   font-size: 12px;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255,255,255,0.7);
 }
 
-/* ==============================
-   RESPONSIVE
-   ============================== */
-
-@media (max-width: 520px){
-  .tm-title{ font-size: 38px; }
-  .tm-card{ padding: 22px; }
+@media (max-width:520px){
+  .tm-title{ font-size: 40px; }
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# ==============================
+# ===========================
 # HERO
-# ==============================
+# ===========================
 
 st.markdown("""
 <div class="tm-card">
   <h1 class="tm-title">Testamentum</h1>
+  <div class="tm-sub">Coffre numérique sécurisé pour transmission vidéo posthume</div>
+  <div class="tm-latin">Verba manent. Memoria custoditur.</div>
 
-  <div class="tm-sub">
-    Coffre numérique sécurisé pour transmission vidéo posthume
-  </div>
-
-  <div class="tm-latin">
-    Verba manent. Memoria custoditur.
-  </div>
-
-  <div class="tm-chiprow">
-    <span class="tm-chip">Mémoire</span>
-    <span class="tm-chip">Transmission</span>
-    <span class="tm-chip">Confidentialité</span>
-    <span class="tm-chip">Traçabilité</span>
-  </div>
-
-  <div class="tm-h2">
-    Un message vidéo, transmis au bon moment.
-  </div>
+  <div class="tm-h2">Un message vidéo, transmis au bon moment.</div>
 
   <div class="tm-p">
-    Enregistrez un message destiné à vos proches, puis contrôlez précisément
-    l’accès des bénéficiaires lorsque le décès est déclaré.
-    Le service est conçu pour une transmission respectueuse,
-    sécurisée et conforme aux exigences internationales.
+    Enregistrez un message destiné à vos proches, puis contrôlez précisément l’accès
+    des bénéficiaires lorsque le décès est déclaré. 
+    Le service est conçu pour une transmission respectueuse, sécurisée et conforme aux standards internationaux.
   </div>
 
   <div class="tm-bullets">
-    • Accès bénéficiaires par jeton temporaire sécurisé<br/>
+    • Accès bénéficiaires par jeton sécurisé<br/>
     • Validation notariale selon juridiction<br/>
     • Journalisation complète des actions
   </div>
@@ -276,9 +192,9 @@ st.markdown("""
 
 st.write("")
 
-# ==============================
-# SECTION CONNEXION
-# ==============================
+# ===========================
+# CONNEXION
+# ===========================
 
 st.markdown("## Commencer")
 st.caption("Saisissez votre adresse e-mail pour créer un compte ou vous connecter.")
@@ -288,10 +204,8 @@ email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
     if st.button("Continuer"):
         st.success("Redirection (MVP)")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 with col2:
     if st.button("Accès bénéficiaire"):
