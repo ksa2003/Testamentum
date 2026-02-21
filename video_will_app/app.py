@@ -1,247 +1,214 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
-st.set_page_config(page_title="Testamentum", page_icon="🎬", layout="wide")
-
-# ---------------------------------------------------
-# CONFIG VISUELLE
-# ---------------------------------------------------
-HERO_BG = "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=2400&q=70"
-LOGO_TEXT = "TESTAMENTUM"
+st.set_page_config(page_title="Testamentum", page_icon="🔒", layout="wide")
 
 # ---------------------------------------------------
-# CSS + HERO (IMPORTANT: unsafe_allow_html=True)
+# THEME sérieux (sobriété, lisible, international)
 # ---------------------------------------------------
 st.markdown(
-    f"""
+    """
     <style>
-      /* Hide Streamlit UI to look like a real website */
-      #MainMenu {{ visibility: hidden; }}
-      footer {{ visibility: hidden; }}
-      header {{ visibility: hidden; }}
+      #MainMenu { visibility: hidden; }
+      footer { visibility: hidden; }
+      header { visibility: hidden; }
 
-      /* Kill Streamlit sidebar spacing */
-      [data-testid="stSidebar"] {{ display:none; }}
+      /* Optionnel : cacher sidebar si vous ne voulez pas le menu Streamlit */
+      [data-testid="stSidebar"] { display: none; }
 
-      .stApp {{
-        background: #000;
-      }}
+      :root{
+        --bg: #0B1220;
+        --bg2:#0A0F1A;
+        --surface: rgba(255,255,255,0.06);
+        --border: rgba(255,255,255,0.12);
+        --text: #F5F7FA;
+        --muted: rgba(245,247,250,0.75);
+        --accent: #3B82F6; /* bleu sobre */
+      }
 
-      section.main > div {{
-        padding: 0 !important;
-        max-width: 100% !important;
-      }}
+      .stApp { background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%) !important; }
+      section.main > div { padding: 0 !important; max-width: 100% !important; }
 
-      .hero {{
-        position: relative;
+      /* Inputs & buttons */
+      .stTextInput input{
+        background: rgba(255,255,255,0.06) !important;
+        border: 1px solid rgba(255,255,255,0.14) !important;
+        color: var(--text) !important;
+        border-radius: 12px !important;
+        padding: 0.85rem 0.9rem !important;
+      }
+      .stTextInput label{
+        color: var(--muted) !important;
+        font-weight: 700 !important;
+      }
+      .stButton button{
+        background: var(--accent) !important;
+        color: #081225 !important;
+        border-radius: 12px !important;
+        border: none !important;
+        padding: 0.85rem 1rem !important;
+        font-weight: 900 !important;
+        width: 100%;
+      }
+      .stButton button:hover{ filter: brightness(1.08); }
+
+      /* Layout helpers */
+      .wrap{
         min-height: 100vh;
-        background-image:
-          linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.88)),
-          url("{HERO_BG}");
-        background-size: cover;
-        background-position: center;
-        padding: 28px 18px;
-      }}
-
-      .nav {{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
+        padding: 26px 18px;
+      }
+      .container{
         max-width: 1120px;
         margin: 0 auto;
-      }}
-
-      .logo {{
-        font-weight: 900;
-        letter-spacing: 0.06em;
-        color: #E50914;
-        font-size: 1.35rem;
-      }}
-
-      .navright {{
+      }
+      .topbar{
         display:flex;
-        gap: 10px;
+        justify-content:space-between;
         align-items:center;
-      }}
-
-      .pill {{
-        border: 1px solid rgba(255,255,255,0.18);
-        background: rgba(0,0,0,0.35);
-        color: rgba(255,255,255,0.88);
+        gap: 12px;
+        margin-bottom: 26px;
+      }
+      .brand{
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        color: var(--text);
+        font-size: 1.25rem;
+      }
+      .badge{
+        border: 1px solid rgba(255,255,255,0.16);
+        background: rgba(255,255,255,0.05);
+        color: rgba(245,247,250,0.85);
         padding: 8px 12px;
         border-radius: 999px;
         font-weight: 700;
         font-size: 0.92rem;
-        backdrop-filter: blur(6px);
-      }}
-
-      .hero-inner {{
-        max-width: 1120px;
-        margin: 0 auto;
-        padding-top: 70px;
+      }
+      .grid{
         display:grid;
-        grid-template-columns: 1.2fr 0.8fr;
-        gap: 24px;
-      }}
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 22px;
+        align-items:start;
+      }
+      @media (max-width: 900px){
+        .grid{ grid-template-columns: 1fr; }
+      }
 
-      @media (max-width: 900px) {{
-        .hero-inner {{
-          grid-template-columns: 1fr;
-          padding-top: 38px;
-        }}
-      }}
-
-      .h1 {{
-        color: #fff;
+      .hero{
+        padding: 26px;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        background:
+          radial-gradient(900px circle at 10% 10%, rgba(59,130,246,0.18), transparent 40%),
+          radial-gradient(700px circle at 90% 20%, rgba(16,185,129,0.10), transparent 35%),
+          radial-gradient(900px circle at 50% 90%, rgba(99,102,241,0.12), transparent 40%),
+          rgba(255,255,255,0.04);
+      }
+      .h1{
+        color: var(--text);
         font-weight: 900;
-        font-size: clamp(2.1rem, 4vw, 3.2rem);
-        line-height: 1.05;
-        margin: 0 0 14px 0;
-      }}
-
-      .lead {{
-        color: rgba(255,255,255,0.86);
-        font-size: 1.08rem;
+        font-size: clamp(2.0rem, 3.6vw, 3.0rem);
+        line-height: 1.07;
+        margin: 0 0 12px 0;
+      }
+      .lead{
+        color: var(--muted);
+        font-size: 1.06rem;
         line-height: 1.55;
-        margin: 0 0 18px 0;
-        max-width: 60ch;
-      }}
-
-      .bullets {{
-        color: rgba(255,255,255,0.78);
+        margin: 0 0 14px 0;
+        max-width: 62ch;
+      }
+      .bullets{
+        color: rgba(245,247,250,0.82);
         font-size: 1.02rem;
         line-height: 1.6;
-        margin-top: 10px;
-      }}
-
-      .card {{
-        background: rgba(0,0,0,0.58);
-        border: 1px solid rgba(255,255,255,0.14);
-        border-radius: 16px;
-        padding: 16px;
-        box-shadow: 0 18px 40px rgba(0,0,0,0.45);
-        backdrop-filter: blur(10px);
-      }}
-
-      .card h3 {{
-        color: #fff;
-        margin: 0 0 8px 0;
-        font-size: 1.1rem;
+      }
+      .card{
+        padding: 18px;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.04);
+      }
+      .card h3{
+        margin: 0 0 6px 0;
+        color: var(--text);
         font-weight: 900;
-      }}
-
-      .muted {{
-        color: rgba(255,255,255,0.74);
-        font-size: 0.98rem;
-        margin: 0 0 12px 0;
+        font-size: 1.05rem;
+      }
+      .muted{
+        color: var(--muted);
+        font-size: 0.96rem;
         line-height: 1.55;
-      }}
-
-      /* Streamlit input overrides inside hero */
-      .stTextInput input {{
-        background: rgba(0,0,0,0.35) !important;
-        border: 1px solid rgba(255,255,255,0.22) !important;
-        color: #fff !important;
-        border-radius: 12px !important;
-        padding: 0.85rem 0.9rem !important;
-      }}
-      .stTextInput label {{
-        color: rgba(255,255,255,0.80) !important;
-        font-weight: 800 !important;
-      }}
-
-      .stButton button {{
-        background: #E50914 !important;
-        color: #fff !important;
-        border-radius: 12px !important;
-        border: none !important;
-        padding: 0.85rem 1.0rem !important;
-        font-weight: 900 !important;
-        width: 100%;
-      }}
-      .stButton button:hover {{
-        background: #f6121d !important;
-      }}
-
-      .fineprint {{
-        color: rgba(255,255,255,0.55);
+        margin: 0 0 10px 0;
+      }
+      .fine{
+        color: rgba(245,247,250,0.62);
         font-size: 0.86rem;
+        line-height: 1.45;
         margin-top: 10px;
-        line-height: 1.4;
-      }}
+      }
     </style>
-
-    <div class="hero">
-      <div class="nav">
-        <div class="logo">{LOGO_TEXT}</div>
-        <div class="navright">
-          <div class="pill">Sécurité</div>
-          <div class="pill">Confidentialité</div>
-          <div class="pill">Traçabilité</div>
-        </div>
-      </div>
-
-      <div class="hero-inner">
-        <div>
-          <div class="h1">Votre message vidéo, transmis au bon moment.</div>
-
-          <div class="lead">
-            Testamentum est un coffre sécurisé permettant d’enregistrer un testament émotionnel en vidéo,
-            et de contrôler précisément l’accès des bénéficiaires lorsque le décès est déclaré.
-          </div>
-
-          <div class="bullets">
-            • Accès par jeton temporaire pour les bénéficiaires<br/>
-            • Validation possible par notaire (workflow métier)<br/>
-            • Stockage cloud et journalisation des actions (MVP)
-          </div>
-
-          <div style="height:14px;"></div>
-
-          <div class="card">
-            <h3>Commencer</h3>
-            <p class="muted">Saisissez votre adresse e-mail pour créer un compte ou vous connecter.</p>
     """,
     unsafe_allow_html=True,
 )
 
 # ---------------------------------------------------
-# CTA (Streamlit widgets)
+# HERO EN HTML "SÛR" (ne s'affichera jamais comme du code)
 # ---------------------------------------------------
-email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
-
-if st.button("Continuer"):
-    st.session_state["prefill_email"] = email.strip()
-    st.switch_page("pages/1_Connexion.py")
-
-# ---------------------------------------------------
-# Bloc droite + footer hero
-# ---------------------------------------------------
-st.markdown(
-    """
-            <div class="fineprint">
-              En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité (MVP).
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div class="card">
-            <h3>Pourquoi ce service existe ?</h3>
-            <p class="muted">
-              Pour laisser un message clair, humain et structuré à vos proches, avec une transmission respectueuse,
-              sécurisée et traçable.
-            </p>
-
-            <div class="bullets">
-              • Interface simple, accessible mondialement<br/>
-              • Séparation des rôles (propriétaire / bénéficiaire / notaire)<br/>
-              • Architecture évolutive (EU/US/Asie) à venir
-            </div>
-          </div>
-        </div>
-
+hero_html = """
+<div class="wrap">
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">Testamentum</div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <div class="badge">Confidentialité</div>
+        <div class="badge">Sécurité</div>
+        <div class="badge">Traçabilité</div>
       </div>
     </div>
-    """,
-    unsafe_allow_html=True,
-)
+
+    <div class="grid">
+      <div class="hero">
+        <div class="h1">Un message vidéo, transmis avec respect et contrôle.</div>
+        <div class="lead">
+          Testamentum permet d’enregistrer un message vidéo à destination de vos proches, puis d’en gérer l’accès
+          selon des règles strictes et traçables, lorsque le décès est déclaré.
+        </div>
+
+        <div class="bullets">
+          • Accès des bénéficiaires par jeton sécurisé et temporaire<br/>
+          • Workflow de validation notaire (optionnel, selon pays)<br/>
+          • Stockage sécurisé et journalisation des actions (MVP)
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Commencer</h3>
+        <p class="muted">Saisissez votre adresse e-mail pour créer un compte ou vous connecter.</p>
+        <p class="fine">
+          Ce service est en version MVP. La mise en production internationale implique des exigences juridiques
+          et de conformité (données, succession, notariat) par pays.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+"""
+
+# On rend le HTML via components.html (évite 100% l'affichage en "code")
+components.html(hero_html, height=520, scrolling=False)
+
+# ---------------------------------------------------
+# CTA Streamlit (inputs + bouton)
+# ---------------------------------------------------
+cta_container = st.container()
+with cta_container:
+    left, right = st.columns([1.2, 0.8])
+    with right:
+        email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
+        if st.button("Continuer"):
+            st.session_state["prefill_email"] = email.strip()
+            st.switch_page("pages/1_Connexion.py")
+        st.markdown(
+            '<div class="fine">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité (MVP).</div>',
+            unsafe_allow_html=True
+        )
