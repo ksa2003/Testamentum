@@ -5,7 +5,6 @@ BG_URL = "https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?q=80&w=19
 def apply_theme() -> None:
     css = f"""
     <style>
-    /* ===== Background ===== */
     .stApp {{
       background:
         linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.80)),
@@ -15,22 +14,9 @@ def apply_theme() -> None:
       background-attachment: fixed;
     }}
 
-    /* ===== Typo globale : nuances de blanc ===== */
     html, body, [class*="css"] {{
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color: rgba(255,255,255,0.82) !important;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }}
-
-    .stMarkdown, .stMarkdown p, .stMarkdown li, .stMarkdown span {{
-      color: rgba(255,255,255,0.82) !important;
-      line-height: 1.55;
-    }}
-
-    h1, h2, h3, h4, h5, h6 {{
-      color: rgba(255,255,255,0.90) !important;
-      letter-spacing: -0.01em;
+      color: #FFFFFF;
     }}
 
     section.main > div {{
@@ -38,7 +24,6 @@ def apply_theme() -> None:
       padding-top: 2.2rem;
     }}
 
-    /* ===== Cards ===== */
     .tm-card {{
       background: rgba(15,18,22,0.82);
       border: 1px solid rgba(255,255,255,0.14);
@@ -48,99 +33,69 @@ def apply_theme() -> None:
       box-shadow: 0 22px 100px rgba(0,0,0,0.70);
     }}
 
-    /* ===== Titre “Testamentum” (forme signature) ===== */
+    /* ====== TITRE: mêmes tailles que ta version (ne pas changer) ====== */
     .tm-title {{
-      font-size: 48px;
-      font-weight: 820;
-      letter-spacing: -0.03em;
-      line-height: 1.03;
-      font-family: "Georgia", "Times New Roman", ui-serif, serif;
+      font-size: 46px;
+      font-weight: 750;
+      letter-spacing: -0.02em;
 
+      /* Couleurs plus “solennelles” (ivoire / or ancien / cuivre / légère touche bordeaux) */
       background: linear-gradient(
         90deg,
-        rgba(132, 233, 214, 0.96) 0%,
-        rgba(221, 196, 140, 0.94) 55%,
-        rgba(255, 255, 255, 0.84) 100%
+        rgba(255, 248, 235, 0.98) 0%,
+        rgba(233, 214, 170, 0.96) 40%,
+        rgba(191, 145, 96, 0.92) 78%,
+        rgba(255, 255, 255, 0.88) 100%
       );
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
 
       text-shadow:
-        0 8px 30px rgba(0,0,0,0.55),
-        0 0 18px rgba(132,233,214,0.08);
+        0 10px 34px rgba(0,0,0,0.60),
+        0 0 22px rgba(191,145,96,0.08);
     }}
 
     .tm-sub {{
       font-size: 14px;
-      color: rgba(255,255,255,0.80) !important;
+      color: rgba(255,255,255,0.85);
     }}
 
     .tm-latin {{
       font-size: 13px;
       font-style: italic;
-      color: rgba(255,255,255,0.66) !important;
+      color: rgba(255,255,255,0.70);
     }}
 
-    /* ===== Section “Commencer” : rendre lisible (blanc nuancé) ===== */
-    .tm-section-title {{
-      font-size: 20px;
-      font-weight: 780;
-      color: rgba(255,255,255,0.92) !important;
-      margin: 0 0 6px 0;
-      text-shadow: 0 10px 30px rgba(0,0,0,0.55);
-    }}
+    /* IMPORTANT: on laisse tes bulles “Mémoire / Transmission ...”
+       Elles viennent de ton HTML/Markdown (spans) ou de ton CSS existant.
+       On n’y touche pas ici pour garder EXACTEMENT le rendu de ta photo. */
 
-    .tm-section-desc {{
-      color: rgba(255,255,255,0.84) !important;
-      margin: 0;
-      font-size: 14px;
-      font-weight: 560;
-      text-shadow: 0 10px 30px rgba(0,0,0,0.50);
-    }}
-
-    /* ===== “En continuant…” : blanc nuancé bien visible ===== */
-    .tm-footnote {{
-      color: rgba(255,255,255,0.80) !important;
-      font-size: 12.8px;
-      font-weight: 560;
-      margin-top: 10px;
-      text-shadow: 0 10px 26px rgba(0,0,0,0.55);
-    }}
-
-    /* Sécurité : si la phrase est rendue via st.caption / small / p */
-    .tm-footnote p, .tm-footnote small, .tm-footnote span {{
-      color: rgba(255,255,255,0.80) !important;
-    }}
-
-    /* ===== Inputs ===== */
     .stTextInput label, .stTextArea label {{
-      color: rgba(255,255,255,0.80) !important;
-      font-weight: 600 !important;
+      color: rgba(255,255,255,0.85) !important;
     }}
 
     .stTextInput input, .stTextArea textarea {{
       background: rgba(0,0,0,0.45) !important;
-      border: 1px solid rgba(255,255,255,0.26) !important;
-      color: rgba(255,255,255,0.88) !important;
+      border: 1px solid rgba(255,255,255,0.28) !important;
+      color: #FFFFFF !important;
       border-radius: 12px !important;
     }}
 
     .stTextInput input::placeholder, .stTextArea textarea::placeholder {{
-      color: rgba(255,255,255,0.52) !important;
+      color: rgba(255,255,255,0.55) !important;
     }}
 
     .stTextInput input:focus, .stTextArea textarea:focus {{
-      border: 1px solid rgba(255,255,255,0.55) !important;
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.10) !important;
+      border: 1px solid rgba(255,255,255,0.70) !important;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.15) !important;
       outline: none !important;
     }}
 
     input:invalid {{
-      border: 1px solid rgba(255,255,255,0.26) !important;
+      border: 1px solid rgba(255,255,255,0.28) !important;
       box-shadow: none !important;
     }}
 
-    /* ===== Columns align (boutons mêmes niveaux) ===== */
     div[data-testid="column"] {{
       display: flex !important;
       align-items: flex-start !important;
@@ -157,16 +112,15 @@ def apply_theme() -> None:
       padding: 0 !important;
     }}
 
-    /* ===== Buttons ===== */
     .stButton > button {{
       width: 100% !important;
       height: 56px !important;
       min-height: 56px !important;
       padding: 0 22px !important;
       border-radius: 999px !important;
-      border: 1px solid rgba(255,255,255,0.20) !important;
-      background: rgba(255,255,255,0.09) !important;
-      color: rgba(255,255,255,0.86) !important;
+      border: 1px solid rgba(255,255,255,0.22) !important;
+      background: rgba(255,255,255,0.10) !important;
+      color: #FFFFFF !important;
       font-size: 16px !important;
       font-weight: 650 !important;
       display: flex !important;
@@ -175,18 +129,17 @@ def apply_theme() -> None:
     }}
 
     .stButton > button:hover {{
-      background: rgba(255,255,255,0.14) !important;
-      color: rgba(255,255,255,0.92) !important;
+      background: rgba(255,255,255,0.18) !important;
     }}
 
     .tm-primary .stButton > button {{
-      background: rgba(229,231,235,0.88) !important;
-      color: rgba(17,24,39,0.98) !important;
+      background: #E5E7EB !important;
+      color: #111827 !important;
       border: none !important;
     }}
 
     .tm-primary .stButton > button:hover {{
-      background: rgba(243,244,246,0.92) !important;
+      background: #F3F4F6 !important;
     }}
 
     .tm-btnwrap {{
@@ -196,7 +149,7 @@ def apply_theme() -> None:
     }}
 
     @media (max-width: 520px) {{
-      .tm-title {{ font-size: 38px; }}
+      .tm-title {{ font-size: 36px; }}
       .tm-card {{ padding: 22px; }}
     }}
     </style>
