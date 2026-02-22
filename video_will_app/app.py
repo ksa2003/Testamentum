@@ -66,14 +66,14 @@ label, .stTextInput label{
 .tm-sub{
   margin-top: 10px;
   font-size: 14px;
-  color: rgba(255,255,255,0.88);
+  color: rgba(255,255,255,0.90);
 }
 
 .tm-latin{
   margin-top: 6px;
   font-size: 13px;
   font-style: italic;
-  color: rgba(255,255,255,0.70);
+  color: rgba(255,255,255,0.72);
 }
 
 .tm-h2{
@@ -84,14 +84,14 @@ label, .stTextInput label{
 
 .tm-p{
   margin-top: 12px;
-  color: rgba(255,255,255,0.88);
+  color: rgba(255,255,255,0.90);
   line-height: 1.7;
   font-size: 15px;
 }
 
 .tm-bullets{
   margin-top: 16px;
-  color: rgba(255,255,255,0.88);
+  color: rgba(255,255,255,0.90);
   line-height: 1.9;
   font-size: 14px;
 }
@@ -109,7 +109,7 @@ label, .stTextInput label{
   padding: 6px 12px;
   border-radius: 999px;
   font-size: 12px;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255,255,255,0.86);
   background: rgba(255,255,255,0.07);
 }
 
@@ -127,67 +127,60 @@ label, .stTextInput label{
   color: rgba(255,255,255,0.60) !important;
 }
 
+/* Focus : pas de rouge, reste dans le thème */
 .stTextInput input:focus{
-  border: 1px solid rgba(255,255,255,0.55) !important;
-  box-shadow: 0 0 0 4px rgba(255,255,255,0.18) !important;
+  border: 1px solid rgba(255,255,255,0.60) !important;
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.16) !important;
   outline: none !important;
 }
 
-/* Remove native red validation (mobile fix) */
+/* Remove native red invalid (mobile fix) */
 input:invalid,
 input:focus:invalid{
   border: 1px solid rgba(255,255,255,0.35) !important;
-  box-shadow: 0 0 0 3px rgba(255,255,255,0.12) !important;
+  box-shadow: none !important;
   outline: none !important;
 }
 
-/* ---------- Symmetrical HTML Buttons ---------- */
-.tm-actions{
-  display:flex;
-  gap: 14px;
-  width:100%;
-  margin-top: 14px;
-}
-
-.tm-btn{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  height: 52px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.28);
-  background: rgba(255,255,255,0.12);
+/* ---------- Buttons (Streamlit) ---------- */
+/* Uniformise tous les boutons */
+.stButton button,
+div[data-testid="stFormSubmitButton"] button{
+  width: 100% !important;
+  height: 52px !important;
+  border-radius: 999px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(255,255,255,0.28) !important;
+  background: rgba(255,255,255,0.12) !important;
   color: #FFFFFF !important;
-  text-decoration: none !important;
-  font-weight: 600;
+  font-weight: 600 !important;
   transition: 0.2s ease;
 }
 
-.tm-btn:hover{
-  background: rgba(255,255,255,0.22);
-  color: #FFFFFF !important;
+.stButton button:hover,
+div[data-testid="stFormSubmitButton"] button:hover{
+  background: rgba(255,255,255,0.22) !important;
 }
 
-.tm-btn:visited,
-.tm-btn:active,
-.tm-btn:focus{
-  color: #FFFFFF !important;
-  text-decoration: none !important;
-  outline: none;
-}
-
-.tm-btn-primary{
-  background: #F3F4F6;
+/* Bouton principal : ivoire/gris clair, pas bleu */
+.tm-primary div[data-testid="stFormSubmitButton"] button{
+  background: #EDEFF2 !important;
   color: #0b0f16 !important;
-  border: none;
+  border: none !important;
 }
 
-.tm-btn-primary:hover{
-  background: #FFFFFF;
+.tm-primary div[data-testid="stFormSubmitButton"] button:hover{
+  background: #FFFFFF !important;
   color: #0b0f16 !important;
 }
 
+/* Disabled (quand email vide) */
+div[data-testid="stFormSubmitButton"] button:disabled{
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+
+/* ---------- Spacing + caption ---------- */
 .tm-muted{
   margin-top: 14px;
   font-size: 12px;
@@ -203,9 +196,6 @@ input:focus:invalid{
 </style>
 """, unsafe_allow_html=True)
 
-# --------- Query Param Action ---------
-qp = st.query_params
-action = qp.get("action", None)
 
 # --------- HERO ---------
 st.markdown("""
@@ -238,6 +228,7 @@ st.markdown("""
 
 st.write("")
 
+
 # --------- COMMENCER ---------
 st.markdown("""
 <div class="tm-card-lite">
@@ -248,18 +239,24 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
+# Form = clic fiable, récupère l'email, et boutons alignés
+with st.form("start_form", clear_on_submit=False):
+    email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
 
-st.markdown("""
-<div class="tm-actions">
-  <a class="tm-btn tm-btn-primary" href="?action=continue">Continuer</a>
-  <a class="tm-btn" href="?action=benef">Accès bénéficiaire</a>
-</div>
-""", unsafe_allow_html=True)
+    col1, col2 = st.columns(2, gap="large")
 
-if action == "continue":
-    st.success("Redirection (MVP)")
-elif action == "benef":
+    with col1:
+        st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
+        go_continue = st.form_submit_button("Continuer", disabled=(not email or not email.strip()))
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with col2:
+        go_benef = st.form_submit_button("Accès bénéficiaire")
+
+# Actions
+if go_continue:
+    st.success(f"Redirection (MVP) — email: {email}")
+elif go_benef:
     st.info("Accès bénéficiaire (MVP)")
 
 st.markdown(
