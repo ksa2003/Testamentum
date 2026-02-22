@@ -15,21 +15,19 @@ def apply_theme() -> None:
       background-attachment: fixed;
     }}
 
-    /* ===== Typo globale : nuancé (pas blanc “blog”) ===== */
+    /* ===== Typo globale : nuances de blanc ===== */
     html, body, [class*="css"] {{
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color: rgba(255,255,255,0.82) !important; /* texte normal */
+      color: rgba(255,255,255,0.82) !important;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }}
 
-    /* Paragraphes / listes */
     .stMarkdown, .stMarkdown p, .stMarkdown li, .stMarkdown span {{
       color: rgba(255,255,255,0.82) !important;
       line-height: 1.55;
     }}
 
-    /* Titres : plus présents, mais pas “flash blanc” */
     h1, h2, h3, h4, h5, h6 {{
       color: rgba(255,255,255,0.90) !important;
       letter-spacing: -0.01em;
@@ -50,60 +48,80 @@ def apply_theme() -> None:
       box-shadow: 0 22px 100px rgba(0,0,0,0.70);
     }}
 
+    /* ===== Titre “Testamentum” (forme signature) ===== */
     .tm-title {{
-      font-size: 46px;
-      font-weight: 760;
-      letter-spacing: -0.02em;
-      background: linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.80) 100%);
+      font-size: 48px;
+      font-weight: 820;
+      letter-spacing: -0.03em;
+      line-height: 1.03;
+      font-family: "Georgia", "Times New Roman", ui-serif, serif;
+
+      background: linear-gradient(
+        90deg,
+        rgba(132, 233, 214, 0.96) 0%,
+        rgba(221, 196, 140, 0.94) 55%,
+        rgba(255, 255, 255, 0.84) 100%
+      );
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+
+      text-shadow:
+        0 8px 30px rgba(0,0,0,0.55),
+        0 0 18px rgba(132,233,214,0.08);
     }}
 
     .tm-sub {{
       font-size: 14px;
-      color: rgba(255,255,255,0.78) !important;
+      color: rgba(255,255,255,0.80) !important;
     }}
 
     .tm-latin {{
       font-size: 13px;
       font-style: italic;
-      color: rgba(255,255,255,0.62) !important;
+      color: rgba(255,255,255,0.66) !important;
     }}
 
-    /* "Commencer" : visible sans être trop blanc */
+    /* ===== Section “Commencer” : rendre lisible (blanc nuancé) ===== */
     .tm-section-title {{
       font-size: 20px;
-      font-weight: 740;
-      color: rgba(255,255,255,0.88) !important;
+      font-weight: 780;
+      color: rgba(255,255,255,0.92) !important;
       margin: 0 0 6px 0;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.55);
     }}
 
-    /* Sous-titre : nuance douce */
     .tm-section-desc {{
-      color: rgba(255,255,255,0.74) !important;
+      color: rgba(255,255,255,0.84) !important;
       margin: 0;
       font-size: 14px;
-      font-weight: 520;
+      font-weight: 560;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.50);
     }}
 
-    /* "En continuant..." : discret mais lisible */
+    /* ===== “En continuant…” : blanc nuancé bien visible ===== */
     .tm-footnote {{
-      color: rgba(255,255,255,0.66) !important;
-      font-size: 12.5px;
-      font-weight: 520;
+      color: rgba(255,255,255,0.80) !important;
+      font-size: 12.8px;
+      font-weight: 560;
       margin-top: 10px;
+      text-shadow: 0 10px 26px rgba(0,0,0,0.55);
+    }}
+
+    /* Sécurité : si la phrase est rendue via st.caption / small / p */
+    .tm-footnote p, .tm-footnote small, .tm-footnote span {{
+      color: rgba(255,255,255,0.80) !important;
     }}
 
     /* ===== Inputs ===== */
     .stTextInput label, .stTextArea label {{
-      color: rgba(255,255,255,0.76) !important;
+      color: rgba(255,255,255,0.80) !important;
       font-weight: 600 !important;
     }}
 
     .stTextInput input, .stTextArea textarea {{
       background: rgba(0,0,0,0.45) !important;
       border: 1px solid rgba(255,255,255,0.26) !important;
-      color: rgba(255,255,255,0.86) !important;
+      color: rgba(255,255,255,0.88) !important;
       border-radius: 12px !important;
     }}
 
@@ -148,7 +166,7 @@ def apply_theme() -> None:
       border-radius: 999px !important;
       border: 1px solid rgba(255,255,255,0.20) !important;
       background: rgba(255,255,255,0.09) !important;
-      color: rgba(255,255,255,0.84) !important;
+      color: rgba(255,255,255,0.86) !important;
       font-size: 16px !important;
       font-weight: 650 !important;
       display: flex !important;
@@ -158,11 +176,11 @@ def apply_theme() -> None:
 
     .stButton > button:hover {{
       background: rgba(255,255,255,0.14) !important;
-      color: rgba(255,255,255,0.90) !important;
+      color: rgba(255,255,255,0.92) !important;
     }}
 
     .tm-primary .stButton > button {{
-      background: rgba(229,231,235,0.88) !important;  /* gris clair doux, pas blanc */
+      background: rgba(229,231,235,0.88) !important;
       color: rgba(17,24,39,0.98) !important;
       border: none !important;
     }}
@@ -178,7 +196,7 @@ def apply_theme() -> None:
     }}
 
     @media (max-width: 520px) {{
-      .tm-title {{ font-size: 36px; }}
+      .tm-title {{ font-size: 38px; }}
       .tm-card {{ padding: 22px; }}
     }}
     </style>
