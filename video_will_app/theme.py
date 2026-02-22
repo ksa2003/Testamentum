@@ -37,7 +37,7 @@ def apply_theme() -> None:
       box-shadow: 0 22px 100px rgba(0,0,0,0.70);
     }}
 
-    /* TITRE: sobre (ivoire/doré léger), pas vert */
+    /* TITRE: ivoire/doré léger */
     .tm-title {{
       font-size: 46px;
       font-weight: 750;
@@ -62,7 +62,7 @@ def apply_theme() -> None:
       margin: 0 0 14px 0;
     }}
 
-    /* Bulles (chips) EXACTEMENT style “pills” */
+    /* Bulles */
     .tm-chips {{
       display: flex;
       gap: 10px;
@@ -84,7 +84,7 @@ def apply_theme() -> None:
       box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12);
     }}
 
-    /* Textes lisibles (nuances de blanc, pas gris sur gris) */
+    /* Nuances lisibles */
     .tm-muted {{
       color: rgba(255,255,255,0.75);
     }}
@@ -121,23 +121,42 @@ def apply_theme() -> None:
       box-shadow: none !important;
     }}
 
-    /* Colonnes / boutons alignés */
+    /* ============================
+       ALIGNEMENT BOUTONS (FIX)
+       ============================ */
+
+    /* Forcer les colonnes à avoir la même "baseline" et supprimer les marges parasites */
+    div[data-testid="stHorizontalBlock"] {{
+      align-items: stretch !important;
+    }}
+
     div[data-testid="column"] {{
       display: flex !important;
-      align-items: flex-start !important;
+      align-items: stretch !important;  /* important: stretch */
     }}
 
     div[data-testid="column"] > div {{
       width: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
     }}
 
-    div[data-testid="column"] .element-container,
-    div[data-testid="column"] .stMarkdown,
-    div[data-testid="column"] .stButton {{
+    /* Supprime les écarts automatiques dans les colonnes */
+    div[data-testid="column"] .element-container {{
       margin: 0 !important;
       padding: 0 !important;
     }}
 
+    /* Le conteneur des boutons doit être identique dans chaque colonne */
+    div[data-testid="column"] .stButton {{
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      display: block !important;
+    }}
+
+    /* Boutons: même hauteur, même alignement vertical */
     .stButton > button {{
       width: 100% !important;
       height: 56px !important;
@@ -153,6 +172,8 @@ def apply_theme() -> None:
       align-items: center !important;
       justify-content: center !important;
       white-space: nowrap !important;
+      line-height: 1 !important;
+      box-sizing: border-box !important;
     }}
 
     .stButton > button:hover {{
