@@ -15,20 +15,24 @@ def apply_theme() -> None:
       background-attachment: fixed;
     }}
 
-    /* ===== Global typography (nuances de blanc uniquement) ===== */
+    /* ===== Typo globale : nuancé (pas blanc “blog”) ===== */
     html, body, [class*="css"] {{
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color: rgba(255,255,255,0.92) !important;
+      color: rgba(255,255,255,0.82) !important; /* texte normal */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }}
 
-    /* Force les textes Streamlit (sinon il remet du gris) */
+    /* Paragraphes / listes */
     .stMarkdown, .stMarkdown p, .stMarkdown li, .stMarkdown span {{
-      color: rgba(255,255,255,0.92) !important;
+      color: rgba(255,255,255,0.82) !important;
+      line-height: 1.55;
     }}
 
-    /* Titres bien visibles */
+    /* Titres : plus présents, mais pas “flash blanc” */
     h1, h2, h3, h4, h5, h6 {{
-      color: #FFFFFF !important;
+      color: rgba(255,255,255,0.90) !important;
+      letter-spacing: -0.01em;
     }}
 
     section.main > div {{
@@ -48,73 +52,73 @@ def apply_theme() -> None:
 
     .tm-title {{
       font-size: 46px;
-      font-weight: 750;
+      font-weight: 760;
       letter-spacing: -0.02em;
-      background: linear-gradient(90deg, #FFFFFF 0%, rgba(255,255,255,0.88) 100%);
+      background: linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.80) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }}
 
     .tm-sub {{
       font-size: 14px;
-      color: rgba(255,255,255,0.88) !important;
+      color: rgba(255,255,255,0.78) !important;
     }}
 
     .tm-latin {{
       font-size: 13px;
       font-style: italic;
-      color: rgba(255,255,255,0.72) !important;
+      color: rgba(255,255,255,0.62) !important;
     }}
 
-    /* “Commencer” : blanc visible */
+    /* "Commencer" : visible sans être trop blanc */
     .tm-section-title {{
-      font-size: 22px;
-      font-weight: 750;
-      color: #FFFFFF !important;
+      font-size: 20px;
+      font-weight: 740;
+      color: rgba(255,255,255,0.88) !important;
       margin: 0 0 6px 0;
     }}
 
-    /* Texte d’aide sous “Commencer” : blanc 85% */
+    /* Sous-titre : nuance douce */
     .tm-section-desc {{
-      color: rgba(255,255,255,0.85) !important;
+      color: rgba(255,255,255,0.74) !important;
       margin: 0;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 520;
     }}
 
-    /* “En continuant…” : blanc 75% (lisible mais discret) */
+    /* "En continuant..." : discret mais lisible */
     .tm-footnote {{
-      color: rgba(255,255,255,0.78) !important;
+      color: rgba(255,255,255,0.66) !important;
       font-size: 12.5px;
-      font-weight: 500;
+      font-weight: 520;
       margin-top: 10px;
     }}
 
     /* ===== Inputs ===== */
     .stTextInput label, .stTextArea label {{
-      color: rgba(255,255,255,0.90) !important;
+      color: rgba(255,255,255,0.76) !important;
       font-weight: 600 !important;
     }}
 
     .stTextInput input, .stTextArea textarea {{
       background: rgba(0,0,0,0.45) !important;
-      border: 1px solid rgba(255,255,255,0.28) !important;
-      color: #FFFFFF !important;
+      border: 1px solid rgba(255,255,255,0.26) !important;
+      color: rgba(255,255,255,0.86) !important;
       border-radius: 12px !important;
     }}
 
     .stTextInput input::placeholder, .stTextArea textarea::placeholder {{
-      color: rgba(255,255,255,0.65) !important;
+      color: rgba(255,255,255,0.52) !important;
     }}
 
     .stTextInput input:focus, .stTextArea textarea:focus {{
-      border: 1px solid rgba(255,255,255,0.70) !important;
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.15) !important;
+      border: 1px solid rgba(255,255,255,0.55) !important;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.10) !important;
       outline: none !important;
     }}
 
     input:invalid {{
-      border: 1px solid rgba(255,255,255,0.28) !important;
+      border: 1px solid rgba(255,255,255,0.26) !important;
       box-shadow: none !important;
     }}
 
@@ -142,9 +146,9 @@ def apply_theme() -> None:
       min-height: 56px !important;
       padding: 0 22px !important;
       border-radius: 999px !important;
-      border: 1px solid rgba(255,255,255,0.22) !important;
-      background: rgba(255,255,255,0.10) !important;
-      color: #FFFFFF !important;
+      border: 1px solid rgba(255,255,255,0.20) !important;
+      background: rgba(255,255,255,0.09) !important;
+      color: rgba(255,255,255,0.84) !important;
       font-size: 16px !important;
       font-weight: 650 !important;
       display: flex !important;
@@ -153,17 +157,18 @@ def apply_theme() -> None:
     }}
 
     .stButton > button:hover {{
-      background: rgba(255,255,255,0.18) !important;
+      background: rgba(255,255,255,0.14) !important;
+      color: rgba(255,255,255,0.90) !important;
     }}
 
     .tm-primary .stButton > button {{
-      background: rgba(255,255,255,0.92) !important;
-      color: rgba(17,24,39,1) !important;
+      background: rgba(229,231,235,0.88) !important;  /* gris clair doux, pas blanc */
+      color: rgba(17,24,39,0.98) !important;
       border: none !important;
     }}
 
     .tm-primary .stButton > button:hover {{
-      background: #FFFFFF !important;
+      background: rgba(243,244,246,0.92) !important;
     }}
 
     .tm-btnwrap {{
