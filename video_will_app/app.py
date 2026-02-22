@@ -116,7 +116,7 @@ label, .stTextInput label{
 /* ---------- Input ---------- */
 .stTextInput input{
   background: rgba(0,0,0,0.62) !important;
-  border: 1px solid rgba(255,255,255,0.32) !important;
+  border: 1px solid rgba(255,255,255,0.35) !important;
   color: #FFFFFF !important;
   border-radius: 12px !important;
   padding: 0.9rem 1rem !important;
@@ -129,14 +129,16 @@ label, .stTextInput label{
 
 .stTextInput input:focus{
   border: 1px solid rgba(255,255,255,0.55) !important;
-  box-shadow: 0 0 0 4px rgba(255,255,255,0.16) !important;
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.18) !important;
   outline: none !important;
 }
 
-/* remove red validation */
-input:invalid{
-  box-shadow: none !important;
-  border: 1px solid rgba(255,255,255,0.32) !important;
+/* Remove native red validation (mobile fix) */
+input:invalid,
+input:focus:invalid{
+  border: 1px solid rgba(255,255,255,0.35) !important;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.12) !important;
+  outline: none !important;
 }
 
 /* ---------- Symmetrical HTML Buttons ---------- */
@@ -201,7 +203,7 @@ input:invalid{
 </style>
 """, unsafe_allow_html=True)
 
-# --------- Query Action ---------
+# --------- Query Param Action ---------
 qp = st.query_params
 action = qp.get("action", None)
 
