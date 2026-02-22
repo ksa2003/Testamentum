@@ -1,103 +1,147 @@
 import streamlit as st
-from supabase import create_client, Client
 from theme import apply_theme
 
-st.set_page_config(page_title="Connexion — Testamentum", page_icon="⚖️", layout="centered")
 apply_theme()
 
-def sidebar_nav():
-    st.sidebar.markdown("### Navigation")
+# -----------------------------------------------------------------------------
+# Connexion / Création de compte (Supabase)
+# - Ne jamais afficher de détails techniques côté utilisateur
+# - Afficher des messages neutres, et stopper si secrets manquants
+# - Vraie vérification: on utilise Supabase Auth (sign_in / sign_up)
+# -----------------------------------------------------------------------------
+
+def _get_supabase_client():
+    """
+    Retourne un client Supabase si la config existe, sinon None.
+    On ne leak jamais l'infra côté UI.
+    """
     try:
-        st.sidebar.page_link("app.py", label="Accueil")
-        st.sidebar.page_link("pages/Connexion.py", label="Connexion")
-        st.sidebar.page_link("pages/Tableau_de_bord.py", label="Espace Mémoire")
-        st.sidebar.page_link("pages/Acces_beneficiaire.py", label="Accès bénéficiaire")
+        from supabase import create_client
     except Exception:
-        pass
+        return None
 
-sidebar_nav()
+    try:
+        url = st.secrets["supabase"]["url"]
+        key = st.secrets["supabase"]["key"]
+        if not url or not key:
+            return None
+        return create_client(url, key)
+    except Exception:
+        return None
 
-def get_supabase() -> Client:
-    # IMPORTANT: on lit le format [supabase] url/key
-    if "supabase_client" in st.session_state:
-        return st.session_state["supabase_client"]
 
-    if "supabase" not in st.secrets:
-        st.error("Secrets manquants : ajoutez [supabase].url et [supabase].key dans les Secrets Streamlit.")
-        st.stop()
+def _set_logged_in(email: str):
+    st.session_state["user_email"] = email
 
-    url = st.secrets["supabase"].get("url")
-    key = st.secrets["supabase"].get("key")
-    if not url or not key:
-        st.error("Secrets incomplets : [supabase].url et [supabase].key sont requis.")
-        st.stop()
 
-    client = create_client(url, key)
-    st.session_state["supabase_client"] = client
-    return client
+def _redirect_to_memory():
+    # Streamlit multipage: chemin page
+    try:
+        st.switch_page("pages/Espace_Memoire.py")
+    except Exception:
+        # fallback si switch_page pas dispo / chemin différent
+        st.page_link("pages/Espace_Memoire.py", label="Aller à Espace Mémoire")
 
-def set_auth(session):
-    st.session_state["auth_session"] = session
-    st.session_state["user"] = session.user if session else None
 
-supabase = get_supabase()
-
+# -----------------------------------------------------------------------------
+# UI Header
+# -----------------------------------------------------------------------------
 st.markdown(
     """
-<div class="tm-card2">
-  <h2 style="margin:0; font-size:34px; font-weight:800; color:rgba(255,255,255,0.93);">Connexion</h2>
-  <div class="tm-p" style="margin-top:8px;">
-    Connectez-vous pour accéder à votre espace personnel, ou créez un compte.
-  </div>
+<div class="tm-card">
+  <h1 style="margin:0; font-size:44px; font-weight:780;">Connexion</h1>
+  <div class="tm-sub">Connectez-vous pour accéder à votre espace personnel, ou créez un compte.</div>
 </div>
 """,
     unsafe_allow_html=True,
 )
 
-# Pré-remplissage depuis la landing page
-prefill = st.session_state.get("prefill_email", "")
+st.write("")
 
+# -----------------------------------------------------------------------------
+# Supabase config check (sans fuite)
+# -----------------------------------------------------------------------------
+supabase = _get_supabase_client()
+if supabase is None:
+    st.error("Le service d’authentification n’est pas disponible pour le moment.")
+    st.info("Réessayez dans quelques instants.")
+    st.stop()
+
+# -----------------------------------------------------------------------------
+# Tabs (Connexion / Créer un compte)
+# -----------------------------------------------------------------------------
 tab_login, tab_signup = st.tabs(["Se connecter", "Créer un compte"])
 
 with tab_login:
-    email = st.text_input("Adresse e-mail", value=prefill, key="login_email")
-    password = st.text_input("Mot de passe", type="password", key="login_password")
+    st.markdown("<div class='tm-card'>", unsafe_allow_html=True)
+    email = st.text_input("Adresse e-mail", placeholder="ex : nom@domaine.com", key="login_email")
+    password = st.text_input("Mot de passe", type="password", placeholder="Votre mot de passe", key="login_pwd")
+
+    st.write("")
 
     st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
-    if st.button("Se connecter", use_container_width=True):
-        if not email or not password:
-            st.error("Veuillez renseigner e-mail et mot de passe.")
+    do_login = st.button("Se connecter", use_container_width=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    if do_login:
+        if not email.strip() or not password:
+            st.error("Veuillez renseigner une adresse e-mail et un mot de passe.")
         else:
             try:
                 res = supabase.auth.sign_in_with_password({"email": email.strip(), "password": password})
-                set_auth(res.session)
-                st.success("Connexion réussie.")
-                st.switch_page("pages/Tableau_de_bord.py")
+                # res.user peut être None si échec
+                if getattr(res, "user", None) is None:
+                    st.error("Identifiants incorrects.")
+                else:
+                    _set_logged_in(res.user.email or email.strip())
+                    st.success("Connexion réussie.")
+                    _redirect_to_memory()
             except Exception:
-                st.error("Connexion impossible. Identifiants invalides ou email non confirmé.")
-    st.markdown("</div>", unsafe_allow_html=True)
+                # On ne leak pas l'erreur
+                st.error("Connexion impossible. Vérifiez vos identifiants et réessayez.")
+
 
 with tab_signup:
-    email2 = st.text_input("Adresse e-mail", value=prefill, key="signup_email")
-    password2 = st.text_input("Mot de passe", type="password", key="signup_password")
-    password3 = st.text_input("Confirmer le mot de passe", type="password", key="signup_password2")
+    st.markdown("<div class='tm-card'>", unsafe_allow_html=True)
+    email2 = st.text_input("Adresse e-mail", placeholder="ex : nom@domaine.com", key="signup_email")
+    password2 = st.text_input("Mot de passe", type="password", placeholder="Choisissez un mot de passe", key="signup_pwd")
+    password3 = st.text_input("Confirmer le mot de passe", type="password", placeholder="Confirmez", key="signup_pwd2")
+
+    st.caption("Un e-mail de confirmation peut être requis selon la configuration du projet.")
+
+    st.write("")
 
     st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
-    if st.button("Créer le compte", use_container_width=True):
-        if not email2 or not password2:
-            st.error("Veuillez renseigner e-mail et mot de passe.")
-        elif password2 != password3:
-            st.error("Les mots de passe ne correspondent pas.")
-        else:
-            try:
-                supabase.auth.sign_up({"email": email2.strip(), "password": password2})
-                st.success("Compte créé. Vérifiez votre email pour confirmer l’inscription, puis connectez-vous.")
-            except Exception:
-                st.error("Impossible de créer le compte (email déjà utilisé ou configuration Supabase).")
+    do_signup = st.button("Créer mon compte", use_container_width=True)
+    st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-# Petite info (sans barre noire inutile)
-st.markdown(
-    '<div class="tm-muted">Conseil : utilisez un mot de passe unique. Si “Confirm email” est activé sur Supabase, la connexion est impossible avant confirmation.</div>',
-    unsafe_allow_html=True,
-)
+    if do_signup:
+        if not email2.strip() or not password2 or not password3:
+            st.error("Veuillez remplir tous les champs.")
+        elif password2 != password3:
+            st.error("Les mots de passe ne correspondent pas.")
+        elif len(password2) < 8:
+            st.error("Le mot de passe doit contenir au moins 8 caractères.")
+        else:
+            try:
+                # IMPORTANT: si "Confirm email" est activé sur Supabase,
+                # l’utilisateur devra confirmer avant de pouvoir se connecter.
+                res = supabase.auth.sign_up({"email": email2.strip(), "password": password2})
+
+                # Certaines configs renvoient user None tant que non confirmé.
+                if getattr(res, "user", None) is None:
+                    st.success("Compte créé. Vérifiez votre e-mail pour confirmer votre inscription.")
+                else:
+                    st.success("Compte créé. Vous pouvez maintenant accéder à votre espace.")
+                    _set_logged_in(res.user.email or email2.strip())
+                    _redirect_to_memory()
+
+            except Exception:
+                st.error("Impossible de créer le compte. Cette adresse est peut-être déjà utilisée.")
+
+
+# -----------------------------------------------------------------------------
+# Note: on ne met aucun texte “Supabase / secrets” visible utilisateur ici.
+# -----------------------------------------------------------------------------
