@@ -5,7 +5,7 @@ st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centere
 st.markdown("""
 <style>
 
-/* --------- Background (photo) --------- */
+/* --------- Background --------- */
 .stApp {
   background:
     linear-gradient(rgba(0,0,0,0.70), rgba(0,0,0,0.80)),
@@ -40,7 +40,7 @@ section.main > div{
   padding-top: 2.3rem;
 }
 
-/* --------- Force couleurs Streamlit --------- */
+/* Force couleurs Streamlit */
 h1, h2, h3, h4, h5, h6,
 .stMarkdown, .stMarkdown p,
 .stCaption, .stCaption p,
@@ -172,6 +172,7 @@ input:invalid{
 }
 
 /* --------- Buttons --------- */
+/* Base commune : mêmes dimensions partout */
 .stButton button{
   width: 100%;
   border-radius: 999px !important;
@@ -180,20 +181,23 @@ input:invalid{
   background: rgba(255,255,255,0.12) !important;
   color: var(--text) !important;
   font-weight: 650 !important;
-  min-height: 52px; /* même hauteur */
+  min-height: 52px !important; /* même hauteur */
+  margin: 0 !important;        /* évite micro-décalages */
 }
 
+/* Hover */
 .stButton button:hover{
   background: rgba(255,255,255,0.22) !important;
 }
 
-.tm-primary button{
+/* Primary (st.button(type="primary")) */
+.stButton button[kind="primary"]{
   background: var(--accent) !important;
   color: #0b0f16 !important;
   border: none !important;
 }
 
-.tm-primary button:hover{
+.stButton button[kind="primary"]:hover{
   background: var(--accentHover) !important;
 }
 
@@ -256,27 +260,24 @@ st.markdown("""
 
 email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
 
-# Actions alignées (messages affichés après, hors colonnes)
+# Actions (affichage sous les deux boutons)
 if "tm_action_msg" not in st.session_state:
     st.session_state.tm_action_msg = None
 if "tm_action_type" not in st.session_state:
     st.session_state.tm_action_type = None
 
-c1, c2 = st.columns(2)
+c1, c2 = st.columns(2, gap="small")
 
 with c1:
-    st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
-    if st.button("Continuer", key="btn_continue"):
+    if st.button("Continuer", key="btn_continue", type="primary"):
         st.session_state.tm_action_type = "success"
         st.session_state.tm_action_msg = "Redirection (MVP)"
-    st.markdown("</div>", unsafe_allow_html=True)
 
 with c2:
     if st.button("Accès bénéficiaire", key="btn_benef"):
         st.session_state.tm_action_type = "info"
         st.session_state.tm_action_msg = "Accès bénéficiaire (MVP)"
 
-# Message unique sous les deux boutons = alignement parfait
 if st.session_state.tm_action_msg:
     if st.session_state.tm_action_type == "success":
         st.success(st.session_state.tm_action_msg)
