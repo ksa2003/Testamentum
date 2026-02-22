@@ -7,16 +7,15 @@ def apply_theme() -> None:
     <style>
     .stApp {{
       background:
-        linear-gradient(rgba(0,0,0,0.60), rgba(0,0,0,0.78)),
+        linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.80)),
         url("{BG_URL}");
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
     }}
 
-    html, body, [class*="css"] {{
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color: #FFFFFF;
+    html, body {{
+      color: #FFFFFF !important;
     }}
 
     section.main > div {{
@@ -25,7 +24,7 @@ def apply_theme() -> None:
     }}
 
     .tm-card {{
-      background: rgba(12,15,20,0.86);
+      background: rgba(15,18,22,0.85);
       border: 1px solid rgba(255,255,255,0.18);
       border-radius: 18px;
       padding: 26px;
@@ -33,81 +32,66 @@ def apply_theme() -> None:
       box-shadow: 0 22px 100px rgba(0,0,0,0.70);
     }}
 
-    /* TITRE PRINCIPAL */
+    /* TITRES */
     .tm-title {{
       font-size: 46px;
       font-weight: 800;
-      letter-spacing: -0.02em;
-      color: #FFFFFF;
-      text-shadow: 0 6px 26px rgba(0,0,0,0.75);
+      color: #FFFFFF !important;
+      text-shadow: 0 6px 26px rgba(0,0,0,0.85);
     }}
 
-    /* SOUS TITRE */
-    .tm-sub {{
-      font-size: 14px;
-      color: rgba(255,255,255,0.95);
-      text-shadow: 0 2px 14px rgba(0,0,0,0.75);
-    }}
-
-    .tm-latin {{
-      font-size: 13px;
-      font-style: italic;
-      color: rgba(255,255,255,0.85);
-      text-shadow: 0 2px 14px rgba(0,0,0,0.75);
-    }}
-
-    /* 🔥 CORRECTION ICI */
-    /* COMMENCER */
     .tm-h2 {{
       font-size: 22px;
       font-weight: 800;
       color: #FFFFFF !important;
-      text-shadow: 0 4px 18px rgba(0,0,0,0.85);
+      text-shadow: 0 4px 20px rgba(0,0,0,0.90);
     }}
 
     /* PARAGRAPHES */
     .tm-text {{
       font-size: 15px;
-      line-height: 1.6;
-      color: rgba(255,255,255,0.96) !important;
-      text-shadow: 0 2px 14px rgba(0,0,0,0.80);
-    }}
-
-    /* 🔥 CORRECTION "En continuant..." */
-    .tm-footnote {{
-      font-size: 13px;
-      color: rgba(255,255,255,0.90) !important;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.85);
+      color: #FFFFFF !important;
       font-weight: 500;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.90);
     }}
 
-    /* LISTES */
-    .tm-card ul, .tm-card li {{
-      color: rgba(255,255,255,0.95) !important;
-      text-shadow: 0 2px 14px rgba(0,0,0,0.75);
+    /* 🔥 "Commencer" en blanc forcé */
+    .tm-card h2,
+    .tm-card h3 {{
+      color: #FFFFFF !important;
+      font-weight: 800 !important;
     }}
 
-    /* INPUTS */
+    /* 🔥 FOOTNOTE CLAIRE */
+    .tm-footnote {{
+      color: #FFFFFF !important;
+      font-size: 14px;
+      font-weight: 600;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.90);
+    }}
+
+    /* LABEL EMAIL */
     .stTextInput label {{
-      color: rgba(255,255,255,0.95) !important;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      color: #FFFFFF !important;
+      font-weight: 600;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.85);
     }}
 
+    /* INPUT */
     .stTextInput input {{
       background: rgba(0,0,0,0.45) !important;
-      border: 1px solid rgba(255,255,255,0.32) !important;
+      border: 1px solid rgba(255,255,255,0.40) !important;
       color: #FFFFFF !important;
       border-radius: 12px !important;
     }}
 
     .stTextInput input::placeholder {{
-      color: rgba(255,255,255,0.65) !important;
+      color: rgba(255,255,255,0.70) !important;
     }}
 
     .stTextInput input:focus {{
-      border: 1px solid rgba(255,255,255,0.80) !important;
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.18) !important;
-      outline: none !important;
+      border: 1px solid #FFFFFF !important;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.20) !important;
     }}
 
     /* BOUTONS */
@@ -115,17 +99,16 @@ def apply_theme() -> None:
       width: 100% !important;
       height: 56px !important;
       border-radius: 999px !important;
-      border: 1px solid rgba(255,255,255,0.30) !important;
-      background: rgba(255,255,255,0.18) !important;
+      border: 1px solid rgba(255,255,255,0.35) !important;
+      background: rgba(255,255,255,0.20) !important;
       color: #FFFFFF !important;
       font-size: 16px !important;
       font-weight: 700 !important;
-      box-shadow: 0 16px 34px rgba(0,0,0,0.45) !important;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.55) !important;
     }}
 
     .stButton > button:hover {{
-      background: rgba(255,255,255,0.28) !important;
+      background: rgba(255,255,255,0.30) !important;
     }}
 
     </style>
