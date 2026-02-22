@@ -1,8 +1,23 @@
 import streamlit as st
-from utils.theme import apply_theme
+from theme import apply_theme
 
 st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centered")
 apply_theme()
+
+def sidebar_nav():
+    st.sidebar.markdown("### Navigation")
+    try:
+        st.sidebar.page_link("app.py", label="Accueil")
+        st.sidebar.page_link("pages/Connexion.py", label="Connexion")
+        st.sidebar.page_link("pages/Tableau_de_bord.py", label="Espace Mémoire")
+        st.sidebar.page_link("pages/Acces_beneficiaire.py", label="Accès bénéficiaire")
+    except Exception:
+        st.sidebar.markdown("- Accueil")
+        st.sidebar.markdown("- Connexion")
+        st.sidebar.markdown("- Espace Mémoire")
+        st.sidebar.markdown("- Accès bénéficiaire")
+
+sidebar_nav()
 
 st.markdown(
     """
@@ -49,20 +64,24 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-with st.form("start_form", clear_on_submit=False):
-    email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
-    col1, col2 = st.columns(2, gap="large")
-    with col1:
-        go_continue = st.form_submit_button("Continuer", type="primary", use_container_width=True)
-    with col2:
-        go_benef = st.form_submit_button("Accès bénéficiaire", use_container_width=True)
+email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
 
-if go_continue:
-    st.session_state["prefill_email"] = (email or "").strip()
-    st.switch_page("pages/Connexion.py")
+c1, c2 = st.columns(2, gap="medium")
 
-if go_benef:
-    st.switch_page("pages/Acces_beneficiaire.py")
+with c1:
+    st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
+    if st.button("Continuer", use_container_width=True):
+        if not email:
+            st.error("Veuillez saisir une adresse e-mail.")
+        else:
+            st.session_state["prefill_email"] = email.strip()
+            st.switch_page("pages/Connexion.py")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with c2:
+    # Accès bénéficiaire : page dédiée (mais elle vérifiera la présence d'un token)
+    if st.button("Accès bénéficiaire", use_container_width=True):
+        st.switch_page("pages/Acces_beneficiaire.py")
 
 st.markdown(
     '<div class="tm-muted">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité.</div>',
