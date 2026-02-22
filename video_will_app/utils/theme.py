@@ -2,90 +2,80 @@ import streamlit as st
 
 BG_IMAGE_URL = "https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?q=80&w=1920&auto=format&fit=crop"
 
-def apply_theme(bg_url: str = BG_IMAGE_URL) -> None:
+def apply_theme(background_url: str = BG_IMAGE_URL) -> None:
     st.markdown(
         f"""
 <style>
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
+/* --------- Background --------- */
 .stApp {{
   background:
-    linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.82)),
-    url("{bg_url}");
+    linear-gradient(rgba(0,0,0,0.68), rgba(0,0,0,0.78)),
+    url("{background_url}");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }}
 
-/* =========================================================
-   VARIABLES
-========================================================= */
-:root{{
-  --card: rgba(15,18,22,0.82);
-  --card2: rgba(15,18,22,0.76);
+/* --------- Variables --------- */
+:root {{
+  --card: rgba(15,18,22,0.78);
+  --card2: rgba(15,18,22,0.62);
   --border: rgba(255,255,255,0.14);
-  --text: #FFFFFF;
-  --muted: #E6E9EE;
-  --muted2: #C4CBD6;
-  --accent: #EDEFF2;
-  --accentHover: #FFFFFF;
-  --focus: rgba(237,239,242,0.22);
-  --chipBg: rgba(255,255,255,0.06);
-  --inputBg: rgba(0,0,0,0.42);
-  --inputBorder: rgba(255,255,255,0.26);
-  --inputBorderFocus: rgba(237,239,242,0.60);
+  --text: rgba(255,255,255,0.94);
+  --muted: rgba(255,255,255,0.78);
+  --muted2: rgba(255,255,255,0.62);
+  --chipbg: rgba(255,255,255,0.06);
+
+  --btn: rgba(255,255,255,0.12);
+  --btnHover: rgba(255,255,255,0.18);
+  --btnPrimaryBg: rgba(255,255,255,0.92);
+  --btnPrimaryText: rgba(0,0,0,0.92);
+
+  --focus: rgba(255,255,255,0.22);
 }}
 
-/* =========================================================
-   BASE
-========================================================= */
-html, body, [class*="css"]{{
+/* --------- Base --------- */
+html, body, [class*="css"] {{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
   color: var(--text);
 }}
 
-section.main > div{{
+section.main > div {{
   max-width: 920px;
-  padding-top: 2rem;
+  padding-top: 2.2rem;
 }}
 
-header, footer {{visibility: hidden;}}
-#MainMenu {{visibility: hidden;}}
-
-/* =========================================================
-   CARDS
-========================================================= */
+/* --------- Card --------- */
 .tm-card {{
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 26px;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 22px 100px rgba(0,0,0,0.70);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 22px 100px rgba(0,0,0,0.7);
+  animation: fadeIn 0.55s ease-out;
 }}
 
 .tm-card2 {{
   background: var(--card2);
   border: 1px solid var(--border);
   border-radius: 18px;
-  padding: 22px 26px 26px;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 22px 100px rgba(0,0,0,0.60);
+  padding: 22px;
+  backdrop-filter: blur(16px);
 }}
 
-/* =========================================================
-   TYPOGRAPHY
-========================================================= */
+@keyframes fadeIn {{
+  from {{opacity:0; transform: translateY(10px);}}
+  to {{opacity:1; transform: translateY(0);}}
+}}
+
+/* --------- Typography --------- */
 .tm-title {{
   font-size: 46px;
+  margin: 0;
   font-weight: 750;
   letter-spacing: -0.03em;
-  margin: 0;
-  background: linear-gradient(90deg, #FFFFFF 0%, #E5E7EB 50%, #FFFFFF 100%);
+  background: linear-gradient(90deg, rgba(255,255,255,0.98) 0%, rgba(229,231,235,0.95) 50%, rgba(255,255,255,0.98) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }}
@@ -104,27 +94,36 @@ header, footer {{visibility: hidden;}}
 }}
 
 .tm-h2 {{
-  margin-top: 18px;
-  font-size: 24px;
+  margin-top: 22px;
+  font-size: 22px;
   font-weight: 700;
+  color: rgba(255,255,255,0.93);
 }}
 
 .tm-p {{
   margin-top: 10px;
   color: var(--muted);
-  line-height: 1.6;
+  line-height: 1.7;
   font-size: 15px;
 }}
 
-.tm-muted {{
-  margin-top: 10px;
-  font-size: 12px;
-  color: rgba(255,255,255,0.70);
+.tm-bullets {{
+  margin-top: 14px;
+  color: var(--muted);
+  line-height: 1.95;
+  font-size: 14px;
 }}
 
-/* =========================================================
-   CHIPS
-========================================================= */
+.tm-videos-title {{
+  font-size: 20px;
+  font-weight: 750;
+  color: rgba(255,255,255,0.94);
+  margin-top: 18px;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.55);
+}}
+
+/* --------- Chips --------- */
 .tm-chiprow {{
   margin-top: 14px;
   display:flex;
@@ -138,137 +137,106 @@ header, footer {{visibility: hidden;}}
   border-radius: 999px;
   font-size: 12px;
   color: var(--muted);
-  background: var(--chipBg);
+  background: var(--chipbg);
 }}
 
-/* =========================================================
-   INPUTS
-========================================================= */
-.stTextInput label,
-.stPasswordInput label {{
+/* --------- Inputs --------- */
+.stTextInput label, .stTextArea label, .stFileUploader label {{
   color: var(--muted) !important;
 }}
 
-.stTextInput input,
-.stPasswordInput input {{
-  background: var(--inputBg) !important;
-  border: 1px solid var(--inputBorder) !important;
-  color: var(--text) !important;
+.stTextInput input, .stTextArea textarea {{
+  background: rgba(0,0,0,0.42) !important;
+  border: 1px solid rgba(255,255,255,0.26) !important;
+  color: rgba(255,255,255,0.94) !important;
   border-radius: 12px !important;
-  padding: 0.8rem 1rem !important;
-  caret-color: var(--text) !important;
+  padding: 0.80rem 1rem !important;
+  caret-color: rgba(255,255,255,0.92) !important;
+  outline: none !important;
+  box-shadow: none !important;
 }}
 
-.stTextInput input::placeholder,
-.stPasswordInput input::placeholder {{
-  color: rgba(255,255,255,0.50) !important;
+.stTextInput input::placeholder, .stTextArea textarea::placeholder {{
+  color: rgba(255,255,255,0.45) !important;
 }}
 
-.stTextInput input:focus,
-.stPasswordInput input:focus {{
-  border: 1px solid var(--inputBorderFocus) !important;
+.stTextInput input:focus, .stTextArea textarea:focus {{
+  border: 1px solid rgba(255,255,255,0.45) !important;
   box-shadow: 0 0 0 3px var(--focus) !important;
   outline: none !important;
 }}
 
+/* Supprime le rouge "invalid" (mobile/Chrome) */
 input:invalid {{
-  border: 1px solid var(--inputBorder) !important;
   box-shadow: none !important;
   outline: none !important;
+  border: 1px solid rgba(255,255,255,0.26) !important;
 }}
 
-/* =========================================================
-   BUTTONS
-========================================================= */
-.stButton button,
-div[data-testid="stFormSubmitButton"] button {{
-  width: 100% !important;
-  border-radius: 999px !important;
-  border: 1px solid rgba(255,255,255,0.20) !important;
-  background: rgba(255,255,255,0.08) !important;
-  color: var(--text) !important;
-  font-weight: 650 !important;
-  height: 50px !important;
-}}
-
-.stButton button:hover,
-div[data-testid="stFormSubmitButton"] button:hover {{
-  background: rgba(255,255,255,0.14) !important;
-}}
-
-.stButton button:active,
-div[data-testid="stFormSubmitButton"] button:active {{
-  transform: translateY(1px);
-}}
-
-.stButton button:focus-visible,
-div[data-testid="stFormSubmitButton"] button:focus-visible {{
-  box-shadow: 0 0 0 3px var(--focus) !important;
-  outline: none !important;
-}}
-
-button[kind="primary"] {{
-  background: var(--accent) !important;
-  color: #0b0f16 !important;
-  border: none !important;
-}}
-
-button[kind="primary"]:hover {{
-  background: var(--accentHover) !important;
-}}
-
-/* =========================================================
-   ALIGNMENT FIX
-========================================================= */
-div[data-testid="stHorizontalBlock"] {{
+/* --------- Buttons: ALIGNMENT + NO BLUE/RED --------- */
+/* Fix Streamlit extra paddings inside columns for consistent baseline */
+div[data-testid="stHorizontalBlock"] > div {{
   align-items: stretch !important;
 }}
 
-div[data-testid="column"] {{
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-end !important;
-}}
-
-div[data-testid="stFormSubmitButton"] {{
-  margin: 0 !important;
-  padding: 0 !important;
-}}
-
-/* =========================================================
-   ALERTS (neutral style)
-========================================================= */
-div[data-testid="stAlert"] {{
-  border-radius: 14px !important;
-  border: 1px solid rgba(255,255,255,0.16) !important;
-  background: rgba(15,18,22,0.70) !important;
-}}
-
-div[data-testid="stAlert"] * {{
+/* Uniform button style */
+.stButton > button {{
+  width: 100%;
+  border-radius: 999px !important;
+  padding: 0.95rem 1.2rem !important;
+  border: 1px solid rgba(255,255,255,0.22) !important;
+  background: var(--btn) !important;
   color: rgba(255,255,255,0.92) !important;
+  font-weight: 650 !important;
+  height: 52px !important;            /* IMPORTANT: same height */
+  line-height: 52px !important;       /* IMPORTANT: same baseline */
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  outline: none !important;
+  box-shadow: none !important;
 }}
 
-/* =========================================================
-   REMOVE BLACK BAR UNDER TABS
-========================================================= */
-div[data-baseweb="tab-border"] {{
-  display: none !important;
+.stButton > button:hover {{
+  background: var(--btnHover) !important;
+  border-color: rgba(255,255,255,0.26) !important;
 }}
 
-div[data-baseweb="tab-highlight"] {{
-  background: rgba(255,255,255,0.15) !important;
-  height: 2px !important;
+.stButton > button:focus,
+.stButton > button:active,
+.stButton > button:focus-visible {{
+  outline: none !important;
+  box-shadow: 0 0 0 3px var(--focus) !important;
+  border-color: rgba(255,255,255,0.36) !important;
 }}
 
-div[data-baseweb="tab"] {{
-  background: transparent !important;
+/* Primary button wrapper */
+.tm-primary .stButton > button {{
+  background: var(--btnPrimaryBg) !important;
+  color: var(--btnPrimaryText) !important;
   border: none !important;
 }}
 
-@media (max-width: 520px) {{
-  .tm-title {{ font-size: 38px; }}
+.tm-primary .stButton > button:hover {{
+  background: rgba(255,255,255,0.98) !important;
 }}
 
+/* Streamlit success/info/warn colors toned down for theme */
+.stAlert {{
+  border-radius: 14px !important;
+  backdrop-filter: blur(10px);
+}}
+
+.tm-muted {{
+  margin-top: 12px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.70);
+}}
+
+@media (max-width: 520px) {{
+  .tm-title{{ font-size: 38px; }}
+  .tm-card{{ padding: 22px; }}
+}}
 </style>
 """,
         unsafe_allow_html=True,
