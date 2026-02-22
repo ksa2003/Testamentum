@@ -5,9 +5,7 @@ BG_URL = "https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?q=80&w=19
 
 def apply_theme() -> None:
     """
-    Applique uniquement le CSS (PAS de st.set_page_config ici).
-    Important : set_page_config doit être appelé une seule fois et avant tout affichage,
-    idéalement dans app.py tout en haut, pas dans theme.py.
+    CSS uniquement (pas de st.set_page_config ici).
     """
     css = f"""
     <style>
@@ -39,7 +37,7 @@ def apply_theme() -> None:
       box-shadow: 0 22px 100px rgba(0,0,0,0.70);
     }}
 
-    /* TITRE: ton “Testamentum” en teinte ivoire/doré (sobre, pas vert) */
+    /* TITRE: sobre (ivoire/doré léger), pas vert */
     .tm-title {{
       font-size: 46px;
       font-weight: 750;
@@ -48,20 +46,54 @@ def apply_theme() -> None:
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 0 6px 22px rgba(0,0,0,0.35);
+      margin: 0 0 6px 0;
     }}
 
     .tm-sub {{
       font-size: 14px;
       color: rgba(255,255,255,0.85);
+      margin: 0 0 6px 0;
     }}
 
     .tm-latin {{
       font-size: 13px;
       font-style: italic;
       color: rgba(255,255,255,0.70);
+      margin: 0 0 14px 0;
     }}
 
-    /* Labels lisibles (nuances de blanc, pas gris sur gris) */
+    /* Bulles (chips) EXACTEMENT style “pills” */
+    .tm-chips {{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 6px 0 18px 0;
+    }}
+    .tm-chip {{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.92);
+      font-size: 16px;
+      font-weight: 650;
+      line-height: 1;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12);
+    }}
+
+    /* Textes lisibles (nuances de blanc, pas gris sur gris) */
+    .tm-muted {{
+      color: rgba(255,255,255,0.75);
+    }}
+    .tm-strong {{
+      color: rgba(255,255,255,0.95);
+      font-weight: 650;
+    }}
+
+    /* Inputs */
     .stTextInput label, .stTextArea label {{
       color: rgba(255,255,255,0.88) !important;
       font-weight: 600 !important;
@@ -89,7 +121,7 @@ def apply_theme() -> None:
       box-shadow: none !important;
     }}
 
-    /* Colonnes: garantit même hauteur/alignement des boutons */
+    /* Colonnes / boutons alignés */
     div[data-testid="column"] {{
       display: flex !important;
       align-items: flex-start !important;
@@ -106,7 +138,6 @@ def apply_theme() -> None:
       padding: 0 !important;
     }}
 
-    /* Boutons: même taille + bien centrés */
     .stButton > button {{
       width: 100% !important;
       height: 56px !important;
@@ -128,7 +159,6 @@ def apply_theme() -> None:
       background: rgba(255,255,255,0.18) !important;
     }}
 
-    /* Variante bouton “primaire” si tu l’utilises via wrapper .tm-primary */
     .tm-primary .stButton > button {{
       background: #E5E7EB !important;
       color: #111827 !important;
@@ -139,15 +169,10 @@ def apply_theme() -> None:
       background: #F3F4F6 !important;
     }}
 
-    .tm-btnwrap {{
-      margin: 0 !important;
-      padding: 0 !important;
-      display: block !important;
-    }}
-
     @media (max-width: 520px) {{
       .tm-title {{ font-size: 36px; }}
       .tm-card {{ padding: 22px; }}
+      .tm-chip {{ font-size: 15px; padding: 9px 16px; }}
     }}
     </style>
     """
