@@ -12,35 +12,27 @@ def apply_theme():
 /* ---------------- Background ---------------- */
 .stApp {{
   background:
-    linear-gradient(rgba(0,0,0,0.70), rgba(0,0,0,0.80)),
+    linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.80)),
     url("{BG_URL}");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }}
 
-/* ---------------- Variables ---------------- */
-:root{{
-  --card: rgba(15,18,22,0.82);
-  --border: rgba(255,255,255,0.14);
-  --text: #FFFFFF;
-
-  /* Plus clair qu'avant */
-  --muted: rgba(255,255,255,0.82);
-  --muted2: rgba(255,255,255,0.70);
-
-  --inputBg: rgba(0,0,0,0.45);
-  --inputBorder: rgba(255,255,255,0.26);
-
-  --accent: #E5E7EB;
-  --accentHover: #F3F4F6;
-  --focus: rgba(255,255,255,0.22);
+/* ---------------- Layout fix for button alignment ---------------- */
+div[data-testid="column"] {{
+    display: flex !important;
+    align-items: stretch !important;
 }}
 
-/* ---------------- Base typography ---------------- */
+div[data-testid="column"] > div {{
+    width: 100% !important;
+}}
+
+/* ---------------- Base ---------------- */
 html, body, [class*="css"] {{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  color: var(--text);
+  color: #FFFFFF;
 }}
 
 section.main > div {{
@@ -50,14 +42,15 @@ section.main > div {{
 
 /* ---------------- Cards ---------------- */
 .tm-card {{
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: rgba(15,18,22,0.82);
+  border: 1px solid rgba(255,255,255,0.14);
   border-radius: 18px;
   padding: 26px;
   backdrop-filter: blur(18px);
   box-shadow: 0 22px 100px rgba(0,0,0,0.70);
 }}
 
+/* ---------------- Typography ---------------- */
 .tm-title {{
   font-size: 46px;
   margin: 0;
@@ -71,106 +64,58 @@ section.main > div {{
 .tm-sub {{
   margin-top: 10px;
   font-size: 14px;
-  color: var(--muted);
+  color: rgba(255,255,255,0.85);
 }}
 
 .tm-latin {{
   margin-top: 6px;
   font-size: 13px;
   font-style: italic;
-  color: var(--muted2);
-}}
-
-.tm-h2 {{
-  margin-top: 22px;
-  font-size: 24px;
-  font-weight: 700;
-}}
-
-.tm-p {{
-  margin-top: 10px;
-  color: var(--muted);
-  line-height: 1.65;
-  font-size: 15px;
-}}
-
-.tm-bullets {{
-  margin-top: 14px;
-  color: var(--muted);
-  line-height: 1.85;
-  font-size: 14px;
+  color: rgba(255,255,255,0.70);
 }}
 
 .tm-muted {{
-  margin-top: 12px;
-  font-size: 12px;
-  color: var(--muted2);
-}}
-
-/* ---------------- Chips ---------------- */
-.tm-chiprow {{
-  margin-top: 14px;
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}}
-
-.tm-chip {{
-  border: 1px solid var(--border);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  color: var(--muted);
-  background: rgba(255,255,255,0.06);
-}}
-
-/* ---------------- Labels / captions (plus lisibles) ---------------- */
-label, .stMarkdown, .stCaption, .stText {{
-  color: var(--muted) !important;
+  font-size: 13px;
+  color: rgba(255,255,255,0.70);
 }}
 
 /* ---------------- Inputs ---------------- */
-.stTextInput input, .stTextArea textarea, .stSelectbox div[data-baseweb="select"] > div {{
-  background: var(--inputBg) !important;
-  border: 1px solid var(--inputBorder) !important;
-  color: var(--text) !important;
+.stTextInput input,
+.stTextArea textarea {{
+  background: rgba(0,0,0,0.45) !important;
+  border: 1px solid rgba(255,255,255,0.28) !important;
+  color: #FFFFFF !important;
   border-radius: 12px !important;
 }}
 
-/* Placeholders plus visibles */
 .stTextInput input::placeholder,
 .stTextArea textarea::placeholder {{
   color: rgba(255,255,255,0.55) !important;
 }}
 
-/* Focus : enlever rouge/bleu, mettre blanc doux */
 .stTextInput input:focus,
 .stTextArea textarea:focus {{
   border: 1px solid rgba(255,255,255,0.70) !important;
-  box-shadow: 0 0 0 3px var(--focus) !important;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.15) !important;
   outline: none !important;
 }}
 
-/* Désactiver bordures rouges "invalid" */
 input:invalid {{
-  border: 1px solid var(--inputBorder) !important;
+  border: 1px solid rgba(255,255,255,0.28) !important;
   box-shadow: none !important;
 }}
 
-/* ---------------- Buttons : même hauteur partout ---------------- */
+/* ---------------- Buttons ---------------- */
 .stButton button {{
-  width: 100%;
-  border-radius: 999px !important;
-
-  /* clé pour l’alignement */
-  min-height: 46px !important;
-  height: 46px !important;
-  line-height: 46px !important;
+  width: 100% !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  line-height: 48px !important;
   padding: 0 18px !important;
-
+  border-radius: 999px !important;
   border: 1px solid rgba(255,255,255,0.22) !important;
   background: rgba(255,255,255,0.10) !important;
-  color: var(--text) !important;
+  color: #FFFFFF !important;
   font-weight: 650 !important;
 }}
 
@@ -178,36 +123,14 @@ input:invalid {{
   background: rgba(255,255,255,0.18) !important;
 }}
 
-.stButton button:active {{
-  transform: translateY(1px);
-}}
-
-/* Bouton "primary" */
 .tm-primary .stButton button {{
-  background: var(--accent) !important;
+  background: #E5E7EB !important;
   color: #111827 !important;
   border: none !important;
 }}
 
 .tm-primary .stButton button:hover {{
-  background: var(--accentHover) !important;
-}}
-
-/* ---------------- Streamlit alert boxes : rendre lisible ---------------- */
-div[data-testid="stAlert"] {{
-  border-radius: 14px !important;
-  border: 1px solid rgba(255,255,255,0.14) !important;
-}}
-
-/* ---------------- Remove weird extra spacing under headings ---------------- */
-h1, h2, h3 {{
-  letter-spacing: -0.02em;
-}}
-
-/* ---------------- Mobile ---------------- */
-@media (max-width: 520px){{
-  .tm-title{{ font-size: 38px; }}
-  .tm-card{{ padding: 22px; }}
+  background: #F3F4F6 !important;
 }}
 
 </style>
