@@ -2,7 +2,7 @@ import streamlit as st
 
 # ============================================================
 # Testamentum — Landing (MVP)
-# Thème sombre + photo "souvenir / départ" (avec silhouette)
+# Thème sombre + photo "souvenir / départ"
 # UI type "X-card" + boutons parfaitement alignés
 # ============================================================
 
@@ -27,10 +27,9 @@ st.markdown(
   --card2: rgba(15,18,22,0.76);
   --border: rgba(255,255,255,0.14);
   --text: #FFFFFF;
-  --muted: #E3E6EB;     /* plus clair */
-  --muted2: #B8C0CC;    /* plus clair */
-  --hint: rgba(255,255,255,0.75);
-  --accent: #EDEFF2;    /* primary button */
+  --muted: #E6E9EE;     /* plus clair */
+  --muted2: #C4CBD6;    /* plus clair */
+  --accent: #EDEFF2;    /* primary button (neutre) */
   --accentHover: #FFFFFF;
   --focus: rgba(237,239,242,0.22);
   --chipBg: rgba(255,255,255,0.06);
@@ -50,7 +49,7 @@ section.main > div{
   padding-top: 2.1rem;
 }
 
-/* Hide Streamlit default header/footer */
+/* Hide Streamlit default header/footer/menu */
 header, footer {visibility: hidden;}
 #MainMenu {visibility: hidden;}
 
@@ -161,21 +160,20 @@ header, footer {visibility: hidden;}
   color: rgba(255,255,255,0.50) !important;
 }
 
-/* Focus ring: remove red + keep theme */
 .stTextInput input:focus{
   border: 1px solid var(--inputBorderFocus) !important;
   box-shadow: 0 0 0 3px var(--focus) !important;
   outline: none !important;
 }
 
-/* remove red invalid (mobile browser) */
+/* Empêche certains navigateurs d'afficher un contour rouge */
 input:invalid{
   border: 1px solid var(--inputBorder) !important;
   box-shadow: none !important;
   outline: none !important;
 }
 
-/* --------- Buttons (default) --------- */
+/* --------- Buttons --------- */
 .stButton button,
 div[data-testid="stFormSubmitButton"] button{
   width: 100% !important;
@@ -187,6 +185,7 @@ div[data-testid="stFormSubmitButton"] button{
   height: 52px !important;
   min-height: 52px !important;
   padding: 0 !important;
+  margin: 0 !important;
 }
 
 .stButton button:hover,
@@ -194,7 +193,7 @@ div[data-testid="stFormSubmitButton"] button:hover{
   background: rgba(255,255,255,0.14) !important;
 }
 
-/* Primary button: neutral (no blue) */
+/* Primary button: neutre (pas de bleu / pas de rouge) */
 button[kind="primary"]{
   background: var(--accent) !important;
   color: #0b0f16 !important;
@@ -204,7 +203,7 @@ button[kind="primary"]:hover{
   background: var(--accentHover) !important;
 }
 
-/* Disabled state */
+/* Disabled */
 button:disabled{
   opacity: 0.55 !important;
   cursor: not-allowed !important;
@@ -225,12 +224,13 @@ div[data-testid="stHorizontalBlock"]{
 div[data-testid="column"]{
   display: flex !important;
   flex-direction: column !important;
-  justify-content: flex-end !important; /* align at bottom */
+  justify-content: flex-end !important;
 }
 
+/* Important: remove extra spacing some Streamlit versions add */
 div[data-testid="stFormSubmitButton"]{
-  margin-top: 0 !important;
-  padding-top: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* --------- Responsive --------- */
@@ -295,7 +295,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Put the form inside the second card visually (Streamlit elements follow)
 with st.form("start_form", clear_on_submit=False):
     email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
 
@@ -325,4 +324,3 @@ st.markdown(
     '<div class="tm-muted">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité.</div>',
     unsafe_allow_html=True,
 )
-```0
