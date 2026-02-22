@@ -1,11 +1,5 @@
 import streamlit as st
 
-# ============================================================
-# Testamentum — Landing (MVP)
-# Thème sombre + photo "souvenir / départ"
-# UI type "X-card" + boutons parfaitement alignés
-# ============================================================
-
 st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centered")
 
 st.markdown(
@@ -27,9 +21,9 @@ st.markdown(
   --card2: rgba(15,18,22,0.76);
   --border: rgba(255,255,255,0.14);
   --text: #FFFFFF;
-  --muted: #E6E9EE;     /* plus clair */
-  --muted2: #C4CBD6;    /* plus clair */
-  --accent: #EDEFF2;    /* primary button (neutre) */
+  --muted: #E6E9EE;
+  --muted2: #C4CBD6;
+  --accent: #EDEFF2;        /* primary */
   --accentHover: #FFFFFF;
   --focus: rgba(237,239,242,0.22);
   --chipBg: rgba(255,255,255,0.06);
@@ -49,11 +43,10 @@ section.main > div{
   padding-top: 2.1rem;
 }
 
-/* Hide Streamlit default header/footer/menu */
 header, footer {visibility: hidden;}
 #MainMenu {visibility: hidden;}
 
-/* --------- Card --------- */
+/* --------- Cards --------- */
 .tm-card{
   background: var(--card);
   border: 1px solid var(--border);
@@ -143,9 +136,7 @@ header, footer {visibility: hidden;}
 }
 
 /* --------- Inputs --------- */
-.stTextInput label{
-  color: var(--muted) !important;
-}
+.stTextInput label{ color: var(--muted) !important; }
 
 .stTextInput input{
   background: var(--inputBg) !important;
@@ -166,7 +157,7 @@ header, footer {visibility: hidden;}
   outline: none !important;
 }
 
-/* Empêche certains navigateurs d'afficher un contour rouge */
+/* remove red invalid */
 input:invalid{
   border: 1px solid var(--inputBorder) !important;
   box-shadow: none !important;
@@ -193,7 +184,19 @@ div[data-testid="stFormSubmitButton"] button:hover{
   background: rgba(255,255,255,0.14) !important;
 }
 
-/* Primary button: neutre (pas de bleu / pas de rouge) */
+/* Visible click/focus */
+.stButton button:active,
+div[data-testid="stFormSubmitButton"] button:active{
+  transform: translateY(1px);
+}
+
+.stButton button:focus-visible,
+div[data-testid="stFormSubmitButton"] button:focus-visible{
+  box-shadow: 0 0 0 3px var(--focus) !important;
+  outline: none !important;
+}
+
+/* Primary (no blue/red) */
 button[kind="primary"]{
   background: var(--accent) !important;
   color: #0b0f16 !important;
@@ -203,11 +206,14 @@ button[kind="primary"]:hover{
   background: var(--accentHover) !important;
 }
 
-/* Disabled */
-button:disabled{
-  opacity: 0.55 !important;
-  cursor: not-allowed !important;
+/* --------- Alignment for columns --------- */
+div[data-testid="stHorizontalBlock"]{ align-items: stretch !important; }
+div[data-testid="column"]{
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
 }
+div[data-testid="stFormSubmitButton"]{ margin: 0 !important; padding: 0 !important; }
 
 /* --------- Small muted line --------- */
 .tm-muted{
@@ -216,24 +222,6 @@ button:disabled{
   color: rgba(255,255,255,0.72);
 }
 
-/* --------- PERFECT ALIGNMENT FOR 2 BUTTONS IN COLUMNS --------- */
-div[data-testid="stHorizontalBlock"]{
-  align-items: stretch !important;
-}
-
-div[data-testid="column"]{
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-end !important;
-}
-
-/* Important: remove extra spacing some Streamlit versions add */
-div[data-testid="stFormSubmitButton"]{
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* --------- Responsive --------- */
 @media (max-width: 520px){
   .tm-title{ font-size: 38px; }
   .tm-card{ padding: 22px; }
@@ -244,9 +232,7 @@ div[data-testid="stFormSubmitButton"]{
     unsafe_allow_html=True,
 )
 
-# =========================
 # HERO
-# =========================
 st.markdown(
     """
 <div class="tm-card">
@@ -280,9 +266,7 @@ st.markdown(
 
 st.write("")
 
-# =========================
-# COMMENCER (FORM)
-# =========================
+# COMMENCER (Form)
 st.markdown(
     """
 <div class="tm-card2">
@@ -301,23 +285,19 @@ with st.form("start_form", clear_on_submit=False):
     col1, col2 = st.columns(2, gap="large")
 
     with col1:
-        go_continue = st.form_submit_button(
-            "Continuer",
-            type="primary",
-            use_container_width=True,
-            disabled=(not email or not email.strip()),
-        )
+        go_continue = st.form_submit_button("Continuer", type="primary", use_container_width=True)
 
     with col2:
-        go_benef = st.form_submit_button(
-            "Accès bénéficiaire",
-            use_container_width=True,
-        )
+        go_benef = st.form_submit_button("Accès bénéficiaire", use_container_width=True)
 
 # Actions (MVP)
 if go_continue:
-    st.success("Redirection (MVP)")
-elif go_benef:
+    if not email or "@" not in email or "." not in email:
+        st.error("Veuillez saisir une adresse e-mail valide.")
+    else:
+        st.success("Redirection (MVP)")
+
+if go_benef:
     st.info("Accès bénéficiaire (MVP)")
 
 st.markdown(
