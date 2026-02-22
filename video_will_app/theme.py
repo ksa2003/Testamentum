@@ -6,7 +6,9 @@ def apply_theme():
     st.markdown(
         f"""
 <style>
-/* Background */
+
+/* ---------------- GLOBAL BACKGROUND ---------------- */
+
 .stApp {{
   background:
     linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.80)),
@@ -26,7 +28,8 @@ section.main > div {{
   padding-top: 2.2rem;
 }}
 
-/* Cards */
+/* ---------------- CARDS ---------------- */
+
 .tm-card {{
   background: rgba(15,18,22,0.82);
   border: 1px solid rgba(255,255,255,0.14);
@@ -56,23 +59,28 @@ section.main > div {{
   color: rgba(255,255,255,0.70);
 }}
 
-/* Inputs */
-.stTextInput label, .stTextArea label {{
+/* ---------------- INPUTS ---------------- */
+
+.stTextInput label,
+.stTextArea label {{
   color: rgba(255,255,255,0.85) !important;
 }}
 
-.stTextInput input, .stTextArea textarea {{
+.stTextInput input,
+.stTextArea textarea {{
   background: rgba(0,0,0,0.45) !important;
   border: 1px solid rgba(255,255,255,0.28) !important;
   color: #FFFFFF !important;
   border-radius: 12px !important;
 }}
 
-.stTextInput input::placeholder, .stTextArea textarea::placeholder {{
+.stTextInput input::placeholder,
+.stTextArea textarea::placeholder {{
   color: rgba(255,255,255,0.55) !important;
 }}
 
-.stTextInput input:focus, .stTextArea textarea:focus {{
+.stTextInput input:focus,
+.stTextArea textarea:focus {{
   border: 1px solid rgba(255,255,255,0.70) !important;
   box-shadow: 0 0 0 3px rgba(255,255,255,0.15) !important;
   outline: none !important;
@@ -83,18 +91,51 @@ input:invalid {{
   box-shadow: none !important;
 }}
 
-/* Buttons (look) */
+/* ---------------- ALIGNEMENT COLONNES ---------------- */
+
+div[data-testid="column"] {{
+  display: flex !important;
+  align-items: flex-start !important;
+}}
+
+div[data-testid="column"] > div {{
+  width: 100% !important;
+}}
+
+div[data-testid="column"] .element-container {{
+  margin: 0 !important;
+  padding: 0 !important;
+}}
+
+div[data-testid="column"] .stMarkdown {{
+  margin: 0 !important;
+  padding: 0 !important;
+}}
+
+div[data-testid="column"] .stButton {{
+  margin: 0 !important;
+  padding: 0 !important;
+}}
+
+/* ---------------- BOUTONS ---------------- */
+
 .stButton > button {{
   width: 100% !important;
-  height: 50px !important;
-  min-height: 50px !important;
-  line-height: 50px !important;
-  padding: 0 18px !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  padding: 0 22px !important;
+
   border-radius: 999px !important;
   border: 1px solid rgba(255,255,255,0.22) !important;
   background: rgba(255,255,255,0.10) !important;
   color: #FFFFFF !important;
+
+  font-size: 16px !important;
   font-weight: 650 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }}
 
 .stButton > button:hover {{
@@ -111,48 +152,25 @@ input:invalid {{
   background: #F3F4F6 !important;
 }}
 
-/* ---------------------------
-   ALIGNEMENT PARFAIT DES 2 BOUTONS (Streamlit mobile)
-   --------------------------- */
+/* ---------------- WRAPPER ---------------- */
 
-/* 1) Colonnes : même “baseline” */
-div[data-testid="column"] {{
-  display: flex !important;
-  align-items: flex-start !important;
-}}
-
-/* 2) Supprimer les marges automatiques que Streamlit met autour des markdown/boutons */
-div[data-testid="column"] .stMarkdown,
-div[data-testid="column"] .element-container {{
-  margin: 0 !important;
-  padding: 0 !important;
-}}
-
-/* 3) Supprimer le padding vertical que Streamlit ajoute parfois aux containers de bouton */
-div[data-testid="column"] .stButton {{
-  margin: 0 !important;
-  padding: 0 !important;
-}}
-
-/* 4) Wrapper propre (si tu l’utilises) */
 .tm-btnwrap {{
   margin: 0 !important;
   padding: 0 !important;
   display: block !important;
 }}
 
-/* 5) Important : éviter un “décalage” dû au line-height différent selon navigateur */
-.stButton > button {{
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: normal !important;
-}}
+/* ---------------- MOBILE ---------------- */
 
 @media (max-width: 520px) {{
-  .tm-title {{ font-size: 38px; }}
-  .tm-card {{ padding: 22px; }}
-}}
+  .tm-title {{
+    font-size: 36px;
+  }}
+  .tm-card {{
+    padding: 22px;
+  }}
+}
+
 </style>
 """,
         unsafe_allow_html=True,
