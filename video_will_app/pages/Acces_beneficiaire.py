@@ -1,15 +1,27 @@
 import streamlit as st
-from utils.theme import apply_theme
+from theme import apply_theme
 
 st.set_page_config(page_title="Accès bénéficiaire — Testamentum", page_icon="⚖️", layout="centered")
 apply_theme()
 
+def sidebar_nav():
+    st.sidebar.markdown("### Navigation")
+    try:
+        st.sidebar.page_link("app.py", label="Accueil")
+        st.sidebar.page_link("pages/Connexion.py", label="Connexion")
+        st.sidebar.page_link("pages/Tableau_de_bord.py", label="Espace Mémoire")
+        st.sidebar.page_link("pages/Acces_beneficiaire.py", label="Accès bénéficiaire")
+    except Exception:
+        pass
+
+sidebar_nav()
+
 st.markdown(
     """
-<div class="tm-card">
-  <h1 class="tm-title" style="font-size:40px;">Accès bénéficiaire</h1>
+<div class="tm-card2">
+  <h2 style="margin:0; font-size:34px; font-weight:800; color:rgba(255,255,255,0.93);">Accès bénéficiaire</h2>
   <div class="tm-p" style="margin-top:8px;">
-    Saisissez un jeton d’accès transmis par la famille ou le notaire.
+    Entrez un jeton d’accès temporaire. Sans jeton valide, aucun contenu n’est accessible.
   </div>
 </div>
 """,
@@ -18,12 +30,15 @@ st.markdown(
 
 st.write("")
 
-with st.form("benef_form"):
-    token = st.text_input("Jeton", placeholder="Ex : TM-9F4K-2Q7A")
-    submitted = st.form_submit_button("Accéder", type="primary", use_container_width=True)
+token = st.text_input("Jeton d’accès", placeholder="Ex : ABCD-1234-EFGH")
 
-if submitted:
-    if not token.strip():
-        st.error("Veuillez saisir un jeton.")
-    else:
-        st.info("Vérification du jeton (MVP).")
+st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
+if st.button("Vérifier le jeton", use_container_width=True):
+    # MVP : pas de validation réelle tant que vous n'avez pas une table tokens + logique d'expiration
+    st.error("Jeton invalide (MVP). Prochaine étape : mise en place des jetons sécurisés et expirables.")
+st.markdown("</div>", unsafe_allow_html=True)
+
+st.markdown(
+    '<div class="tm-muted">Remarque : cette page est volontairement bloquée tant que les jetons sécurisés ne sont pas implémentés.</div>',
+    unsafe_allow_html=True,
+)
