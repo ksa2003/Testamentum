@@ -1,7 +1,7 @@
 import streamlit as st
 from theme import apply_theme
 
-# ⚠️ DOIT être le premier appel Streamlit
+# DOIT être le premier appel Streamlit
 st.set_page_config(
     page_title="Testamentum",
     page_icon="⚖️",
@@ -39,17 +39,23 @@ email = st.text_input(
 
 st.write("")
 
-# --- BOUTONS ALIGNÉS PARFAITEMENT ---
-col_left, col_right = st.columns(2, gap="medium")
+# 🔹 Colonnes plus larges et moins espacées
+col_left, col_right = st.columns([1, 1], gap="small")
 
 with col_left:
     st.markdown('<div class="tm-btnwrap tm-primary">', unsafe_allow_html=True)
-    btn_continue = st.button("Continuer", use_container_width=True)
+    btn_continue = st.button(
+        "Continuer",
+        use_container_width=True
+    )
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col_right:
     st.markdown('<div class="tm-btnwrap">', unsafe_allow_html=True)
-    btn_benef = st.button("Accès Bénéficiaire", use_container_width=True)
+    btn_benef = st.button(
+        "Accès bénéficiaire",
+        use_container_width=True
+    )
     st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
