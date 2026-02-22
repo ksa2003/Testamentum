@@ -17,15 +17,15 @@ st.markdown("""
 
 /* --------- Variables --------- */
 :root{
-  --card: rgba(15,18,22,0.86);         /* un peu plus opaque = plus lisible */
+  --card: rgba(15,18,22,0.86);
   --card2: rgba(15,18,22,0.78);
   --border: rgba(255,255,255,0.18);
 
   --text: #FFFFFF;
-  --muted: rgba(255,255,255,0.86);
-  --muted2: rgba(255,255,255,0.70);
+  --muted: rgba(255,255,255,0.88);
+  --muted2: rgba(255,255,255,0.72);
 
-  --accent: #F3F4F6;                  /* bouton primary clair */
+  --accent: #F3F4F6;
   --accentHover: #FFFFFF;
 }
 
@@ -40,7 +40,7 @@ section.main > div{
   padding-top: 2.3rem;
 }
 
-/* --------- Force couleurs Streamlit (titres/captions) --------- */
+/* --------- Force couleurs Streamlit --------- */
 h1, h2, h3, h4, h5, h6,
 .stMarkdown, .stMarkdown p,
 .stCaption, .stCaption p,
@@ -148,7 +148,7 @@ label, .stTextInput label,
 }
 
 .stTextInput input{
-  background: rgba(0,0,0,0.62) !important; /* plus sombre => plus lisible */
+  background: rgba(0,0,0,0.62) !important;
   border: 1px solid rgba(255,255,255,0.32) !important;
   color: var(--text) !important;
   border-radius: 12px !important;
@@ -166,7 +166,6 @@ label, .stTextInput label,
   outline: none !important;
 }
 
-/* enlever le rouge "invalid" (mobile) */
 input:invalid{
   border: 1px solid rgba(255,255,255,0.32) !important;
   box-shadow: none !important;
@@ -181,6 +180,7 @@ input:invalid{
   background: rgba(255,255,255,0.12) !important;
   color: var(--text) !important;
   font-weight: 650 !important;
+  min-height: 52px; /* même hauteur */
 }
 
 .stButton button:hover{
@@ -244,7 +244,7 @@ st.markdown("""
 
 st.write("")
 
-# COMMENCER (dans une carte, pour lisibilité)
+# COMMENCER
 st.markdown("""
 <div class="tm-card-lite">
   <div class="tm-h2" style="margin-top:0;">Commencer</div>
@@ -254,20 +254,34 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Inputs / actions (restent Streamlit mais sur fond lisible)
 email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
+
+# Actions alignées (messages affichés après, hors colonnes)
+if "tm_action_msg" not in st.session_state:
+    st.session_state.tm_action_msg = None
+if "tm_action_type" not in st.session_state:
+    st.session_state.tm_action_type = None
 
 c1, c2 = st.columns(2)
 
 with c1:
     st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
-    if st.button("Continuer"):
-        st.success("Redirection (MVP)")
+    if st.button("Continuer", key="btn_continue"):
+        st.session_state.tm_action_type = "success"
+        st.session_state.tm_action_msg = "Redirection (MVP)"
     st.markdown("</div>", unsafe_allow_html=True)
 
 with c2:
-    if st.button("Accès bénéficiciaire"):
-        st.info("Accès bénéficiaire (MVP)")
+    if st.button("Accès bénéficiaire", key="btn_benef"):
+        st.session_state.tm_action_type = "info"
+        st.session_state.tm_action_msg = "Accès bénéficiaire (MVP)"
+
+# Message unique sous les deux boutons = alignement parfait
+if st.session_state.tm_action_msg:
+    if st.session_state.tm_action_type == "success":
+        st.success(st.session_state.tm_action_msg)
+    else:
+        st.info(st.session_state.tm_action_msg)
 
 st.markdown(
     '<div class="tm-muted">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité.</div>',
