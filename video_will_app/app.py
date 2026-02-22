@@ -2,11 +2,10 @@ import streamlit as st
 
 st.set_page_config(page_title="Testamentum", page_icon="⚖️", layout="centered")
 
-# --------- CSS ---------
-st.markdown(
-    """
+st.markdown("""
 <style>
-/* --------- Background --------- */
+
+/* ---------- Background ---------- */
 .stApp {
   background:
     linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.82)),
@@ -16,29 +15,10 @@ st.markdown(
   background-attachment: fixed;
 }
 
-/* --------- Variables --------- */
-:root{
-  --card: rgba(15,18,22,0.86);
-  --card2: rgba(15,18,22,0.80);
-  --border: rgba(255,255,255,0.18);
-
-  --text: #FFFFFF;
-  --muted: rgba(255,255,255,0.90);
-  --muted2: rgba(255,255,255,0.74);
-
-  --btn: rgba(255,255,255,0.12);
-  --btnHover: rgba(255,255,255,0.22);
-  --btnBorder: rgba(255,255,255,0.28);
-
-  --primaryBg: #F3F4F6;
-  --primaryHover: #FFFFFF;
-  --primaryText: #0b0f16;
-}
-
-/* --------- Base --------- */
+/* ---------- Base Typography ---------- */
 html, body, [class*="css"]{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  color: var(--text);
+  color: #FFFFFF;
 }
 
 section.main > div{
@@ -46,41 +26,33 @@ section.main > div{
   padding-top: 2.3rem;
 }
 
-/* Force text color everywhere */
 h1,h2,h3,h4,h5,h6,
 .stMarkdown, .stMarkdown p,
 .stCaption, .stCaption p,
-label, .stTextInput label,
-[data-testid="stMarkdownContainer"] p{
-  color: var(--text) !important;
+label, .stTextInput label{
+  color: #FFFFFF !important;
 }
-.stCaption, .stCaption p{ color: var(--muted2) !important; }
 
-/* --------- Cards --------- */
+/* ---------- Cards ---------- */
 .tm-card{
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: rgba(15,18,22,0.86);
+  border: 1px solid rgba(255,255,255,0.18);
   border-radius: 18px;
   padding: 26px;
   backdrop-filter: blur(22px);
   box-shadow: 0 25px 110px rgba(0,0,0,0.75);
-  animation: fadeIn 0.55s ease-out;
 }
+
 .tm-card-lite{
-  background: var(--card2);
-  border: 1px solid var(--border);
+  background: rgba(15,18,22,0.80);
+  border: 1px solid rgba(255,255,255,0.18);
   border-radius: 18px;
   padding: 22px;
   backdrop-filter: blur(20px);
   box-shadow: 0 18px 90px rgba(0,0,0,0.65);
-  animation: fadeIn 0.55s ease-out;
-}
-@keyframes fadeIn{
-  from {opacity:0; transform: translateY(10px);}
-  to {opacity:1; transform: translateY(0);}
 }
 
-/* --------- Typography --------- */
+/* ---------- Title ---------- */
 .tm-title{
   font-size: 46px;
   margin: 0;
@@ -90,107 +62,129 @@ label, .stTextInput label,
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
 .tm-sub{
   margin-top: 10px;
   font-size: 14px;
-  color: var(--muted);
+  color: rgba(255,255,255,0.88);
 }
+
 .tm-latin{
   margin-top: 6px;
   font-size: 13px;
   font-style: italic;
-  color: var(--muted2);
+  color: rgba(255,255,255,0.70);
 }
+
 .tm-h2{
   margin-top: 22px;
   font-size: 24px;
   font-weight: 650;
 }
+
 .tm-p{
   margin-top: 12px;
-  color: var(--muted);
+  color: rgba(255,255,255,0.88);
   line-height: 1.7;
   font-size: 15px;
 }
+
 .tm-bullets{
   margin-top: 16px;
-  color: var(--muted);
+  color: rgba(255,255,255,0.88);
   line-height: 1.9;
   font-size: 14px;
 }
 
-/* --------- Chips --------- */
+/* ---------- Chips ---------- */
 .tm-chiprow{
   margin-top: 14px;
   display:flex;
   gap:8px;
   flex-wrap:wrap;
 }
+
 .tm-chip{
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255,255,255,0.18);
   padding: 6px 12px;
   border-radius: 999px;
   font-size: 12px;
-  color: var(--muted);
+  color: rgba(255,255,255,0.85);
   background: rgba(255,255,255,0.07);
 }
 
-/* --------- Inputs --------- */
-.stTextInput label{
-  color: var(--muted) !important;
-  font-weight: 600 !important;
-}
+/* ---------- Input ---------- */
 .stTextInput input{
   background: rgba(0,0,0,0.62) !important;
   border: 1px solid rgba(255,255,255,0.32) !important;
-  color: var(--text) !important;
+  color: #FFFFFF !important;
   border-radius: 12px !important;
   padding: 0.9rem 1rem !important;
-  caret-color: var(--text) !important;
+  caret-color: #FFFFFF !important;
 }
+
 .stTextInput input::placeholder{
   color: rgba(255,255,255,0.60) !important;
 }
+
 .stTextInput input:focus{
   border: 1px solid rgba(255,255,255,0.55) !important;
   box-shadow: 0 0 0 4px rgba(255,255,255,0.16) !important;
   outline: none !important;
 }
+
+/* remove red validation */
 input:invalid{
-  border: 1px solid rgba(255,255,255,0.32) !important;
   box-shadow: none !important;
+  border: 1px solid rgba(255,255,255,0.32) !important;
 }
 
-/* --------- Pixel-perfect button row (HTML, not Streamlit buttons) --------- */
+/* ---------- Symmetrical HTML Buttons ---------- */
 .tm-actions{
   display:flex;
   gap: 14px;
   width:100%;
   margin-top: 14px;
 }
+
 .tm-btn{
   flex:1;
   display:flex;
   align-items:center;
   justify-content:center;
-  height: 52px;             /* SAME HEIGHT ALWAYS */
+  height: 52px;
   border-radius: 999px;
-  border: 1px solid var(--btnBorder);
-  background: var(--btn);
-  color: var(--text);
-  font-weight: 650;
-  text-decoration: none;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  border: 1px solid rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.12);
+  color: #FFFFFF !important;
+  text-decoration: none !important;
+  font-weight: 600;
+  transition: 0.2s ease;
 }
-.tm-btn:hover{ background: var(--btnHover); }
+
+.tm-btn:hover{
+  background: rgba(255,255,255,0.22);
+  color: #FFFFFF !important;
+}
+
+.tm-btn:visited,
+.tm-btn:active,
+.tm-btn:focus{
+  color: #FFFFFF !important;
+  text-decoration: none !important;
+  outline: none;
+}
 
 .tm-btn-primary{
-  background: var(--primaryBg);
-  color: var(--primaryText);
+  background: #F3F4F6;
+  color: #0b0f16 !important;
   border: none;
 }
-.tm-btn-primary:hover{ background: var(--primaryHover); }
+
+.tm-btn-primary:hover{
+  background: #FFFFFF;
+  color: #0b0f16 !important;
+}
 
 .tm-muted{
   margin-top: 14px;
@@ -202,21 +196,17 @@ input:invalid{
   .tm-title{ font-size: 38px; }
   .tm-card{ padding: 22px; }
   .tm-card-lite{ padding: 18px; }
-  .tm-actions{ gap: 10px; }
 }
-</style>
-""",
-    unsafe_allow_html=True,
-)
 
-# --------- Actions (via query params) ---------
-# Clicking the HTML links reloads the page with ?action=continue or ?action=benef
+</style>
+""", unsafe_allow_html=True)
+
+# --------- Query Action ---------
 qp = st.query_params
 action = qp.get("action", None)
 
-# HERO
-st.markdown(
-    """
+# --------- HERO ---------
+st.markdown("""
 <div class="tm-card">
   <h1 class="tm-title">Testamentum</h1>
   <div class="tm-sub">Coffre numérique sécurisé pour transmission vidéo posthume</div>
@@ -242,48 +232,35 @@ st.markdown(
     • Journalisation des actions
   </div>
 </div>
-""",
-    unsafe_allow_html=True,
-)
+""", unsafe_allow_html=True)
 
 st.write("")
 
-# COMMENCER (buttons at the bottom of the section)
-st.markdown(
-    """
+# --------- COMMENCER ---------
+st.markdown("""
 <div class="tm-card-lite">
   <div class="tm-h2" style="margin-top:0;">Commencer</div>
   <div class="tm-p" style="margin-top:6px;">
     Saisissez votre adresse e-mail pour créer un compte ou vous connecter.
   </div>
 </div>
-""",
-    unsafe_allow_html=True,
-)
+""", unsafe_allow_html=True)
 
 email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
 
-# Pixel-perfect row of actions (HTML flex)
-st.markdown(
-    """
+st.markdown("""
 <div class="tm-actions">
   <a class="tm-btn tm-btn-primary" href="?action=continue">Continuer</a>
   <a class="tm-btn" href="?action=benef">Accès bénéficiaire</a>
 </div>
-""",
-    unsafe_allow_html=True,
-)
+""", unsafe_allow_html=True)
 
-# Feedback after click
 if action == "continue":
     st.success("Redirection (MVP)")
-    # Optionnel: nettoyer l'URL après affichage
-    # st.query_params.clear()
 elif action == "benef":
     st.info("Accès bénéficiaire (MVP)")
-    # st.query_params.clear()
 
 st.markdown(
     '<div class="tm-muted">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité.</div>',
-    unsafe_allow_html=True,
+    unsafe_allow_html=True
 )
