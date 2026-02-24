@@ -1,44 +1,43 @@
 import streamlit as st
 from theme import apply_theme
 
-st.set_page_config(page_title="Accès bénéficiaire — Testamentum", page_icon="⚖️", layout="centered")
 apply_theme()
 
-def sidebar_nav():
-    st.sidebar.markdown("### Navigation")
-    try:
-        st.sidebar.page_link("app.py", label="Accueil")
-        st.sidebar.page_link("pages/Connexion.py", label="Connexion")
-        st.sidebar.page_link("pages/Tableau_de_bord.py", label="Espace Mémoire")
-        st.sidebar.page_link("pages/Acces_beneficiaire.py", label="Accès bénéficiaire")
-    except Exception:
-        pass
 
-sidebar_nav()
+def main():
+    st.markdown(
+        """
+        <div class="tm-card">
+          <div class="tm-title">Kidan Vid</div>
+          <div class="tm-sub">Accès bénéficiaire</div>
+          <div class="tm-latin">Consultez un message qui vous a été destiné (via lien ou jeton).</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-st.markdown(
-    """
-<div class="tm-card2">
-  <h2 style="margin:0; font-size:34px; font-weight:800; color:rgba(255,255,255,0.93);">Accès bénéficiaire</h2>
-  <div class="tm-p" style="margin-top:8px;">
-    Entrez un jeton d’accès temporaire. Sans jeton valide, aucun contenu n’est accessible.
-  </div>
-</div>
-""",
-    unsafe_allow_html=True,
-)
+    st.write("")
 
-st.write("")
+    token = st.text_input("Jeton d’accès", placeholder="Ex : KIDAN-XXXX-XXXX")
+    st.markdown('<div class="tm-muted" style="margin-top:-6px;">Le jeton est fourni par le déposant.</div>', unsafe_allow_html=True)
 
-token = st.text_input("Jeton d’accès", placeholder="Ex : ABCD-1234-EFGH")
+    c1, c2 = st.columns(2, gap="large")
+    with c1:
+        st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
+        go = st.button("Accéder")
+        st.markdown("</div>", unsafe_allow_html=True)
+    with c2:
+        back = st.button("Retour")
 
-st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
-if st.button("Vérifier le jeton", use_container_width=True):
-    # MVP : pas de validation réelle tant que vous n'avez pas une table tokens + logique d'expiration
-    st.error("Jeton invalide (MVP). Prochaine étape : mise en place des jetons sécurisés et expirables.")
-st.markdown("</div>", unsafe_allow_html=True)
+    if go:
+        if not token.strip():
+            st.error("Veuillez saisir un jeton d’accès.")
+        else:
+            st.success("Jeton reçu. (MVP) Ici, vous chargerez la vidéo associée au jeton.")
 
-st.markdown(
-    '<div class="tm-muted">Remarque : cette page est volontairement bloquée tant que les jetons sécurisés ne sont pas implémentés.</div>',
-    unsafe_allow_html=True,
-)
+    if back:
+        st.switch_page("app.py")
+
+
+if __name__ == "__main__":
+    main()
