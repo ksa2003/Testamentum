@@ -1,84 +1,84 @@
 import streamlit as st
 from theme import apply_theme
+from supabase import create_client, Client
 
 apply_theme()
 
-if "user_email" not in st.session_state or not st.session_state["user_email"]:
-    st.warning("Veuillez vous connecter.")
-    st.switch_page("pages/Connexion.py")
+SUPABASE_URL = st.secrets["supabase"]["url"]
+SUPABASE_KEY = st.secrets["supabase"]["key"]
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-st.markdown(f"""
-<div class="tm-card">
-  <h1 style="margin:0;">Espace Mémoire</h1>
-  <div class="tm-sub">Votre espace personnel de messages et de transmission</div>
-  <div class="tm-latin">Connecté : {st.session_state["user_email"]}</div>
-</div>
-""", unsafe_allow_html=True)
 
-st.write("")
+def main():
+    user = st.session_state.get("user")
+    if not user:
+        st.switch_page("app.py")
 
-st.subheader("Créer un message vidéo")
-titre = st.text_input("Titre du message", placeholder="Ex : Pour ma famille")
-video = st.file_uploader("Sélectionner une vidéo", type=["mp4", "mov", "webm"])
+    st.markdown(
+        f"""
+        <div class="tm-card">
+          <div class="tm-h2">Espace Mémoire</div>
+          <div class="tm-sub" style="margin-top:6px;">Votre espace personnel de messages et de transmission</div>
+          <div class="tm-latin" style="margin-top:6px;">Connecté : {user.email}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-c1, c2 = st.columns(2, gap="medium")
+    st.write("")
 
-with c1:
-    st.markdown('<div class="tm-btnwrap tm-primary">', unsafe_allow_html=True)
-    televerser = st.button("Téléverser", use_container_width=True)
+    st.markdown('<div class="tm-card2"><div class="tm-h3">Créer un message vidéo</div></div>', unsafe_allow_html=True)
+    title = st.text_input("Titre du message", placeholder="Ex : Pour ma famille")
+    video = st.file_uploader("Sélectionner une vidéo", type=["mp4", "mov", "webm", "mpeg4"])
+
+    c1, c2 = st.columns(2, gap="large")
+    with c1:
+        st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
+        upload = st.button("Téléverser")
+        st.markdown("</div>", unsafe_allow_html=True)
+    with c2:
+        manage = st.button("Gérer les bénéficiaires")
+
+    st.write("")
+    st.markdown('<div class="tm-card2"><div class="tm-h3">Bénéficiaires</div><div class="tm-muted" style="margin-top:6px;">Ajoutez les personnes autorisées à recevoir l’accès au message.</div></div>', unsafe_allow_html=True)
+
+    name = st.text_input("Nom complet", placeholder="Ex : Marie Dupont")
+    email = st.text_input("Email (optionnel)", placeholder="Ex : marie@email.com")
+    relation = st.text_input("Lien (optionnel)", placeholder="Ex : sœur, ami, conjoint")
+
+    st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
+    add = st.button("Ajouter")
     st.markdown("</div>", unsafe_allow_html=True)
 
-with c2:
-    st.markdown('<div class="tm-btnwrap">', unsafe_allow_html=True)
-    gerer = st.button("Gérer les bénéficiaires", use_container_width=True)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-if televerser:
-    if not titre.strip():
-        st.error("Veuillez renseigner un titre.")
-    elif video is None:
-        st.error("Veuillez sélectionner une vidéo.")
-    else:
-        st.success("Téléversement (MVP) : vidéo reçue côté interface.")
-
-st.write("")
-st.subheader("Bénéficiaires")
-
-if "beneficiaires" not in st.session_state:
-    st.session_state["beneficiaires"] = []
-
-with st.expander("Ajouter un bénéficiaire", expanded=True):
-    nom = st.text_input("Nom complet", placeholder="Ex : Marie Dupont")
-    email_b = st.text_input("Email (optionnel)", placeholder="Ex : marie@email.com")
-    lien = st.text_input("Lien (optionnel)", placeholder="Ex : sœur, ami, conjoint")
-
-    st.markdown('<div class="tm-btnwrap tm-primary">', unsafe_allow_html=True)
-    add_b = st.button("Ajouter", use_container_width=True)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-if add_b:
-    if nom.strip():
-        st.session_state["beneficiaires"].append(
-            {"nom": nom.strip(), "email": email_b.strip(), "lien": lien.strip()}
-        )
-        st.success("Bénéficiaire ajouté.")
-    else:
-        st.error("Le nom complet est requis.")
-
-if not st.session_state["beneficiaires"]:
     st.info("Aucun bénéficiaire ajouté pour l’instant.")
-else:
-    for b in st.session_state["beneficiaires"]:
-        line = f"• {b['nom']}"
-        if b["lien"]:
-            line += f" — {b['lien']}"
-        if b["email"]:
-            line += f" ({b['email']})"
-        st.write(line)
 
-st.write("")
-st.markdown('<div class="tm-btnwrap">', unsafe_allow_html=True)
-if st.button("Se déconnecter", use_container_width=True):
-    st.session_state.clear()
-    st.switch_page("app.py")
-st.markdown("</div>", unsafe_allow_html=True)
+    st.write("")
+    st.markdown('<div class="tm-card2"><div class="tm-h3">Vos messages</div><div class="tm-muted" style="margin-top:6px;">Vous retrouverez ici vos messages enregistrés.</div></div>', unsafe_allow_html=True)
+    st.info("Aucun message pour l’instant (MVP).")
+
+    st.write("")
+    logout = st.button("Se déconnecter")
+    if logout:
+        st.session_state.pop("user", None)
+        st.switch_page("app.py")
+
+    if upload:
+        if not title.strip():
+            st.error("Veuillez saisir un titre.")
+        elif not video:
+            st.error("Veuillez sélectionner une vidéo.")
+        else:
+            st.success("Vidéo prête à être téléversée (MVP).")
+
+    if manage:
+        st.info("Gestion des bénéficiaires (MVP).")
+
+    if add:
+        if not name.strip():
+            st.error("Le nom du bénéficiaire est obligatoire.")
+        else:
+            st.success("Bénéficiaire ajouté (MVP).")
+
+
+if __name__ == "__main__":
+    main()
