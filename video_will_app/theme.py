@@ -92,4 +92,108 @@ def apply_theme() -> None:
 
     .tm-muted {{
       font-size: 13px;
-      color: rgba(255,255,255,0.82
+      color: rgba(255,255,255,0.82);
+    }}
+
+    /* Inputs */
+    .stTextInput label, .stTextArea label {{
+      color: rgba(255,255,255,0.88) !important;
+    }}
+
+    .stTextInput input, .stTextArea textarea {{
+      background: rgba(0,0,0,0.45) !important;
+      border: 1px solid rgba(255,255,255,0.28) !important;
+      color: #FFFFFF !important;
+      border-radius: 12px !important;
+    }}
+
+    .stTextInput input::placeholder, .stTextArea textarea::placeholder {{
+      color: rgba(255,255,255,0.58) !important;
+    }}
+
+    .stTextInput input:focus, .stTextArea textarea:focus {{
+      border: 1px solid rgba(255,255,255,0.70) !important;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.15) !important;
+      outline: none !important;
+    }}
+
+    /* Colonnes : alignement strict */
+    div[data-testid="column"] {{
+      display: flex !important;
+      align-items: stretch !important;
+    }}
+    div[data-testid="column"] > div {{
+      width: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }}
+    div[data-testid="column"] .element-container,
+    div[data-testid="column"] .stMarkdown,
+    div[data-testid="column"] .stButton,
+    div[data-testid="column"] div[data-testid="stFormSubmitButton"] {{
+      margin: 0 !important;
+      padding: 0 !important;
+    }}
+
+    /* Boutons : taille identique + pas de retour à la ligne */
+    .stButton > button,
+    div[data-testid="stFormSubmitButton"] > button {{
+      width: 100% !important;
+      height: 56px !important;
+      min-height: 56px !important;
+      padding: 0 22px !important;
+      border-radius: 999px !important;
+      border: 1px solid rgba(255,255,255,0.22) !important;
+      background: rgba(255,255,255,0.10) !important;
+      color: rgba(255,255,255,0.92) !important;
+      font-size: 16px !important;
+      font-weight: 650 !important;
+      white-space: nowrap !important;
+      line-height: 1 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }}
+
+    .stButton > button:hover,
+    div[data-testid="stFormSubmitButton"] > button:hover {{
+      background: rgba(255,255,255,0.18) !important;
+    }}
+
+    .tm-primary .stButton > button,
+    .tm-primary div[data-testid="stFormSubmitButton"] > button {{
+      background: #E5E7EB !important;
+      color: #111827 !important;
+      border: none !important;
+    }}
+
+    .tm-primary .stButton > button:hover,
+    .tm-primary div[data-testid="stFormSubmitButton"] > button:hover {{
+      background: #F3F4F6 !important;
+    }}
+
+    /* Petites bulles (chips) */
+    .tm-chips {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      margin-bottom: 16px;
+    }}
+    .tm-chip {{
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.90);
+      font-size: 13px;
+      font-weight: 650;
+    }}
+
+    @media (max-width: 520px) {{
+      .tm-title {{ font-size: 36px; }}
+      .tm-card {{ padding: 22px; }}
+    }}
+    </style>
+    """
+    st.markdown(css, unsafe_allow_html=True)
