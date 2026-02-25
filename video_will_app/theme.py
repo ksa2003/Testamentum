@@ -1,30 +1,39 @@
 import streamlit as st
+import inspect
 from pathlib import Path
 
 
 # -------------------------------------------------------
-# Safe theme function (Streamlit Cloud compatible)
+# Safe page config + clean theme
 # -------------------------------------------------------
 def apply_theme(title: str):
-    # IMPORTANT : set_page_config doit être appelé UNE SEULE FOIS
-    # et en tout début d'exécution.
+    """
+    Applique la configuration de page en toute sécurité.
+    Compatible Streamlit Cloud.
+    """
     try:
         st.set_page_config(
             page_title=title,
             layout="wide",
-            initial_sidebar_state="expanded",
+            initial_sidebar_state="collapsed",
         )
-    except:
+    except Exception:
         # Si déjà appelé ailleurs, on ignore
         pass
 
-    # CSS léger, sans risque
+    # CSS léger et sûr
     st.markdown(
         """
         <style>
+        /* Cache la navigation automatique des pages */
+        [data-testid="stSidebarNav"] { display: none; }
+        [data-testid="stSidebarNavSeparator"] { display: none; }
+
+        /* Fond général */
         .main {
             background-color: #f8f8f8;
         }
+
         h1, h2, h3 {
             color: #1f2c44;
         }
@@ -35,12 +44,32 @@ def apply_theme(title: str):
 
 
 # -------------------------------------------------------
-# Safe image loader
+# Ultra-safe image loader (anti-TypeError Streamlit)
 # -------------------------------------------------------
-def img(path: str, caption=None, use_container_width=True):
+def img(path, caption=None, use_container_width=True):
+    """
+    Affiche une image compatible avec toutes les versions Streamlit.
+
+    - Versions récentes : use_container_width
+    - Anciennes versions : use_column_width
+    - Si rien n’est supporté : fallback simple
+    """
+
     p = Path(path)
 
-    if p.exists():
-        st.image(str(p), caption=caption, use_container_width=use_container_width)
-    else:
+    if not p.exists():
         st.warning(f"Image introuvable : {p.name}")
+        return
+
+    # Inspecte dynamiquement la signature de st.image
+    params = inspect.signature(st.image).parameters
+
+    if "use_container_width" in params:
+        st.image(str(p), caption=caption, use_container_width=use_container_width)
+
+    elif "use_column_width" in params:
+        st.image(str(p), caption=caption, use_column_width=use_container_width)
+
+    else:
+        # Fallback ultime
+        st.image(str(p), caption=caption)
