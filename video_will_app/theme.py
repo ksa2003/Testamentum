@@ -1,64 +1,45 @@
-import streamlit as st
-import inspect
+# video_will_app/theme.py
+from __future__ import annotations
+
 from pathlib import Path
+import streamlit as st
 
 
-# -------------------------------------------------------
-# Safe page config + clean theme
-# -------------------------------------------------------
-def apply_theme(title: str = "Kidan Vid"):
+def apply_theme(title: str = "Kidan Vid", subtitle: str | None = None) -> None:
     """
-    Applique la configuration de page en toute sécurité.
-    - title est optionnel (évite TypeError si une page appelle apply_theme() sans argument)
+    Thème SAFE : ne casse pas la sidebar Streamlit, ne masque pas la navigation des pages.
     """
-    try:
-        st.set_page_config(
-            page_title=title,
-            layout="wide",
-            initial_sidebar_state="collapsed",
-        )
-    except Exception:
-        # Si déjà appelé ailleurs, on ignore
-        pass
-
+    # IMPORTANT : ne jamais cacher stSidebar/stSidebarNav dans le CSS
     st.markdown(
         """
         <style>
-        /* Cache la navigation automatique des pages Streamlit */
-        [data-testid="stSidebarNav"] { display: none; }
-        [data-testid="stSidebarNavSeparator"] { display: none; }
+        /* Layout général */
+        .block-container { padding-top: 1.5rem; padding-bottom: 2rem; }
 
-        /* Fond général */
-        .main { background-color: #f8f8f8; }
-
-        h1, h2, h3 { color: #1f2c44; }
+        /* Petits ajustements esthétiques (sans toucher la navigation) */
+        h1, h2, h3 { letter-spacing: 0.2px; }
         </style>
         """,
         unsafe_allow_html=True,
     )
 
+    if title:
+        st.title(title)
+    if subtitle:
+        st.caption(subtitle)
 
-# -------------------------------------------------------
-# Ultra-safe image loader (anti-TypeError Streamlit)
-# -------------------------------------------------------
-def img(path, caption=None, use_container_width=True):
+
+def img(
+    p: str | Path,
+    caption: str | None = None,
+    use_container_width: bool = True,
+) -> None:
     """
-    Affiche une image compatible avec toutes les versions Streamlit.
-
-    - Versions récentes : use_container_width
-    - Anciennes versions : use_column_width
+    Affiche une image sans planter si elle manque.
     """
-    p = Path(path)
-
-    if not p.exists():
-        st.warning(f"Image introuvable : {p.name}")
+    path = Path(str(p))
+    if not path.exists():
+        st.warning(f"Image introuvable : {path}")
         return
 
-    params = inspect.signature(st.image).parameters
-
-    if "use_container_width" in params:
-        st.image(str(p), caption=caption, use_container_width=use_container_width)
-    elif "use_column_width" in params:
-        st.image(str(p), caption=caption, use_column_width=use_container_width)
-    else:
-        st.image(str(p), caption=caption)
+    st.image(str(path), caption=caption, use_container_width=use_container_width)
