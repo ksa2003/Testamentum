@@ -1,29 +1,27 @@
 import streamlit as st
-
+from theme import apply_theme, img
 from kidan_content import get_slide
-from theme import apply_theme
 
-apply_theme()
 
-s14 = get_slide(14)
-s15 = get_slide(15)
-s7 = get_slide(7)
+apply_theme("Kidan Vid — Les 3 piliers")
 
-st.markdown(
-    """
-    <div class="tm-card">
-      <div class="tm-title" style="font-size:40px;">Les 3 piliers</div>
-      <div class="tm-sub">Émotion • Juridique • Transmission</div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+st.title("Les 3 piliers du modèle")
 
-st.image(s14.image_path, use_container_width=True)
-st.markdown(f"**Émotion (extrait PDF)** : {s14.text}")
+s_j = get_slide(9)
+st.subheader(s_j.title)
+st.write(s_j.text)
+img(str(s_j.image_path), use_container_width=True)
 
-st.image(s15.image_path, use_container_width=True)
-st.markdown(f"**Juridique (extrait PDF)** : {s15.text}")
+st.divider()
 
-st.image(s7.image_path, use_container_width=True)
-st.markdown(f"**Transmission (extrait PDF)** : {s7.text}")
+s_t = get_slide(10)
+st.subheader(s_t.title)
+st.write(s_t.text)
+img(str(s_t.image_path), use_container_width=True)
+
+st.divider()
+
+s_e = get_slide(11)
+st.subheader(s_e.title)
+st.write(s_e.text)
+img(str(s_e.image_path), use_container_width=True)
