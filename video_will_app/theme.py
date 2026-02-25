@@ -1,29 +1,29 @@
-from pathlib import Path
 import streamlit as st
+from pathlib import Path
 
 
 def apply_theme(title: str = "Kidan Vid"):
-    # Ne jamais planter si set_page_config est déjà appelé ailleurs
+    # Evite les crash si déjà appelé ailleurs
     try:
-        st.set_page_config(
-            page_title=title,
-            layout="wide",
-            initial_sidebar_state="expanded",
-        )
+        st.set_page_config(page_title=title, layout="wide")
     except Exception:
         pass
 
 
-def img(path, caption=None, **kwargs):
+def img(path, caption=None, use_container_width=True):
     """
-    Affiche une image sans faire planter l'app.
-    - Accepte tous les kwargs de st.image() (ex: use_container_width=True)
+    Affiche une image en compatibilité Streamlit :
+    - Streamlit récent : use_container_width
+    - Streamlit ancien : use_column_width
     """
+    p = Path(str(path))
+
+    if not p.exists():
+        st.warning(f"Image introuvable : {p}")
+        return
+
     try:
-        p = Path(path)
-        if p.exists():
-            st.image(str(p), caption=caption, **kwargs)
-        else:
-            st.warning(f"Image introuvable : {p.name}")
-    except Exception as e:
-        st.warning(f"Erreur affichage image : {e}")
+        st.image(str(p), caption=caption, use_container_width=use_container_width)
+    except TypeError:
+        # Anciennes versions Streamlit
+        st.image(str(p), caption=caption, use_column_width=True)
