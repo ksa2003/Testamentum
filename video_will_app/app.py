@@ -1,71 +1,76 @@
 import streamlit as st
-from theme import apply_theme
-from pathlib import Path
-import base64
 
-st.set_page_config(page_title="Kidan Vid", page_icon="🎥", layout="centered")
+from kidan_content import get_slide
+from theme import apply_theme
+
+
 apply_theme()
 
+s1 = get_slide(1)
 
-def show_page1():
-    img_path = Path("video_will_app/assets/kidan_page_01.png")
-    if img_path.exists():
-        img_base64 = base64.b64encode(img_path.read_bytes()).decode()
-        st.markdown(
-            f'<img src="data:image/png;base64,{img_base64}" class="tm-image" width="100%">',
-            unsafe_allow_html=True
-        )
+st.markdown(
+    f"""
+    <div class="tm-card">
+      <div class="tm-title">Kidan Vid</div>
+      <div class="tm-sub">Coffre numérique sécurisé pour transmission vidéo posthume</div>
+      <div class="tm-latin">Verba manent. Memoria custoditur.</div>
 
+      <div class="tm-chips">
+        <span class="tm-chip">Mémoire</span>
+        <span class="tm-chip">Transmission</span>
+        <span class="tm-chip">Confidentialité</span>
+        <span class="tm-chip">Traçabilité</span>
+      </div>
 
-def main():
-    st.markdown(
-        """
-        <div class="tm-card">
-            <div class="tm-title">Kidan Vid</div>
-            <div class="tm-sub">
-                Transmettez vos mots. Préservez vos volontés. Sécurisez votre héritage.
-            </div>
-            <div style="margin-top:15px;">
-                <span class="tm-chip">Mémoire</span>
-                <span class="tm-chip">Transmission</span>
-                <span class="tm-chip">Confidentialité</span>
-                <span class="tm-chip">Traçabilité</span>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+      <div class="tm-h2">Un message vidéo, transmis au bon moment.</div>
+      <p>
+        Enregistrez un message destiné à vos proches, puis contrôlez précisément l’accès des bénéficiaires
+        lorsque le décès est déclaré. Le service est conçu pour une transmission respectueuse et structurée.
+      </p>
+      <ul>
+        <li>Accès bénéficiaires par jeton temporaire sécurisé</li>
+        <li>Validation notariale (selon le niveau choisi)</li>
+        <li>Journalisation des actions et traçabilité</li>
+      </ul>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
-    st.write("")
-    show_page1()
-    st.write("")
+# Visuel couverture (slide 1)
+st.image(s1.image_path, use_container_width=True)
 
-    with st.form("start"):
-        email = st.text_input("Adresse e-mail", placeholder="votre@email.com")
-        col1, col2 = st.columns(2)
+st.markdown(
+    """
+    <div class="tm-card" style="margin-top: 18px;">
+      <div class="tm-h3">Commencer</div>
+      <p class="tm-muted">Saisissez votre adresse e-mail pour créer un compte ou vous connecter.</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
-        with col1:
-            st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
-            continue_btn = st.form_submit_button("Continuer")
-            st.markdown('</div>', unsafe_allow_html=True)
+email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
 
-        with col2:
-            access_btn = st.form_submit_button("Accès bénéficiaire")
+# Deux boutons STRICTEMENT alignés (même row, même hauteur)
+col_a, col_b = st.columns(2, gap="small")
 
-    st.markdown(
-        '<div style="color:rgba(255,255,255,0.85);font-size:13px;margin-top:10px;">'
-        "En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité."
-        "</div>",
-        unsafe_allow_html=True,
-    )
+with col_a:
+    st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
+    go = st.button("Continuer", use_container_width=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    if continue_btn:
-        st.session_state["email"] = email
-        st.switch_page("pages/Connexion.py")
+with col_b:
+    go_benef = st.button("Accès bénéficiaire", use_container_width=True)
 
-    if access_btn:
-        st.switch_page("pages/Acces_beneficiaire.py")
+st.markdown(
+    '<div class="tm-footnote">En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité.</div>',
+    unsafe_allow_html=True,
+)
 
+if go:
+    st.session_state["start_email"] = email
+    st.switch_page("pages/Connexion.py")
 
-if __name__ == "__main__":
-    main()
+if go_benef:
+    st.switch_page("pages/Acces_beneficiaire.py")
