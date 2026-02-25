@@ -1,41 +1,45 @@
+# video_will_app/pages/Connexion.py
+from __future__ import annotations
+
 import streamlit as st
 from theme import apply_theme
 
 
-apply_theme("Kidan Vid - Connexion")
-
-st.title("Connexion")
-st.markdown("Accédez à votre espace sécurisé Kidan Vid.")
-
-# -----------------------------
-# Formulaire
-# -----------------------------
-with st.form("login_form", clear_on_submit=False):
-    email = st.text_input("Adresse email", placeholder="votre@email.com")
-    password = st.text_input("Mot de passe", type="password")
-    submitted = st.form_submit_button("Se connecter")
-
-if submitted:
-    if not email:
-        st.error("Veuillez saisir votre adresse email.")
-    elif not password:
-        st.error("Veuillez saisir votre mot de passe.")
-    else:
-        st.success("Connexion réussie.")
-        st.session_state["user_email"] = email
-
-st.markdown("---")
-
-# -----------------------------
-# Accès bénéficiaire (sans page_link)
-# -----------------------------
-st.subheader("Accès bénéficiaire")
-
-st.info(
-    "Si vous avez reçu un code d'accès (jeton) pour consulter un message, "
-    "utilisez le menu à gauche et ouvrez la page : « Acces beneficiaire »."
+# Toujours config AVANT st.* si ce fichier peut être exécuté seul
+st.set_page_config(
+    page_title="Connexion - Kidan Vid",
+    layout="wide",
+    initial_sidebar_state="expanded",
 )
 
-# Optionnel : bouton qui explique quoi faire (aucun crash)
-if st.button("Aller à Accès bénéficiaire (via menu à gauche)"):
-    st.toast("Ouvre le menu à gauche → clique « Acces beneficiaire ».", icon=None)
+
+apply_theme("Connexion", "Accédez à votre espace sécurisé")
+
+col1, col2 = st.columns([1, 1], gap="large")
+
+with col1:
+    st.subheader("Connexion")
+    email = st.text_input("Adresse email", placeholder="votre@email.com")
+    password = st.text_input("Mot de passe", type="password", placeholder="********")
+
+    # Ici tu mets ta logique réelle d'auth (Supabase etc.)
+    # Pour éviter de planter, on garde un bouton neutre.
+    if st.button("Se connecter", use_container_width=True):
+        # Exemple : tu peux rediriger vers une page après auth validée
+        st.success("Connexion envoyée (à relier à ton backend).")
+
+with col2:
+    st.subheader("Accès bénéficiaire")
+    st.info(
+        "Si vous avez reçu un code d’accès, vous pouvez ouvrir la page Accès bénéficiaire."
+    )
+
+    # IMPORTANT : page_link plante souvent si le chemin/nom n'est pas reconnu.
+    # switch_page est plus fiable.
+    if st.button("Aller à Accès bénéficiaire", use_container_width=True):
+        # Le fichier doit exister exactement sous /pages avec ce nom.
+        st.switch_page("pages/Acces beneficiaire.py")
+
+
+st.divider()
+st.caption("Kidan Vid - Transmission sécurisée et traçable.")
