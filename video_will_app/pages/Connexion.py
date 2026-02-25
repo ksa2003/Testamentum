@@ -1,45 +1,55 @@
-# video_will_app/pages/Connexion.py
-from __future__ import annotations
-
 import streamlit as st
+
 from theme import apply_theme
 
 
-# Toujours config AVANT st.* si ce fichier peut être exécuté seul
-st.set_page_config(
-    page_title="Connexion - Kidan Vid",
-    layout="wide",
-    initial_sidebar_state="expanded",
+def _goto(page: str):
+    """Navigate to another page with compatibility fallbacks."""
+    # Streamlit >= 1.22
+    try:
+        st.switch_page(page)
+        return
+    except Exception:
+        pass
+
+    # Fallback: show a direct link (works in Streamlit Cloud)
+    st.info("Navigation indisponible sur cette version : utilisez le menu à gauche.")
+
+
+apply_theme("Kidan Vid")
+
+st.markdown("<div class='tm-card'>", unsafe_allow_html=True)
+st.markdown("<h1 class='tm-title'>Connexion</h1>", unsafe_allow_html=True)
+st.markdown("<div class='tm-sub'>Accédez à votre espace sécurisé.</div>", unsafe_allow_html=True)
+
+with st.form("login_form", clear_on_submit=False):
+    email = st.text_input("Adresse email", placeholder="votre@email.com")
+    password = st.text_input("Mot de passe", type="password")
+    submitted = st.form_submit_button("Se connecter", type="primary")
+
+if submitted:
+    # Démo : on ne valide pas réellement (pas de backend ici).
+    if not email or not password:
+        st.error("Veuillez renseigner l'email et le mot de passe.")
+    else:
+        st.success("Connexion simulée réussie (mode démo).")
+        # Exemple : diriger vers l'espace mémoire
+        _goto("pages/Espace_Memoire.py")
+
+st.markdown("<hr style='border:0;border-top:1px solid rgba(255,255,255,0.15);margin:22px 0;'/>", unsafe_allow_html=True)
+
+st.markdown("<h2 class='tm-h2'>Accès bénéficiaire</h2>", unsafe_allow_html=True)
+st.markdown(
+    "<div class='tm-sub'>Si vous avez reçu un code d'accès, utilisez le menu à gauche ou cliquez ci-dessous.</div>",
+    unsafe_allow_html=True,
 )
 
-
-apply_theme("Connexion", "Accédez à votre espace sécurisé")
-
-col1, col2 = st.columns([1, 1], gap="large")
-
+col1, col2 = st.columns([1, 1])
 with col1:
-    st.subheader("Connexion")
-    email = st.text_input("Adresse email", placeholder="votre@email.com")
-    password = st.text_input("Mot de passe", type="password", placeholder="********")
-
-    # Ici tu mets ta logique réelle d'auth (Supabase etc.)
-    # Pour éviter de planter, on garde un bouton neutre.
-    if st.button("Se connecter", use_container_width=True):
-        # Exemple : tu peux rediriger vers une page après auth validée
-        st.success("Connexion envoyée (à relier à ton backend).")
-
-with col2:
-    st.subheader("Accès bénéficiaire")
-    st.info(
-        "Si vous avez reçu un code d’accès, vous pouvez ouvrir la page Accès bénéficiaire."
-    )
-
-    # IMPORTANT : page_link plante souvent si le chemin/nom n'est pas reconnu.
-    # switch_page est plus fiable.
     if st.button("Aller à Accès bénéficiaire", use_container_width=True):
-        # Le fichier doit exister exactement sous /pages avec ce nom.
-        st.switch_page("pages/Acces beneficiaire.py")
+        _goto("pages/Acces_beneficiaire.py")
+with col2:
+    if st.button("Créer un compte (bientôt)", use_container_width=True):
+        st.info("Fonction à venir.")
 
-
-st.divider()
-st.caption("Kidan Vid - Transmission sécurisée et traçable.")
+st.markdown("</div>", unsafe_allow_html=True)
