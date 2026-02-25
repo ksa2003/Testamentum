@@ -6,31 +6,11 @@ from kidan_content import get_slide
 def main():
     apply_theme("Kidan Vid")
 
-    # -----------------------------
-    # SLIDE DE PRÉSENTATION (HAUT)
-    # -----------------------------
-    st.markdown("## Présentation")
+    # PHOTO DE PRÉSENTATION FIXE (slide 1)
+    s0 = get_slide(1)
+    if s0 and getattr(s0, "image_path", None):
+        img(s0.image_path, caption=None, use_container_width=True)
 
-    # Slider pour parcourir les 15 slides
-    slide_id = st.slider(
-        "Parcourir les slides",
-        min_value=1,
-        max_value=15,
-        value=1,
-        step=1,
-    )
-
-    s = get_slide(slide_id)
-    if s and getattr(s, "image_path", None):
-        img(s.image_path, use_container_width=True)
-    else:
-        st.warning(f"Slide {slide_id} introuvable (image_path manquant).")
-
-    st.divider()
-
-    # -----------------------------
-    # CONTENU HOME (COMME AVANT)
-    # -----------------------------
     st.markdown("# Un message vidéo, transmis au bon moment.")
     st.write(
         "Enregistrez un message destiné à vos proches, puis contrôlez précisément l’accès des bénéficiaires lorsque le décès est déclaré."
