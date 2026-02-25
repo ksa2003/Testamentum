@@ -1,29 +1,57 @@
 import streamlit as st
 from theme import apply_theme
 
-apply_theme()
 
-st.markdown("""
-<div class="tm-card">
-  <h1 style="margin:0;">Connexion</h1>
-  <div class="tm-sub">Accédez à votre espace sécurisé</div>
-</div>
-""", unsafe_allow_html=True)
+# -------------------------------------------------------
+# PAGE CONNEXION
+# -------------------------------------------------------
 
-st.write("")
+apply_theme("Kidan Vid - Connexion")
 
-email = st.text_input("Adresse e-mail", placeholder="votre-email@exemple.com")
-password = st.text_input("Mot de passe", type="password", placeholder="••••••••")
 
-st.markdown('<div class="tm-btnwrap tm-primary">', unsafe_allow_html=True)
-login = st.button("Se connecter", use_container_width=True)
-st.markdown("</div>", unsafe_allow_html=True)
+st.title("Connexion")
 
-if login:
-    if not email.strip():
-        st.error("Veuillez saisir un e-mail.")
+st.markdown("Accédez à votre espace sécurisé Kidan Vid.")
+
+
+# -------------------------------------------------------
+# Formulaire sécurisé (évite rerun instable)
+# -------------------------------------------------------
+
+with st.form("login_form", clear_on_submit=False):
+
+    email = st.text_input(
+        "Adresse email",
+        placeholder="votre@email.com"
+    )
+
+    password = st.text_input(
+        "Mot de passe",
+        type="password"
+    )
+
+    submitted = st.form_submit_button("Se connecter")
+
+
+# -------------------------------------------------------
+# Logique après soumission
+# -------------------------------------------------------
+
+if submitted:
+
+    if not email:
+        st.error("Veuillez saisir votre adresse email.")
+    elif not password:
+        st.error("Veuillez saisir votre mot de passe.")
     else:
-        # MVP: pas d'auth réelle
-        st.session_state["user_email"] = email.strip()
-        st.success("Connecté.")
-        st.switch_page("pages/Espace_Memoire.py")
+        # Ici tu pourras brancher Supabase / base utilisateurs plus tard
+        st.success("Connexion réussie.")
+        st.session_state["user_email"] = email
+
+
+# -------------------------------------------------------
+# Lien vers accès bénéficiaire
+# -------------------------------------------------------
+
+st.markdown("---")
+st.page_link("pages/Acces beneficiaire.py", label="Accès bénéficiaire")
