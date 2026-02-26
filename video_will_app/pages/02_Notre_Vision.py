@@ -2,11 +2,13 @@ import streamlit as st
 from theme import apply_theme, img
 from kidan_content import get_slide
 
-apply_theme("Titre de la page")
+apply_theme("Notre Vision")
 
-s = get_slide(X)
+s = get_slide(2)
+
+st.title("Notre Vision")
 
 if s:
-    img(s.image_path, use_container_width=True)
+    img(s.image_path)
 else:
-    st.error("Slide X introuvable")
+    st.warning("Slide introuvable.")
