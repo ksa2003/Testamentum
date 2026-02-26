@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 # ==============================
-# STYLE (réduction marge haute)
+# STYLE
 # ==============================
 st.markdown("""
 <style>
@@ -22,13 +22,13 @@ st.markdown("""
     max-width: 1200px;
 }
 header {visibility: hidden;}
-/* Logo responsive */
+
 .kidan-logo-wrap{
     width: 100%;
     display: flex;
     justify-content: center;
     margin-top: 0.2rem;
-    margin-bottom: 0.8rem;
+    margin-bottom: 1.2rem;
 }
 .kidan-logo{
     width: 100%;
@@ -39,7 +39,7 @@ header {visibility: hidden;}
 """, unsafe_allow_html=True)
 
 # ==============================
-# LOGO GRAND FORMAT (compat old Streamlit)
+# LOGO GRAND FORMAT
 # ==============================
 BASE_DIR = Path(__file__).resolve().parent
 logo_path = BASE_DIR / "assets" / "logo_kidan_vid.png"
@@ -57,10 +57,8 @@ if logo_path.exists():
 else:
     st.warning(f"Logo introuvable : {logo_path}")
 
-st.markdown("<br>", unsafe_allow_html=True)
-
 # ==============================
-# TITRE PRINCIPAL
+# TITRE
 # ==============================
 st.markdown("""
 <h1 style='text-align:center; font-size:42px; margin-bottom: 0.4rem;'>
@@ -77,7 +75,7 @@ Enregistrez un message destiné à vos proches, puis contrôlez précisément l�
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ==============================
-# LISTE AVANTAGES
+# AVANTAGES
 # ==============================
 st.markdown("""
 <div style='max-width:700px; margin:auto; font-size:16px; line-height: 1.8;'>
@@ -99,7 +97,14 @@ email = st.text_input("Adresse e-mail", placeholder="votre@email.com")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.button("Continuer")
+    if st.button("Continuer"):
+        if not email.strip():
+            st.warning("Veuillez saisir votre e-mail.")
+        else:
+            # On sauvegarde l'email pour la page Connexion
+            st.session_state["prefill_email"] = email.strip()
+            st.switch_page("pages/Connexion.py")
 
 with col2:
-    st.button("Accès bénéficiaire")
+    if st.button("Accès bénéficiaire"):
+        st.switch_page("pages/Acces_beneficiaire.py")
