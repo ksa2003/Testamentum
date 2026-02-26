@@ -6,7 +6,6 @@ apply_theme("Modèle économique")
 
 st.title("Modèle économique")
 
-# Chemin vers l'image
-image_path = Path("assets/slides/modele_economique.png")
+image_path = Path("assets/07_modele_economique.png")
 
 img(image_path)
