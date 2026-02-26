@@ -1,52 +1,81 @@
 import streamlit as st
-import os
+from pathlib import Path
+
+# ==============================
+# CONFIG PAGE
+# ==============================
 
 st.set_page_config(
     page_title="Kidan Vid",
+    page_icon="🎥",
     layout="wide"
 )
 
-# Supprimer le padding haut
+# ==============================
+# STYLE (réduction marge haute)
+# ==============================
+
 st.markdown("""
-    <style>
-        .block-container {
-            padding-top: 1rem;
-        }
-    </style>
+<style>
+.block-container {
+    padding-top: 0.8rem;
+    padding-bottom: 2rem;
+}
+header {visibility: hidden;}
+</style>
 """, unsafe_allow_html=True)
 
-# === LOGO GRAND FORMAT ===
-logo_path = "logo_kidan_vid.png"
+# ==============================
+# LOGO GRAND FORMAT
+# ==============================
 
-if os.path.exists(logo_path):
-    st.image(logo_path, use_container_width=True)
+BASE_DIR = Path(__file__).resolve().parent
+logo_path = BASE_DIR / "assets" / "logo_kidan_vid.png"
+
+if logo_path.exists():
+    st.image(str(logo_path), use_container_width=True)
 else:
-    st.warning("Logo introuvable dans logo_kidan_vid.png")
+    st.warning(f"Logo introuvable : {logo_path}")
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# === CONTENU ===
-st.markdown(
-    "<h1 style='text-align:center;'>Un message vidéo, transmis au bon moment.</h1>",
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    "<div style='text-align:center;'>"
-    "Enregistrez un message destiné à vos proches, puis contrôlez précisément l’accès des bénéficiaires lorsque le décès est déclaré."
-    "</div>",
-    unsafe_allow_html=True
-)
-
-st.markdown("<br>", unsafe_allow_html=True)
+# ==============================
+# TITRE PRINCIPAL
+# ==============================
 
 st.markdown("""
-- Accès bénéficiaires par jeton temporaire sécurisé  
-- Validation notariale  
-- Journalisation et traçabilité  
-""")
+<h1 style='text-align:center; font-size:42px;'>
+Un message vidéo, transmis au bon moment.
+</h1>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div style='text-align:center; font-size:18px; max-width:900px; margin:auto;'>
+Enregistrez un message destiné à vos proches, puis contrôlez précisément l’accès des bénéficiaires lorsque le décès est déclaré.
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+# ==============================
+# LISTE AVANTAGES
+# ==============================
+
+st.markdown("""
+<div style='max-width:700px; margin:auto; font-size:16px;'>
+
+• Accès bénéficiaires par jeton temporaire sécurisé  
+• Validation notariale  
+• Journalisation et traçabilité  
+
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("<br><br>", unsafe_allow_html=True)
+
+# ==============================
+# SECTION CONNEXION
+# ==============================
 
 st.subheader("Commencer")
 
