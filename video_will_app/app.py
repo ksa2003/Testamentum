@@ -6,10 +6,10 @@ from kidan_content import get_slide
 def main():
     apply_theme("Kidan Vid")
 
-    # PHOTO DE PRÉSENTATION FIXE (slide 1)
+    # Slide de présentation (cover)
     s0 = get_slide(1)
-    if s0 and getattr(s0, "image_path", None):
-        img(s0.image_path, caption=None, use_container_width=True)
+    if s0:
+        img(s0.image_path)
 
     st.markdown("# Un message vidéo, transmis au bon moment.")
     st.write(
@@ -27,13 +27,14 @@ def main():
     st.markdown("## Commencer")
     email = st.text_input("Adresse e-mail", placeholder="votre@email.com")
 
-    c1, c2 = st.columns(2)
-    with c1:
+    col1, col2 = st.columns(2)
+
+    with col1:
         if st.button("Continuer", use_container_width=True):
             st.session_state["email"] = email
             st.switch_page("pages/Connexion.py")
 
-    with c2:
+    with col2:
         if st.button("Accès bénéficiaire", use_container_width=True):
             st.switch_page("pages/Acces beneficiaire.py")
 
