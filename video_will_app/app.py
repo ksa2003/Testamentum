@@ -1,45 +1,57 @@
 import streamlit as st
-from pathlib import Path
+from PIL import Image
+import os
 
-st.set_page_config(page_title="Kidan Vid", layout="wide")
+st.set_page_config(
+    page_title="Kidan Vid",
+    page_icon="🎥",
+    layout="wide"
+)
 
-ASSETS_DIR = Path(__file__).resolve().parent / "assets"
-LOGO_PATH = ASSETS_DIR / "logo_kidanvid.png"  # mets ton logo ici
-
-# --- Style propre type site officiel ---
+# --- SUPPRESSION DU PADDING HAUT ---
 st.markdown("""
     <style>
-        .logo-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-            margin-bottom: 10px;
+        .block-container {
+            padding-top: 1rem;
+            padding-bottom: 0rem;
         }
-        .divider {
-            margin-top: 10px;
-            margin-bottom: 30px;
-        }
+        header {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
 
-# --- LOGO ---
-st.markdown('<div class="logo-container">', unsafe_allow_html=True)
 
-if LOGO_PATH.exists():
-    st.image(str(LOGO_PATH), width=240)  # taille élégante type site officiel
+# --- AFFICHAGE LOGO EN GRAND FORMAT ---
+logo_path = "assets/logo_kidan_vid.png"  # adapte si besoin
+
+if os.path.exists(logo_path):
+    st.image(logo_path, use_container_width=True)
 else:
-    st.warning("Logo introuvable dans /assets/logo_kidanvid.png")
+    st.warning("Logo introuvable dans assets/logo_kidan_vid.png")
 
-st.markdown("</div>", unsafe_allow_html=True)
-st.markdown('<hr class="divider">', unsafe_allow_html=True)
 
-# --- Texte d’introduction ---
-st.title("Un message vidéo, transmis au bon moment.")
-st.write(
-    "Enregistrez un message destiné à vos proches, puis contrôlez précisément "
-    "l’accès des bénéficiaires lorsque le décès est déclaré."
+# --- ESPACE ---
+st.markdown("<br>", unsafe_allow_html=True)
+
+# --- TITRE ---
+st.markdown(
+    """
+    <h1 style='text-align: center;'>
+        Un message vidéo, transmis au bon moment.
+    </h1>
+    """,
+    unsafe_allow_html=True
 )
+
+st.markdown(
+    """
+    <div style='text-align: center; font-size:18px;'>
+    Enregistrez un message destiné à vos proches, puis contrôlez précisément l’accès des bénéficiaires lorsque le décès est déclaré.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown("<br>", unsafe_allow_html=True)
 
 st.markdown("""
 - Accès bénéficiaires par jeton temporaire sécurisé  
@@ -47,9 +59,12 @@ st.markdown("""
 - Journalisation et traçabilité  
 """)
 
+st.markdown("<br><br>", unsafe_allow_html=True)
+
+# --- SECTION CONNEXION ---
 st.subheader("Commencer")
 
-email = st.text_input("Adresse e-mail", placeholder="votre@email.com")
+email = st.text_input("Adresse e-mail")
 
 col1, col2 = st.columns(2)
 
@@ -57,5 +72,4 @@ with col1:
     st.button("Continuer", use_container_width=True)
 
 with col2:
-    if st.button("Accès bénéficiaire", use_container_width=True):
-        st.switch_page("pages/Acces_beneficiaire.py")
+    st.button("Accès bénéficiaire", use_container_width=True)
