@@ -1,53 +1,40 @@
 import streamlit as st
-from PIL import Image
 import os
 
 st.set_page_config(
     page_title="Kidan Vid",
-    page_icon="🎥",
     layout="wide"
 )
 
-# --- SUPPRESSION DU PADDING HAUT ---
+# Supprimer le padding haut
 st.markdown("""
     <style>
         .block-container {
             padding-top: 1rem;
-            padding-bottom: 0rem;
         }
-        header {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
 
-
-# --- AFFICHAGE LOGO EN GRAND FORMAT ---
-logo_path = "assets/logo_kidan_vid.png"  # adapte si besoin
+# === LOGO GRAND FORMAT ===
+logo_path = "logo_kidan_vid.png"
 
 if os.path.exists(logo_path):
     st.image(logo_path, use_container_width=True)
 else:
-    st.warning("Logo introuvable dans assets/logo_kidan_vid.png")
+    st.warning("Logo introuvable dans logo_kidan_vid.png")
 
-
-# --- ESPACE ---
 st.markdown("<br>", unsafe_allow_html=True)
 
-# --- TITRE ---
+# === CONTENU ===
 st.markdown(
-    """
-    <h1 style='text-align: center;'>
-        Un message vidéo, transmis au bon moment.
-    </h1>
-    """,
+    "<h1 style='text-align:center;'>Un message vidéo, transmis au bon moment.</h1>",
     unsafe_allow_html=True
 )
 
 st.markdown(
-    """
-    <div style='text-align: center; font-size:18px;'>
-    Enregistrez un message destiné à vos proches, puis contrôlez précisément l’accès des bénéficiaires lorsque le décès est déclaré.
-    </div>
-    """,
+    "<div style='text-align:center;'>"
+    "Enregistrez un message destiné à vos proches, puis contrôlez précisément l’accès des bénéficiaires lorsque le décès est déclaré."
+    "</div>",
     unsafe_allow_html=True
 )
 
@@ -61,7 +48,6 @@ st.markdown("""
 
 st.markdown("<br><br>", unsafe_allow_html=True)
 
-# --- SECTION CONNEXION ---
 st.subheader("Commencer")
 
 email = st.text_input("Adresse e-mail")
