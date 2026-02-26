@@ -1,116 +1,218 @@
+# pages/Espace_Memoire.py
 import streamlit as st
-from theme import apply_theme
+from datetime import datetime
+import secrets
 
-apply_theme("Espace Mémoire")
 
-# -------------------------------------------------------------------
-# Guard: accès réservé aux utilisateurs connectés
-# -------------------------------------------------------------------
-if not st.session_state.get("auth", False):
-    st.warning("Vous devez être connecté pour accéder à l’Espace Mémoire.")
-    st.switch_page("pages/Connexion.py")
-
-# -------------------------------------------------------------------
+# -----------------------------
 # Helpers
-# -------------------------------------------------------------------
+# -----------------------------
+def _safe_apply_theme():
+    """
+    Essaie d'appliquer ton thème si tu as un theme.py avec apply_theme().
+    Ne casse jamais la page si le fichier n'existe pas.
+    """
+    try:
+        from theme import apply_theme  # type: ignore
+        apply_theme()
+    except Exception:
+        pass
+
+
+def require_login():
+    """
+    Page protégée. On considère l'utilisateur connecté si st.session_state["user_email"] existe.
+    Si absent -> redirection vers Connexion.
+    """
+    if not st.session_state.get("user_email"):
+        st.warning("Vous devez vous connecter pour accéder à cet espace.")
+        # Redirection Streamlit (nouvelle API)
+        try:
+            st.switch_page("pages/Connexion.py")
+        except Exception:
+            st.stop()
+
+
+def logout_button():
+    if st.button("Se déconnecter", use_container_width=True):
+        for k in ["user_email", "is_authenticated"]:
+            if k in st.session_state:
+                del st.session_state[k]
+        # Redirection vers Connexion
+        try:
+            st.switch_page("pages/Connexion.py")
+        except Exception:
+            st.stop()
+
+
 def mask_email(email: str) -> str:
-    """Masque l'email pour éviter l'affichage public + évite la mise en lien auto."""
-    if not email or "@" not in email:
-        return ""
-    local, domain = email.split("@", 1)
-    if len(local) <= 2:
-        local_masked = local[0] + "*"
+    if "@" not in email:
+        return email
+    name, domain = email.split("@", 1)
+    if len(name) <= 2:
+        masked = name[0] + "*" * 6
     else:
-        local_masked = local[0] + "*" * (len(local) - 2) + local[-1]
-    return f"{local_masked}@{domain}"
+        masked = name[0] + "*" * max(6, len(name) - 2) + name[-1]
+    return f"{masked}@{domain}"
+
+
+# -----------------------------
+# Page
+# -----------------------------
+_safe_apply_theme()
+st.set_page_config(page_title="Espace Mémoire", layout="centered")
+
+require_login()
 
 email = st.session_state.get("user_email", "")
-masked = mask_email(email)
-
-# -------------------------------------------------------------------
-# UI
-# -------------------------------------------------------------------
 st.title("Espace Mémoire")
-
-# Affichage email en "code" pour empêcher Streamlit de le rendre cliquable
-if masked:
-    st.markdown(f"Connecté en tant que : `{masked}`")
-else:
-    st.caption("Connecté")
+st.caption(f"Connecté en tant que : {mask_email(email)}")
 
 st.divider()
 
-# Init stockage démo en session (en attendant Supabase)
-if "vault_videos" not in st.session_state:
-    st.session_state["vault_videos"] = []  # list[dict{name, bytes}]
-if "vault_docs" not in st.session_state:
-    st.session_state["vault_docs"] = []    # list[dict{name, bytes}]
-if "vault_notes" not in st.session_state:
-    st.session_state["vault_notes"] = ""
-
-tab_videos, tab_docs, tab_benef, tab_settings = st.tabs(
+tab_videos, tab_docs, tab_benef, tab_params = st.tabs(
     ["Vidéos", "Documents", "Bénéficiaires", "Paramètres"]
 )
 
+# -----------------------------
+# Onglet Vidéos
+# -----------------------------
 with tab_videos:
     st.subheader("Vidéos")
-    st.caption("Démo locale (session). Prochaine étape : stockage sécurisé Supabase.")
-    up = st.file_uploader("Ajouter une vidéo", type=["mp4", "mov", "m4v"], accept_multiple_files=False)
-    if up is not None:
-        st.session_state["vault_videos"].append({"name": up.name, "data": up.getvalue()})
-        st.success("Vidéo ajoutée à la session.")
+    st.info("Zone privée à connecter ensuite à Supabase : upload, stockage, lecture, journalisation.")
 
-    if st.session_state["vault_videos"]:
-        st.write("Vos vidéos (session) :")
-        for i, v in enumerate(st.session_state["vault_videos"], start=1):
-            col1, col2 = st.columns([3, 1])
-            with col1:
-                st.write(f"{i}. {v['name']}")
-            with col2:
-                st.download_button(
-                    "Télécharger",
-                    data=v["data"],
-                    file_name=v["name"],
-                    mime="video/mp4",
-                    use_container_width=True,
-                    key=f"dl_video_{i}",
-                )
-    else:
-        st.info("Aucune vidéo pour l’instant.")
+    st.caption("Démo : pas encore branché à Supabase.")
+    st.text_input("Rechercher une vidéo", placeholder="Titre, tag, bénéficiaire...")
 
+    st.write("Aucune vidéo pour l’instant.")
+
+
+# -----------------------------
+# Onglet Documents
+# -----------------------------
 with tab_docs:
     st.subheader("Documents")
-    st.caption("Démo locale (session). Prochaine étape : coffre-fort Supabase + droits d’accès.")
-    doc = st.file_uploader("Ajouter un document", type=["pdf", "jpg", "jpeg", "png"], accept_multiple_files=False)
-    if doc is not None:
-        st.session_state["vault_docs"].append({"name": doc.name, "data": doc.getvalue()})
-        st.success("Document ajouté à la session.")
+    st.info("Zone privée à connecter ensuite à Supabase : PDF, pièces, coffre-fort, versions.")
 
-    if st.session_state["vault_docs"]:
-        st.write("Vos documents (session) :")
-        for i, d in enumerate(st.session_state["vault_docs"], start=1):
-            col1, col2 = st.columns([3, 1])
-            with col1:
-                st.write(f"{i}. {d['name']}")
-            with col2:
-                st.download_button(
-                    "Télécharger",
-                    data=d["data"],
-                    file_name=d["name"],
-                    use_container_width=True,
-                    key=f"dl_doc_{i}",
+    st.caption("Démo : pas encore branché à Supabase.")
+    st.text_input("Rechercher un document", placeholder="Nom, catégorie...")
+
+    st.write("Aucun document pour l’instant.")
+
+
+# -----------------------------
+# Onglet Bénéficiaires
+# -----------------------------
+with tab_benef:
+    st.subheader("Bénéficiaires")
+
+    # Init stockage session
+    if "beneficiaries" not in st.session_state:
+        st.session_state["beneficiaries"] = []  # list[dict]
+
+    st.caption("Démo locale (session). Prochaine étape : Supabase (table + RLS + journalisation).")
+
+    with st.form("add_beneficiary", clear_on_submit=True):
+        c1, c2 = st.columns(2)
+        with c1:
+            last_name = st.text_input("Nom", placeholder="Ex: Dupont")
+            relation = st.selectbox(
+                "Lien avec le testateur",
+                ["Conjoint", "Enfant", "Parent", "Frère/Sœur", "Ami", "Notaire", "Autre"],
+                index=1,
+            )
+            access_level = st.selectbox(
+                "Niveau d'accès",
+                ["Lecture seule", "Accès complet", "Accès conditionnel (post-décès)"],
+                index=2,
+            )
+        with c2:
+            first_name = st.text_input("Prénom", placeholder="Ex: Marie")
+            ben_email = st.text_input("Email", placeholder="ex: marie.dupont@email.com")
+            expiry_days = st.number_input(
+                "Expiration du lien (jours)",
+                min_value=1,
+                max_value=3650,
+                value=365,
+                step=1,
+            )
+
+        notes = st.text_area(
+            "Notes (optionnel)",
+            placeholder="Ex: à prévenir en priorité, instructions, etc.",
+            height=90,
+        )
+
+        submitted = st.form_submit_button("Ajouter le bénéficiaire", use_container_width=True)
+
+        if submitted:
+            if not last_name.strip() or not first_name.strip():
+                st.error("Nom et prénom sont obligatoires.")
+            elif "@" not in ben_email or "." not in ben_email:
+                st.error("Email invalide.")
+            else:
+                # Code unique lisible (démo)
+                code = secrets.token_urlsafe(8).replace("-", "").replace("_", "")[:10].upper()
+
+                st.session_state["beneficiaries"].append(
+                    {
+                        "Nom": last_name.strip(),
+                        "Prénom": first_name.strip(),
+                        "Email": ben_email.strip(),
+                        "Lien": relation,
+                        "Accès": access_level,
+                        "Expiration (jours)": int(expiry_days),
+                        "Code": code,
+                        "Notes": notes.strip(),
+                        "Créé le": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                    }
                 )
-    else:
-        st.info("Aucun document pour l’instant.")
+                st.success("Bénéficiaire ajouté.")
 
     st.divider()
-    st.subheader("Notes privées")
-    st.session_state["vault_notes"] = st.text_area(
-        "Notes",
-        value=st.session_state["vault_notes"],
-        height=160,
-        placeholder="Écrivez ici des informations privées (démo session).",
-    )
+
+    if not st.session_state["beneficiaries"]:
+        st.info("Aucun bénéficiaire enregistré pour l’instant.")
+    else:
+        st.write("Liste des bénéficiaires :")
+
+        for idx, b in enumerate(st.session_state["beneficiaries"]):
+            with st.container(border=True):
+                colA, colB = st.columns([3, 1])
+
+                with colA:
+                    st.markdown(
+                        f"**{b['Prénom']} {b['Nom']}**  \n"
+                        f"Email : `{b['Email']}`  \n"
+                        f"Lien : {b['Lien']}  \n"
+                        f"Accès : {b['Accès']}  \n"
+                        f"Expiration : {b['Expiration (jours)']} jours  \n"
+                        f"Code d’accès : `{b['Code']}`  \n"
+                        f"Créé le : {b['Créé le']}"
+                    )
+                    if b.get("Notes"):
+                        st.caption(f"Notes : {b['Notes']}")
+
+                with colB:
+                    if st.button("Supprimer", key=f"del_benef_{idx}", use_container_width=True):
+                        st.session_state["beneficiaries"].pop(idx)
+                        st.rerun()
+
+        st.divider()
+        st.subheader("Partager un code d’accès (démo)")
+        st.caption("En production : envoi email/SMS + journalisation + double validation.")
+        st.info("Chaque bénéficiaire reçoit un code unique à utiliser dans « Accès bénéficiaire ».")
+
+
+# -----------------------------
+# Onglet Paramètres
+# -----------------------------
+with tab_params:
+    st.subheader("Paramètres")
+    st.info("Paramètres du compte (démo).")
+
+    st.caption("Ici tu pourras ajouter : MFA, clés, préférences, sécurité, journal d’accès…")
+    logout_button()    )
 
 with tab_benef:
     st.subheader("Bénéficiaires")
