@@ -1,11 +1,11 @@
 import streamlit as st
+from pathlib import Path
 from theme import apply_theme, img
-from kidan_content import get_slide
 
+apply_theme("Marché & opportunité")
 
-apply_theme("Kidan Vid — Marché & opportunité")
-
-s = get_slide(5)
 st.title("Marché & opportunité")
-st.write(s.text)
-img(str(s.image_path), use_container_width=True)
+
+image_path = Path("assets/slides/marche_opportunite.png")
+
+img(image_path)
