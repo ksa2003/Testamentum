@@ -278,7 +278,7 @@ with tab_benef:
             last_name = st.text_input("Nom")
             relation = st.selectbox(
                 "Lien",
-                ["Conjoint", "Enfant", "Parent", "Frère/Sœur", "Ami", "Notaire", "Autre"]
+                ["Conjoint(e)", "Enfant", "Parent", "Frère/Sœur", "Ami(e)", "Notaire", "Autre"]
             )
             access_level = st.selectbox(
                 "Niveau d'accès",
