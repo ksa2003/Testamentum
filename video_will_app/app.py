@@ -20,39 +20,35 @@ LOGO_FILE = "logo_kidan_vid.png"
 # Helpers
 # -----------------------------
 def load_image(path: Path):
-    """Charge une image de façon sûre (évite les erreurs Streamlit)."""
     try:
         return Image.open(path)
     except Exception:
         return None
 
-def show_logo():
+def show_logo(width: int = 720):
     """
-    Affiche le logo depuis /assets.
-    Important: ne PAS mélanger width=... et use_container_width=True
-    (cela peut provoquer des TypeError selon les versions Streamlit).
+    Affiche le logo depuis /assets en évitant use_container_width
+    (certaines versions Streamlit lèvent TypeError).
     """
     logo_path = ASSETS_DIR / LOGO_FILE
 
-    if logo_path.exists():
-        img = load_image(logo_path)
-        if img is None:
-            st.warning(f"Impossible d'ouvrir l'image : {logo_path}")
-            return
-        st.image(img, use_container_width=True)
-    else:
+    if not logo_path.exists():
         st.warning(f"Logo introuvable : {logo_path}")
+        return
+
+    img = load_image(logo_path)
+    if img is None:
+        st.warning(f"Impossible d'ouvrir l'image : {logo_path}")
+        return
+
+    # Version compatible : pas de use_container_width
+    st.image(img, width=width)
 
 def go_to_page(page_filename: str):
-    """
-    Redirige vers une page Streamlit multipage si possible.
-    Exemple: pages/Connexion.py -> st.switch_page('pages/Connexion.py')
-    """
     try:
         st.switch_page(f"pages/{page_filename}")
     except Exception:
-        # Fallback: affiche une info plutôt que de planter
-        st.info("Navigation indisponible sur cette version Streamlit. Utilisez le menu à gauche pour ouvrir la page.")
+        st.info("Utilisez le menu à gauche pour ouvrir la page (navigation auto indisponible ici).")
 
 # -----------------------------
 # Styles
@@ -60,10 +56,7 @@ def go_to_page(page_filename: str):
 st.markdown(
     """
     <style>
-      /* Resserre un peu la largeur max du contenu (effet landing page) */
       .block-container { max-width: 900px; padding-top: 1.5rem; }
-
-      /* Petits séparateurs plus discrets */
       hr { margin: 2rem 0; }
     </style>
     """,
@@ -73,7 +66,7 @@ st.markdown(
 # -----------------------------
 # Page content
 # -----------------------------
-show_logo()
+show_logo(width=760)
 
 st.title("Kidan Vid")
 st.write("Plateforme de transmission vidéo sécurisée.")
@@ -86,12 +79,10 @@ st.write(
 # Boutons d'action
 colA, colB = st.columns(2)
 with colA:
-    if st.button("Découvrir comment ça marche", use_container_width=True):
-        # Si tu as une page pages/Comment_ca_marche.py
+    if st.button("Découvrir comment ça marche"):
         go_to_page("Comment_ca_marche.py")
 with colB:
-    if st.button("Créer un envoi sécurisé", use_container_width=True):
-        # Si tu as une page pages/Creer_un_envoi_securise.py
+    if st.button("Créer un envoi sécurisé"):
         go_to_page("Creer_un_envoi_securise.py")
 
 st.markdown("---")
@@ -167,22 +158,18 @@ st.markdown(
 
 st.markdown("---")
 
-# Connexion en bas (comme avant)
+# Connexion en bas
 st.header("Connexion")
 st.write("Accédez à votre espace sécurisé.")
 
 email = st.text_input("Adresse e-mail", placeholder="votre@email.com")
 
-btn1, btn2 = st.columns(2)
-with btn1:
-    if st.button("Continuer", use_container_width=True):
-        # Redirection vers la page de connexion
-        # Si tu as pages/Connexion.py
+b1, b2 = st.columns(2)
+with b1:
+    if st.button("Continuer"):
         go_to_page("Connexion.py")
-
-with btn2:
-    if st.button("Accès bénéficiaire", use_container_width=True):
-        # Si tu as pages/Acces_beneficiaire.py
+with b2:
+    if st.button("Accès bénéficiaire"):
         go_to_page("Acces_beneficiaire.py")
 
 st.caption("© Kidan Vid")
