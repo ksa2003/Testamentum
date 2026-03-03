@@ -7,7 +7,7 @@ from PIL import Image
 # -----------------------------
 st.set_page_config(
     page_title="Kidan Vid",
-    page_icon="🔒",
+    page_icon="K",
     layout="centered",
     initial_sidebar_state="expanded",
 )
@@ -27,8 +27,8 @@ def load_image(path: Path):
 
 def show_logo():
     """
-    Affiche le logo depuis /assets en évitant use_container_width
-    et en gardant un rendu propre sur mobile (responsive via width raisonnable).
+    Logo ajusté pour mobile.
+    Largeur réduite pour affichage complet.
     """
     logo_path = ASSETS_DIR / LOGO_FILE
 
@@ -41,18 +41,14 @@ def show_logo():
         st.warning(f"Impossible d'ouvrir l'image : {logo_path}")
         return
 
-    # Taille ajustée pour mobile (évite l'effet "logo coupé")
-    # Option 1 (recommandée) :
-    st.image(img, width=650)
-
-    # Si tu veux encore plus compact sur mobile, remplace par :
-    # st.image(img, width=600)
+    # 🔥 Ajustement ici
+    st.image(img, width=550)
 
 def go_to_page(page_filename: str):
     try:
         st.switch_page(f"pages/{page_filename}")
     except Exception:
-        st.info("Utilisez le menu à gauche pour ouvrir la page (navigation auto indisponible ici).")
+        st.info("Utilisez le menu à gauche pour ouvrir la page.")
 
 # -----------------------------
 # Styles
@@ -60,7 +56,10 @@ def go_to_page(page_filename: str):
 st.markdown(
     """
     <style>
-      .block-container { max-width: 900px; padding-top: 1.5rem; }
+      .block-container { 
+        max-width: 900px; 
+        padding-top: 1.2rem; 
+      }
       hr { margin: 2rem 0; }
     </style>
     """,
@@ -73,6 +72,7 @@ st.markdown(
 show_logo()
 
 st.title("Kidan Vid")
+
 st.write("Plateforme de transmission vidéo sécurisée.")
 st.write("Envoyez des vidéos personnelles en toute confidentialité.")
 st.write(
