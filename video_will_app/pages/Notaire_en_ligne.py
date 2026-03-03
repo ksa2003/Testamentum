@@ -1,30 +1,38 @@
 import streamlit as st
+from pathlib import Path
+
+APP_DIR = Path(__file__).resolve().parent.parent
+ASSETS_DIR = APP_DIR / "assets"
+
+def show_logo():
+    logo = ASSETS_DIR / "logo_kidan_vid.png"
+    if logo.exists():
+        st.image(str(logo), use_container_width=True)
+    else:
+        st.warning(f"Logo introuvable : {logo.as_posix()}")
 
 st.set_page_config(page_title="Notaire en ligne", layout="wide")
 
-st.title("Pourquoi utiliser un notaire en ligne ?")
+show_logo()
 
-st.markdown("""
-### Commodité
-Les signataires peuvent faire authentifier leurs documents à distance,
-depuis un appareil mobile ou un ordinateur avec webcam.
+st.title("Lien pour succession (actes notariés)")
+st.subheader("Pourquoi utiliser un notaire en ligne ?")
 
-### Rapidité
-Une séance de notarisation en ligne prend généralement entre 5 et 15 minutes.
+st.markdown(
+    """
+**Commodité**  
+Les signataires peuvent obtenir leurs documents notariés à distance via un appareil mobile ou une webcam.
 
-### Sécurité
-Les documents sont scellés numériquement afin de prévenir toute fraude ou altération.
+**Vitesse**  
+La séance moyenne de notarisation en ligne prend généralement 5 à 15 minutes.
 
-### Accessibilité internationale
-Le service peut s’adapter aux cadres juridiques des différents pays,
-selon la réglementation locale en vigueur.
-""")
+**Sécurité**  
+Les documents peuvent être scellés numériquement pour se protéger contre la fraude et l'altération.
 
-st.markdown("---")
-
-st.caption(
-    "La disponibilité de la notarisation en ligne dépend des lois en vigueur dans chaque pays."
+**Facilité d'utilisation**  
+Cliquez sur un lien pour rejoindre la session avec votre smartphone ou votre navigateur d'ordinateur.
+"""
 )
 
-if st.button("Retour accueil", use_container_width=True):
-    st.switch_page("app.py")
+st.markdown("---")
+st.info("Important : la notarisation en ligne dépend du cadre légal de chaque pays / État. Une page de conformité par juridiction sera nécessaire.")
