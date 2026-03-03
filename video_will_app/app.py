@@ -7,7 +7,7 @@ from PIL import Image
 # -----------------------------
 st.set_page_config(
     page_title="Kidan Vid",
-    page_icon="K",  # (évite les emojis si tu veux un rendu plus neutre)
+    page_icon="🔒",
     layout="centered",
     initial_sidebar_state="expanded",
 )
@@ -25,10 +25,10 @@ def load_image(path: Path):
     except Exception:
         return None
 
-def show_logo(width: int = 760):
+def show_logo():
     """
     Affiche le logo depuis /assets en évitant use_container_width
-    (certaines versions Streamlit lèvent TypeError).
+    et en gardant un rendu propre sur mobile (responsive via width raisonnable).
     """
     logo_path = ASSETS_DIR / LOGO_FILE
 
@@ -41,8 +41,12 @@ def show_logo(width: int = 760):
         st.warning(f"Impossible d'ouvrir l'image : {logo_path}")
         return
 
-    # Version compatible : pas de use_container_width
-    st.image(img, width=width)
+    # Taille ajustée pour mobile (évite l'effet "logo coupé")
+    # Option 1 (recommandée) :
+    st.image(img, width=650)
+
+    # Si tu veux encore plus compact sur mobile, remplace par :
+    # st.image(img, width=600)
 
 def go_to_page(page_filename: str):
     try:
@@ -66,7 +70,7 @@ st.markdown(
 # -----------------------------
 # Page content
 # -----------------------------
-show_logo(width=760)
+show_logo()
 
 st.title("Kidan Vid")
 st.write("Plateforme de transmission vidéo sécurisée.")
