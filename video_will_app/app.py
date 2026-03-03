@@ -1,168 +1,151 @@
 import streamlit as st
 from pathlib import Path
-import base64
 
-# =====================================================
-# CONFIG PAGE
-# =====================================================
+# ----------------------------
+# Helpers
+# ----------------------------
+APP_DIR = Path(__file__).resolve().parent
+ASSETS_DIR = APP_DIR / "assets"
+
+def asset_path(filename: str) -> Path:
+    return ASSETS_DIR / filename
+
+def show_image_if_exists(path: Path, *, caption: str | None = None, width: int | None = None, use_container_width: bool = False):
+    if path.exists():
+        st.image(str(path), caption=caption, width=width, use_container_width=use_container_width)
+        return True
+    st.warning(f"Image introuvable : {path.as_posix()}")
+    return False
+
+# ----------------------------
+# Page config
+# ----------------------------
 st.set_page_config(
     page_title="Kidan Vid",
+    page_icon="🎥",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
-# =====================================================
-# RÉDUCTION SIDEBAR (OPTION 1 COMPLETE)
-# =====================================================
-st.markdown("""
-<style>
+# ----------------------------
+# Header (logo grand)
+# ----------------------------
+logo = asset_path("logo_kidan_vid.png")
+# Pour qu'il prenne une grande place en haut : use_container_width + marge négative
+st.markdown(
+    """
+    <style>
+      .block-container { padding-top: 1.2rem; }
+      /* Réduit la "grosse" largeur visuelle du sidebar sur mobile */
+      section[data-testid="stSidebar"] { min-width: 260px !important; width: 260px !important; }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
-/* Sidebar largeur réduite */
-section[data-testid="stSidebar"] {
-    width: 240px !important;
-    min-width: 240px !important;
-}
+show_image_if_exists(logo, use_container_width=True)
 
-/* Ajuste zone principale */
-section.main > div {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
+# ----------------------------
+# Hero
+# ----------------------------
+st.title("Envoyez des vidéos personnelles en toute confidentialité.")
+st.write(
+    "La première plateforme sécurisée qui permet d’envoyer une vidéo privée à une personne, "
+    "accessible uniquement par elle, lorsque vous reposez en paix."
+)
 
-/* Supprime marge top excessive */
-.block-container {
-    padding-top: 0.8rem;
-    padding-bottom: 2rem;
-    max-width: 1100px;
-}
+colA, colB, colC, colD = st.columns(4)
+with colA:
+    st.markdown("- 100% sécurisé")
+with colB:
+    st.markdown("- Accès unique et contrôlé")
+with colC:
+    st.markdown("- Programmation possible")
+with colD:
+    st.markdown("- Accessible partout")
 
-/* Cache header streamlit */
-header { visibility: hidden; }
+st.markdown("")
 
-/* HERO */
-.kv-hero {
-    display:flex;
-    justify-content:center;
-    margin-bottom: 1.5rem;
-}
-.kv-hero img {
-    width: 100%;
-    max-width: 1000px;
-    height: auto;
-}
+# Boutons (haut de page)
+cta1, cta2 = st.columns([1, 1])
+with cta1:
+    if st.button("Découvrir comment ça marche", use_container_width=True):
+        st.switch_page("pages/01_Comment_ca_marche.py")
+with cta2:
+    if st.button("Créer un envoi sécurisé", use_container_width=True):
+        st.switch_page("pages/02_Creer_un_envoi_securise.py")
 
-/* TITRES */
-.kv-title {
-    text-align:center;
-    font-size: 34px;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-.kv-sub {
-    text-align:center;
-    font-size: 18px;
-    max-width: 850px;
-    margin: auto;
-}
-
-/* SECTIONS */
-.kv-section {
-    max-width: 850px;
-    margin: 2rem auto;
-}
-
-/* BOX CONNEXION */
-.kv-login-box {
-    margin-top: 2rem;
-    padding: 24px;
-    border-radius: 14px;
-    border: 1px solid rgba(0,0,0,0.08);
-    background: rgba(255,255,255,0.98);
-}
-
-</style>
-""", unsafe_allow_html=True)
-
-# =====================================================
-# PATHS
-# =====================================================
-BASE_DIR = Path(__file__).resolve().parent
-ASSETS_DIR = BASE_DIR / "assets"
-LOGO_PATH = ASSETS_DIR / "logo_kidan_vid.png"
-
-# =====================================================
-# LOGO
-# =====================================================
-if LOGO_PATH.exists():
-    b64 = base64.b64encode(LOGO_PATH.read_bytes()).decode("utf-8")
-    st.markdown(f"""
-        <div class="kv-hero">
-            <img src="data:image/png;base64,{b64}" alt="Kidan Vid"/>
-        </div>
-    """, unsafe_allow_html=True)
-else:
-    st.warning("Logo introuvable dans assets/logo_kidan_vid.png")
-
-# =====================================================
-# HEADLINE
-# =====================================================
-st.markdown('<div class="kv-title">Envoyez des vidéos personnelles en toute confidentialité.</div>', unsafe_allow_html=True)
-
-st.markdown("""
-<div class="kv-sub">
-La première plateforme sécurisée permettant d’envoyer une vidéo privée à une personne,
-accessible uniquement par elle, lorsque vous reposez en paix.
-</div>
-""", unsafe_allow_html=True)
-
-# =====================================================
-# AVANTAGES
-# =====================================================
-st.markdown("""
-<div class="kv-section">
-<ul>
-<li>100% sécurisé</li>
-<li>Accès unique et contrôlé</li>
-<li>Programmation possible</li>
-<li>Accessible partout</li>
-</ul>
-</div>
-""", unsafe_allow_html=True)
-
-# =====================================================
-# COMMENT CA MARCHE
-# =====================================================
-st.markdown('<div class="kv-section">', unsafe_allow_html=True)
-st.markdown("## Comment ça marche ?")
-
-st.markdown("""
-1️⃣ Vous téléchargez votre vidéo  
-2️⃣ Vous identifiez le destinataire  
-3️⃣ Nous sécurisons l’accès  
-4️⃣ Le destinataire reçoit la vidéo au moment prévu
-""")
-
-# =====================================================
-# CONNEXION EN BAS
-# =====================================================
-st.markdown('<div class="kv-login-box">', unsafe_allow_html=True)
-
-st.subheader("Se connecter")
-
-email = st.text_input("Adresse e-mail", placeholder="votre@email.com")
-
-if st.button("Continuer", use_container_width=True):
-    if not email.strip():
-        st.warning("Veuillez saisir votre e-mail.")
-    else:
-        st.session_state["prefill_email"] = email.strip()
-        st.switch_page("pages/Connexion.py")
-
-st.markdown("</div>", unsafe_allow_html=True)
-st.markdown("</div>", unsafe_allow_html=True)
-
-# =====================================================
-# FOOTER
-# =====================================================
 st.markdown("---")
-st.caption("Kidan Vid – Transmission sécurisée et traçable.")
+
+# ----------------------------
+# Aperçu "Comment ça marche" (résumé sur la home)
+# ----------------------------
+st.subheader("Comment ça marche ?")
+
+steps = [
+    ("I. Vous téléchargez votre vidéo", "Format sécurisé, cryptage immédiat."),
+    ("II. Vous identifiez le destinataire", "Email + téléphone + vérification d’identité."),
+    ("III. Nous sécurisons l’accès", "Code unique + double authentification (2FA)."),
+    ("IV. Le destinataire reçoit la vidéo (timing)", "Accès personnel, protégé et traçable."),
+]
+
+for title, desc in steps:
+    st.markdown(f"**{title}**  \n{desc}")
+
+st.markdown("---")
+
+# ----------------------------
+# Pourquoi Kidan Vid (résumé)
+# ----------------------------
+st.subheader("Pourquoi Kidan Vid ?")
+st.markdown(
+    """
+- Cryptage de bout en bout
+- Vidéo non téléchargeable
+- Accès limité dans le temps
+- Traçabilité des ouvertures
+- Option "visionnage unique"
+- Hébergement sécurisé conforme RGPD
+"""
+)
+
+st.markdown("---")
+
+# ----------------------------
+# Cas d’usage (résumé)
+# ----------------------------
+st.subheader("Cas d’usage")
+st.markdown(
+    """
+- Messages personnels confidentiels
+- Transmission de souvenirs familiaux
+- Messages importants programmés
+- Communication sensible
+- Transmission patrimoniale numérique
+"""
+)
+
+st.markdown("---")
+
+# ----------------------------
+# Nos offres (résumé)
+# ----------------------------
+st.subheader("Nos offres")
+st.markdown(
+    """
+- Abonnement mensuel
+- Abonnement annuel
+- Envoi unique premium
+"""
+)
+
+st.markdown("---")
+
+# ----------------------------
+# Connexion tout en bas de page (comme demandé)
+# ----------------------------
+st.subheader("Connexion")
+st.write("Accédez à votre espace pour gérer vos envois et vos paramètres de sécurité (2FA, codes de récupération).")
+
+if st.button("Se connecter", use_container_width=True):
+    st.switch_page("pages/Connexion.py")
