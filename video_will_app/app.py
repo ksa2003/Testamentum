@@ -10,12 +10,20 @@ ASSETS_DIR = APP_DIR / "assets"
 def asset_path(filename: str) -> Path:
     return ASSETS_DIR / filename
 
-def show_image_if_exists(path: Path, *, caption: str | None = None, width: int | None = None, use_container_width: bool = False):
-    if path.exists():
-        st.image(str(path), caption=caption, width=width, use_container_width=use_container_width)
-        return True
-    st.warning(f"Image introuvable : {path.as_posix()}")
-    return False
+def show_image_if_exists(path: Path, *, caption: str | None = None, width: int | None = None, use_container_width: bool = False) -> bool:
+    if not path.exists():
+        st.warning(f"Image introuvable : {path.as_posix()}")
+        return False
+
+    # IMPORTANT: Streamlit n'accepte pas width + use_container_width en même temps.
+    if use_container_width:
+        st.image(str(path), caption=caption, use_container_width=True)
+    else:
+        if width is not None:
+            st.image(str(path), caption=caption, width=width)
+        else:
+            st.image(str(path), caption=caption)
+    return True
 
 # ----------------------------
 # Page config
@@ -28,21 +36,22 @@ st.set_page_config(
 )
 
 # ----------------------------
-# Header (logo grand)
+# Styles
 # ----------------------------
-logo = asset_path("logo_kidan_vid.png")
-# Pour qu'il prenne une grande place en haut : use_container_width + marge négative
 st.markdown(
     """
     <style>
       .block-container { padding-top: 1.2rem; }
-      /* Réduit la "grosse" largeur visuelle du sidebar sur mobile */
       section[data-testid="stSidebar"] { min-width: 260px !important; width: 260px !important; }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
+# ----------------------------
+# Header (logo grand)
+# ----------------------------
+logo = asset_path("logo_kidan_vid.png")
 show_image_if_exists(logo, use_container_width=True)
 
 # ----------------------------
@@ -78,24 +87,22 @@ with cta2:
 st.markdown("---")
 
 # ----------------------------
-# Aperçu "Comment ça marche" (résumé sur la home)
+# Aperçu "Comment ça marche"
 # ----------------------------
 st.subheader("Comment ça marche ?")
-
 steps = [
     ("I. Vous téléchargez votre vidéo", "Format sécurisé, cryptage immédiat."),
     ("II. Vous identifiez le destinataire", "Email + téléphone + vérification d’identité."),
     ("III. Nous sécurisons l’accès", "Code unique + double authentification (2FA)."),
     ("IV. Le destinataire reçoit la vidéo (timing)", "Accès personnel, protégé et traçable."),
 ]
-
 for title, desc in steps:
     st.markdown(f"**{title}**  \n{desc}")
 
 st.markdown("---")
 
 # ----------------------------
-# Pourquoi Kidan Vid (résumé)
+# Pourquoi Kidan Vid
 # ----------------------------
 st.subheader("Pourquoi Kidan Vid ?")
 st.markdown(
@@ -112,7 +119,7 @@ st.markdown(
 st.markdown("---")
 
 # ----------------------------
-# Cas d’usage (résumé)
+# Cas d’usage
 # ----------------------------
 st.subheader("Cas d’usage")
 st.markdown(
@@ -128,7 +135,7 @@ st.markdown(
 st.markdown("---")
 
 # ----------------------------
-# Nos offres (résumé)
+# Nos offres
 # ----------------------------
 st.subheader("Nos offres")
 st.markdown(
@@ -142,7 +149,7 @@ st.markdown(
 st.markdown("---")
 
 # ----------------------------
-# Connexion tout en bas de page (comme demandé)
+# Connexion tout en bas
 # ----------------------------
 st.subheader("Connexion")
 st.write("Accédez à votre espace pour gérer vos envois et vos paramètres de sécurité (2FA, codes de récupération).")
