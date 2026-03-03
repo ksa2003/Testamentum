@@ -1,5 +1,7 @@
-import streamlit as st
+import base64
 from pathlib import Path
+
+import streamlit as st
 from PIL import Image
 
 # -----------------------------
@@ -7,7 +9,7 @@ from PIL import Image
 # -----------------------------
 st.set_page_config(
     page_title="Kidan Vid",
-    page_icon="K",
+    page_icon="🔒",
     layout="centered",
     initial_sidebar_state="expanded",
 )
@@ -15,6 +17,7 @@ st.set_page_config(
 BASE_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = BASE_DIR / "assets"
 LOGO_FILE = "logo_kidan_vid.png"
+
 
 # -----------------------------
 # Helpers
@@ -25,12 +28,12 @@ def load_image(path: Path):
     except Exception:
         return None
 
+
 def show_logo():
     """
-    Affichage responsive du logo sans découpe.
-    Compatible anciennes/nouvelles versions Streamlit :
-    - essaie use_container_width
-    - sinon fallback use_column_width
+    Affiche le logo en FULL responsive via HTML (pas st.image),
+    pour éviter les TypeError sur use_container_width / use_column_width
+    + éviter le logo "coupé" en haut sur mobile.
     """
     logo_path = ASSETS_DIR / LOGO_FILE
 
@@ -38,25 +41,34 @@ def show_logo():
         st.warning(f"Logo introuvable : {logo_path}")
         return
 
-    img = load_image(logo_path)
-    if img is None:
-        st.warning(f"Impossible d'ouvrir l'image : {logo_path}")
-        return
-
-    # Petit espace en haut pour éviter l'effet "collé"
-    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
-
-    # Responsive + fallback selon version Streamlit
     try:
-        st.image(img, use_container_width=True)
-    except TypeError:
-        st.image(img, use_column_width=True)
+        data = logo_path.read_bytes()
+        b64 = base64.b64encode(data).decode("utf-8")
+        ext = logo_path.suffix.lower().replace(".", "") or "png"
+
+        st.markdown(
+            f"""
+            <div class="kv-logo-wrap">
+              <img class="kv-logo" src="data:image/{ext};base64,{b64}" alt="Kidan Vid" />
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    except Exception:
+        # Fallback PIL si jamais le base64 échoue
+        img = load_image(logo_path)
+        if img is None:
+            st.warning(f"Impossible d'ouvrir l'image : {logo_path}")
+            return
+        st.image(img, width=760)
+
 
 def go_to_page(page_filename: str):
     try:
         st.switch_page(f"pages/{page_filename}")
     except Exception:
-        st.info("Utilisez le menu à gauche pour ouvrir la page.")
+        st.info("Utilisez le menu à gauche pour ouvrir la page (navigation auto indisponible ici).")
+
 
 # -----------------------------
 # Styles
@@ -64,10 +76,21 @@ def go_to_page(page_filename: str):
 st.markdown(
     """
     <style>
-      .block-container {
-        max-width: 900px;
-        padding-top: 0.6rem;
+      /* On pousse le contenu vers le bas pour éviter que le logo soit masqué/coupé par l’UI en haut (mobile). */
+      .block-container { max-width: 900px; padding-top: 3.2rem; }
+
+      .kv-logo-wrap{
+        margin-top: 0.8rem;
+        margin-bottom: 0.6rem;
+        display: flex;
+        justify-content: center;
       }
+      .kv-logo{
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+
       hr { margin: 2rem 0; }
     </style>
     """,
@@ -173,7 +196,7 @@ st.markdown("---")
 st.header("Connexion")
 st.write("Accédez à votre espace sécurisé.")
 
-st.text_input("Adresse e-mail", placeholder="votre@email.com")
+email = st.text_input("Adresse e-mail", placeholder="votre@email.com")
 
 b1, b2 = st.columns(2)
 with b1:
