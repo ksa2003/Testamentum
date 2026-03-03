@@ -27,8 +27,10 @@ def load_image(path: Path):
 
 def show_logo():
     """
-    Logo ajusté pour mobile.
-    Largeur réduite pour affichage complet.
+    Affichage responsive du logo sans découpe.
+    Compatible anciennes/nouvelles versions Streamlit :
+    - essaie use_container_width
+    - sinon fallback use_column_width
     """
     logo_path = ASSETS_DIR / LOGO_FILE
 
@@ -41,8 +43,14 @@ def show_logo():
         st.warning(f"Impossible d'ouvrir l'image : {logo_path}")
         return
 
-    # 🔥 Ajustement ici
-    st.image(img, width=550)
+    # Petit espace en haut pour éviter l'effet "collé"
+    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+
+    # Responsive + fallback selon version Streamlit
+    try:
+        st.image(img, use_container_width=True)
+    except TypeError:
+        st.image(img, use_column_width=True)
 
 def go_to_page(page_filename: str):
     try:
@@ -56,9 +64,9 @@ def go_to_page(page_filename: str):
 st.markdown(
     """
     <style>
-      .block-container { 
-        max-width: 900px; 
-        padding-top: 1.2rem; 
+      .block-container {
+        max-width: 900px;
+        padding-top: 0.6rem;
       }
       hr { margin: 2rem 0; }
     </style>
@@ -72,7 +80,6 @@ st.markdown(
 show_logo()
 
 st.title("Kidan Vid")
-
 st.write("Plateforme de transmission vidéo sécurisée.")
 st.write("Envoyez des vidéos personnelles en toute confidentialité.")
 st.write(
@@ -166,7 +173,7 @@ st.markdown("---")
 st.header("Connexion")
 st.write("Accédez à votre espace sécurisé.")
 
-email = st.text_input("Adresse e-mail", placeholder="votre@email.com")
+st.text_input("Adresse e-mail", placeholder="votre@email.com")
 
 b1, b2 = st.columns(2)
 with b1:
