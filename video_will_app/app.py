@@ -2,45 +2,97 @@ import streamlit as st
 from pathlib import Path
 import base64
 
-st.set_page_config(page_title="Kidan Vid", layout="wide")
+# =====================================================
+# CONFIG PAGE
+# =====================================================
+st.set_page_config(
+    page_title="Kidan Vid",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-# ==============================
+# =====================================================
+# RÉDUCTION SIDEBAR (OPTION 1 COMPLETE)
+# =====================================================
+st.markdown("""
+<style>
+
+/* Sidebar largeur réduite */
+section[data-testid="stSidebar"] {
+    width: 240px !important;
+    min-width: 240px !important;
+}
+
+/* Ajuste zone principale */
+section.main > div {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Supprime marge top excessive */
+.block-container {
+    padding-top: 0.8rem;
+    padding-bottom: 2rem;
+    max-width: 1100px;
+}
+
+/* Cache header streamlit */
+header { visibility: hidden; }
+
+/* HERO */
+.kv-hero {
+    display:flex;
+    justify-content:center;
+    margin-bottom: 1.5rem;
+}
+.kv-hero img {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+}
+
+/* TITRES */
+.kv-title {
+    text-align:center;
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+.kv-sub {
+    text-align:center;
+    font-size: 18px;
+    max-width: 850px;
+    margin: auto;
+}
+
+/* SECTIONS */
+.kv-section {
+    max-width: 850px;
+    margin: 2rem auto;
+}
+
+/* BOX CONNEXION */
+.kv-login-box {
+    margin-top: 2rem;
+    padding: 24px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.08);
+    background: rgba(255,255,255,0.98);
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# =====================================================
 # PATHS
-# ==============================
+# =====================================================
 BASE_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = BASE_DIR / "assets"
 LOGO_PATH = ASSETS_DIR / "logo_kidan_vid.png"
 
-# ==============================
-# STYLE
-# ==============================
-st.markdown("""
-<style>
-.block-container { padding-top: 0.6rem; padding-bottom: 2rem; max-width: 1100px; }
-header { visibility: hidden; }
-
-.kv-hero { display:flex; justify-content:center; margin: 0.2rem 0 1.2rem 0; }
-.kv-hero img { width: 100%; max-width: 1000px; height: auto; }
-
-.kv-title { text-align:center; font-size: 34px; font-weight: 700; margin-bottom: 0.5rem; }
-.kv-sub { text-align:center; font-size: 18px; max-width: 850px; margin: auto; }
-
-.kv-section { max-width: 850px; margin: 2rem auto; }
-.kv-section h2 { margin-bottom: 0.5rem; }
-
-.kv-login-box {
-    margin-top: 2rem;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid rgba(0,0,0,0.08);
-    background: rgba(255,255,255,0.98);
-}
-</style>
-""", unsafe_allow_html=True)
-
-# ==============================
+# =====================================================
 # LOGO
-# ==============================
+# =====================================================
 if LOGO_PATH.exists():
     b64 = base64.b64encode(LOGO_PATH.read_bytes()).decode("utf-8")
     st.markdown(f"""
@@ -48,22 +100,24 @@ if LOGO_PATH.exists():
             <img src="data:image/png;base64,{b64}" alt="Kidan Vid"/>
         </div>
     """, unsafe_allow_html=True)
+else:
+    st.warning("Logo introuvable dans assets/logo_kidan_vid.png")
 
-# ==============================
+# =====================================================
 # HEADLINE
-# ==============================
+# =====================================================
 st.markdown('<div class="kv-title">Envoyez des vidéos personnelles en toute confidentialité.</div>', unsafe_allow_html=True)
 
 st.markdown("""
 <div class="kv-sub">
-La première plateforme sécurisée qui permet d’envoyer une vidéo privée à une personne,
+La première plateforme sécurisée permettant d’envoyer une vidéo privée à une personne,
 accessible uniquement par elle, lorsque vous reposez en paix.
 </div>
 """, unsafe_allow_html=True)
 
-# ==============================
+# =====================================================
 # AVANTAGES
-# ==============================
+# =====================================================
 st.markdown("""
 <div class="kv-section">
 <ul>
@@ -75,9 +129,9 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ==============================
+# =====================================================
 # COMMENT CA MARCHE
-# ==============================
+# =====================================================
 st.markdown('<div class="kv-section">', unsafe_allow_html=True)
 st.markdown("## Comment ça marche ?")
 
@@ -88,9 +142,9 @@ st.markdown("""
 4️⃣ Le destinataire reçoit la vidéo au moment prévu
 """)
 
-# ==============================
-# CONNEXION EN BAS DE LA SECTION
-# ==============================
+# =====================================================
+# CONNEXION EN BAS
+# =====================================================
 st.markdown('<div class="kv-login-box">', unsafe_allow_html=True)
 
 st.subheader("Se connecter")
@@ -107,8 +161,8 @@ if st.button("Continuer", use_container_width=True):
 st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ==============================
+# =====================================================
 # FOOTER
-# ==============================
+# =====================================================
 st.markdown("---")
 st.caption("Kidan Vid – Transmission sécurisée et traçable.")
