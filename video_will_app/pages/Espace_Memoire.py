@@ -88,7 +88,7 @@ st.markdown("---")
 tab_videos, tab_docs, tab_benef, tab_params = st.tabs(["Vidéos", "Documents", "Bénéficiaires", "Paramètres"])
 
 # ============================================================
-# TAB: VIDEOS (comme avant = contenu réel, pas placeholder)
+# TAB: VIDEOS (contenu réel)
 # ============================================================
 with tab_videos:
     st.subheader("Vidéos")
@@ -124,7 +124,11 @@ with tab_videos:
         col3, col4 = st.columns(2)
         with col3:
             if benef_ids:
-                idx = st.selectbox("Bénéficiaire destinataire", list(range(len(benef_ids))), format_func=lambda i: benef_labels[i])
+                idx = st.selectbox(
+                    "Bénéficiaire destinataire",
+                    list(range(len(benef_ids))),
+                    format_func=lambda i: benef_labels[i],
+                )
                 benef_id = benef_ids[idx]
                 benef_display = benef_labels[idx]
             else:
@@ -212,7 +216,7 @@ with tab_videos:
         st.info("Aucune vidéo enregistrée pour le moment.")
 
 # ============================================================
-# TAB: DOCUMENTS (comme avant = upload + liste)
+# TAB: DOCUMENTS (upload + liste)
 # ============================================================
 with tab_docs:
     st.subheader("Documents")
@@ -285,7 +289,7 @@ with tab_docs:
         st.info("Aucun document enregistré pour le moment.")
 
 # ============================================================
-# TAB: BENEFICIAIRES (inchangé, mais on garde complet)
+# TAB: BENEFICIAIRES
 # ============================================================
 with tab_benef:
     st.subheader("Bénéficiaires")
@@ -374,7 +378,7 @@ Ces informations servent à l’accès sécurisé et peuvent être utiles aux ac
         st.info("Aucun bénéficiaire enregistré.")
 
 # ============================================================
-# TAB: PARAMETRES (ajout complet = infos inscription abonné)
+# TAB: PARAMETRES (infos inscription abonné)
 # ============================================================
 with tab_params:
     st.subheader("Paramètres")
@@ -403,7 +407,7 @@ Ces informations servent à l’inscription, à la sécurité, et peuvent être 
         with col2:
             p_prenom = st.text_input("Prénom", value=p.get("Prénom", ""))
             # email connecté : on laisse visible mais non modifiable ici
-            p_email = st.text_input("Email", value=p.get("Email", st.session_state.get("user_email", "")), disabled=True)
+            _ = st.text_input("Email", value=p.get("Email", st.session_state.get("user_email", "")), disabled=True)
             p_adresse = st.text_area(
                 "Adresse complète",
                 value=p.get("Adresse", ""),
@@ -414,11 +418,9 @@ Ces informations servent à l’inscription, à la sécurité, et peuvent être 
         st.markdown("**Pièce d’identité (optionnel / Premium)**")
         col3, col4, col5 = st.columns(3)
         with col3:
-            p_id_type = st.selectbox(
-                "Type de pièce",
-                ["", "Carte d'identité", "Passeport", "Titre de séjour", "Autre"],
-                index=0 if p.get("Pièce (type)", "") == "" else ["", "Carte d'identité", "Passeport", "Titre de séjour", "Autre"].index(p.get("Pièce (type)", "")),
-            )
+            options = ["", "Carte d'identité", "Passeport", "Titre de séjour", "Autre"]
+            current = p.get("Pièce (type)", "")
+            p_id_type = st.selectbox("Type de pièce", options, index=options.index(current) if current in options else 0)
         with col4:
             p_id_num = st.text_input("Numéro de pièce", value=p.get("Pièce (numéro)", ""))
         with col5:
@@ -446,12 +448,6 @@ Ces informations servent à l’inscription, à la sécurité, et peuvent être 
                 "Dernière mise à jour": datetime.now().strftime("%Y-%m-%d %H:%M"),
             }
             st.success("Informations abonné enregistrées (prototype).")
-
-    st.markdown("---")
-    st.markdown("### Aperçu (abonné)")
-    ap = st.session_state.abonnee_profile
-    preview = {k: v for k, v in ap.items() if k not in ["Notes"]}
-    st.json(preview)
 
 # -----------------------------
 # Footer navigation
