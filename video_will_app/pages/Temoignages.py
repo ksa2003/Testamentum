@@ -14,15 +14,6 @@ LOGO_PATH = ASSETS_DIR / "logo_kidan_vid.png"
 # -----------------------------
 # Helpers
 # -----------------------------
-def show_logo(width: int = 520):
-    if LOGO_PATH.exists():
-        try:
-            img = Image.open(LOGO_PATH)
-            st.image(img, width=width)
-        except Exception:
-            st.warning("Logo présent mais impossible à ouvrir.")
-    else:
-        st.warning("Logo introuvable (assets/logo_kidan_vid.png).")
 
 def yt_id(url: str) -> str | None:
     """
