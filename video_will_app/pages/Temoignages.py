@@ -9,7 +9,6 @@ st.set_page_config(page_title="Témoignages", layout="centered")
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 ASSETS_DIR = BASE_DIR / "assets"
-LOGO_PATH = ASSETS_DIR / "logo_kidan_vid.png"
 
 # -----------------------------
 # Helpers
