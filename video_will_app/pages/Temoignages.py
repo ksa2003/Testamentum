@@ -164,32 +164,32 @@ VIDEOS = [
     {
         "title": "Transmettre un message vidéo dans le temps",
         "subtitle": "Retour d’expérience sur les messages programmés et l’héritage numérique.",
-        "url": "https://www.youtube.com/watch?v=3GwjfUFyY6M",
+        "url": "https://youtu.be/RwQvEs_PkKA?is=IsEVaW19icHYNTVF",
     },
     {
         "title": "Protéger l’accès à une vidéo privée",
         "subtitle": "Témoignage sur la confidentialité, l’accès contrôlé et la sécurité.",
-        "url": "https://www.youtube.com/watch?v=V-_O7nl0Ii0",
+        "url": "https://youtu.be/oRVvi5xWF1k?is=jp3m7ZNh0adm3xd3",
     },
     {
         "title": "Mémoire familiale et transmission",
         "subtitle": "Partager des souvenirs et documents avec un accès réservé.",
-        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "url": "https://youtu.be/jr_mf05iJkE?is=s4Vtm3VJThW1QZ0H",
     },
     {
         "title": "Préparer la succession numérique",
         "subtitle": "Approche pratique : documents, bénéficiaires et organisation.",
-        "url": "https://www.youtube.com/watch?v=oHg5SJYRHA0",
+        "url": "https://youtu.be/bkOKj_hWCj4?is=-KzbtU_4nRh1zaVs",
     },
     {
         "title": "Accès bénéficiaire sécurisé",
         "subtitle": "Comment limiter l’accès dans le temps et tracer les ouvertures.",
-        "url": "https://www.youtube.com/watch?v=2Vv-BfVoq4g",
+        "url": "https://youtu.be/qk4XuiQGAtw?is=aRGdwKJ7DIMVThuC",
     },
     {
         "title": "KYC / Vérification d’identité simplifiée",
         "subtitle": "Pourquoi vérifier l’identité renforce la sécurité globale.",
-        "url": "https://www.youtube.com/watch?v=6Dh-RL__uN4",
+        "url": "https://youtu.be/ZvaCqzKAy7U?is=0_6qavo5nZK5YGN3",
     },
 ]
 
@@ -210,9 +210,9 @@ st.subheader("Plus de témoignages")
 
 col1, col2 = st.columns(2)
 with col1:
-    st.video("https://www.youtube.com/watch?v=jNQXAC9IVRw")
+    st.video("https://youtu.be/DBzO5rDAVPw?is=1PhdxiKR2TbLBBMV")
 with col2:
-    st.video("https://www.youtube.com/watch?v=9bZkp7q19f0")
+    st.video("https://youtu.be/6g0MA6tMlvU?is=avnHaWqL7_nIPIUw")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
