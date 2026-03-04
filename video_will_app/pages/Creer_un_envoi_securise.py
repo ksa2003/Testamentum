@@ -18,22 +18,32 @@ st.write("Un code unique et une double authentification (2FA) seront requis à l
 
 # --- MVP 2FA (démo) ---
 st.markdown("### Démonstration 2FA (MVP)")
-st.write("Cette étape simule un OTP. En production : envoi réel par SMS/Email + stockage en base + expiration.")
+st.write(
+    "Cette étape simule un OTP. En production : envoi réel par SMS/Email + stockage en base + expiration."
+)
 
 if "otp_code" not in st.session_state:
     st.session_state.otp_code = None
 if "otp_expire" not in st.session_state:
     st.session_state.otp_expire = None
 
-col1, col2 = st.columns([1, 1])
+col1, col2 = st.columns(2)
+
 with col1:
+    st.markdown("**Générer un code**")
     if st.button("Générer un code OTP", use_container_width=True):
         st.session_state.otp_code = f"{random.randint(100000, 999999)}"
         st.session_state.otp_expire = time.time() + 300  # 5 minutes
         st.info(f"Code OTP (démo) : {st.session_state.otp_code} (valide 5 minutes)")
 
 with col2:
-    otp_input = st.text_input("Entrer l’OTP", max_chars=6)
+    st.markdown("**Entrer l’OTP**")
+    otp_input = st.text_input(
+        "",
+        max_chars=6,
+        placeholder="6 chiffres",
+        label_visibility="collapsed",
+    )
 
 valid_otp = False
 if st.session_state.otp_code and st.session_state.otp_expire:
@@ -50,5 +60,8 @@ access_deadline = st.date_input("Date limite d’accès (optionnel)")
 
 st.subheader("5) Création")
 can_create = bool(video) and bool(dest_email) and valid_otp
+
 if st.button("Créer l’envoi sécurisé", use_container_width=True, disabled=not can_create):
-    st.success("Envoi créé (MVP). Prochaine étape : stockage chiffré + règles d’accès + traçabilité + notification destinataire.")
+    st.success(
+        "Envoi créé (MVP). Prochaine étape : stockage chiffré + règles d’accès + traçabilité + notification destinataire."
+    )
