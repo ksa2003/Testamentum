@@ -8,10 +8,9 @@ st.set_page_config(page_title="Témoignages", layout="centered")
 # -----------------------------
 # Helpers
 # -----------------------------
-def yt_id(url: str):
+def yt_id(url: str) -> str | None:
     """
     Extrait l'ID d'une URL YouTube (formats courants).
-    Compatible Python 3.10 (pas de type union '|' obligatoire).
     """
     try:
         if "youtu.be/" in url:
@@ -28,7 +27,7 @@ def yt_id(url: str):
 def yt_thumb(url: str) -> str:
     vid = yt_id(url)
     if not vid:
-        # fallback neutre si ID non parsé
+        # fallback générique (image neutre si ID non parsé)
         return "https://i.imgur.com/8Q2QZ4B.png"
     return f"https://img.youtube.com/vi/{vid}/hqdefault.jpg"
 
@@ -54,8 +53,10 @@ def video_card(title: str, subtitle: str, url: str):
         unsafe_allow_html=True,
     )
 
+
 # -----------------------------
 # Styles (look "site vitrine")
+# + suppression icône lien (🔗) à côté du titre
 # -----------------------------
 st.markdown(
     """
@@ -63,6 +64,9 @@ st.markdown(
       .block-container { max-width: 1000px; padding-top: 1.4rem; padding-bottom: 2.5rem; }
       h1, h2 { letter-spacing: -0.02em; }
       .subtle { color: rgba(0,0,0,0.6); font-size: 0.98rem; margin-top: -0.6rem; }
+
+      /* Supprime l’icône de lien (anchor/permalink) ajoutée par Streamlit */
+      a.anchor-link { display: none !important; }
 
       .grid {
         display: grid;
@@ -135,7 +139,7 @@ st.markdown(
 )
 
 # -----------------------------
-# Content (SANS LOGO)
+# Content
 # -----------------------------
 st.title("Témoignages")
 st.markdown(
@@ -143,40 +147,41 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Remplace ces liens par tes vraies vidéos quand tu veux.
+# Exemples "au hasard" — remplace par ta sélection.
 VIDEOS = [
     {
         "title": "Transmettre un message vidéo dans le temps",
         "subtitle": "Retour d’expérience sur les messages programmés et l’héritage numérique.",
-        "url": "https://youtu.be/RwQvEs_PkKA?si=IsEVaW19icHYNTVF",
+        "url": "https://youtu.be/RwQvEs_PkKA?is=IsEVaW19icHYNTVF",
     },
     {
         "title": "Protéger l’accès à une vidéo privée",
         "subtitle": "Témoignage sur la confidentialité, l’accès contrôlé et la sécurité.",
-        "url": "https://youtu.be/oRVvi5xWF1k?si=jp3m7ZNh0adm3xd3",
+        "url": "https://youtu.be/oRVvi5xWF1k?is=jp3m7ZNh0adm3xd3",
     },
     {
         "title": "Mémoire familiale et transmission",
         "subtitle": "Partager des souvenirs et documents avec un accès réservé.",
-        "url": "https://youtu.be/jr_mf05iJkE?si=s4Vtm3VJThW1QZ0H",
+        "url": "https://youtu.be/jr_mf05iJkE?is=s4Vtm3VJThW1QZ0H",
     },
     {
         "title": "Préparer la succession numérique",
         "subtitle": "Approche pratique : documents, bénéficiaires et organisation.",
-        "url": "https://youtu.be/bkOKj_hWCj4?si=-KzbtU_4nRh1zaVs",
+        "url": "https://youtu.be/bkOKj_hWCj4?is=-KzbtU_4nRh1zaVs",
     },
     {
         "title": "Accès bénéficiaire sécurisé",
-        "subtitle": "Limiter l’accès dans le temps et tracer les ouvertures.",
-        "url": "https://youtu.be/qk4XuiQGAtw?si=aRGdwKJ7DIMVThuC",
+        "subtitle": "Comment limiter l’accès dans le temps et tracer les ouvertures.",
+        "url": "https://youtu.be/qk4XuiQGAtw?is=aRGdwKJ7DIMVThuC",
     },
     {
-        "title": "Vérification d’identité (KYC) et sécurité",
+        "title": "KYC / Vérification d’identité simplifiée",
         "subtitle": "Pourquoi vérifier l’identité renforce la sécurité globale.",
-        "url": "https://youtu.be/ZvaCqzKAy7U?si=0_6qavo5nZK5YGN3",
+        "url": "https://youtu.be/ZvaCqzKAy7U?is=0_6qavo5nZK5YGN3",
     },
 ]
 
+# Grille 3 colonnes via HTML
 st.markdown('<div class="grid">', unsafe_allow_html=True)
 for v in VIDEOS:
     st.markdown('<div>', unsafe_allow_html=True)
@@ -190,9 +195,9 @@ st.subheader("Plus de témoignages")
 
 col1, col2 = st.columns(2)
 with col1:
-    st.video("https://youtu.be/DBzO5rDAVPw?si=1PhdxiKR2TbLBBMV")
+    st.video("https://youtu.be/DBzO5rDAVPw?is=1PhdxiKR2TbLBBMV")
 with col2:
-    st.video("https://youtu.be/6g0MA6tMlvU?si=avnHaWqL7_nIPIUw")
+    st.video("https://youtu.be/6g0MA6tMlvU?is=avnHaWqL7_nIPIUw")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
