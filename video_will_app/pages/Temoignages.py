@@ -1,14 +1,9 @@
 import streamlit as st
-from pathlib import Path
-from PIL import Image
 
 # -----------------------------
 # Config
 # -----------------------------
 st.set_page_config(page_title="Témoignages", layout="centered")
-
-BASE_DIR = Path(__file__).resolve().parents[1]
-ASSETS_DIR = BASE_DIR / "assets"
 
 # -----------------------------
 # Helpers
