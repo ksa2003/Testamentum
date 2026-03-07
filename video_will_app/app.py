@@ -26,11 +26,9 @@ def show_logo(path: Path):
 
     try:
         img = Image.open(path)
-
         col1, col2, col3 = st.columns([1, 6, 1])
         with col2:
             st.image(img, width=700)
-
     except Exception as e:
         st.error(f"Impossible de charger le logo : {e}")
 
@@ -66,6 +64,7 @@ st.markdown(
         display: none !important;
     }
 
+    /* Sidebar */
     section[data-testid="stSidebar"] {
         background: #081b30;
     }
@@ -74,14 +73,16 @@ st.markdown(
         color: white !important;
     }
 
+    /* Titres et texte */
     h1, h2, h3, h4, h5, h6 {
         color: white !important;
     }
 
-    p, li, label, div, span {
+    p, li, label {
         color: #eef4fb !important;
     }
 
+    /* Zone logo */
     .logo-wrap {
         background: #102c4f;
         border: 1px solid rgba(255,255,255,0.12);
@@ -91,6 +92,7 @@ st.markdown(
         box-shadow: 0 8px 24px rgba(0,0,0,0.18);
     }
 
+    /* Hero */
     .hero-box {
         background: #1c3d66;
         border-radius: 18px;
@@ -100,6 +102,7 @@ st.markdown(
         margin-bottom: 18px;
     }
 
+    /* Bloc juridique */
     .legal-box {
         background: #193a5f;
         border-left: 5px solid #4da3ff;
@@ -113,6 +116,7 @@ st.markdown(
         color: white !important;
     }
 
+    /* Stats */
     .small-stat {
         background: #1b446d;
         border-radius: 14px;
@@ -128,6 +132,7 @@ st.markdown(
         justify-content: center;
     }
 
+    /* Piliers */
     .pill-card {
         background: #244f80;
         border-radius: 16px;
@@ -158,6 +163,7 @@ st.markdown(
         font-size: 1rem;
     }
 
+    /* Inputs */
     input, textarea {
         background: #132c4a !important;
         color: white !important;
@@ -168,13 +174,15 @@ st.markdown(
         color: white !important;
     }
 
+    /* Boutons - correction lisibilité */
     .stButton > button {
-        background: white !important;
+        background: #ffffff !important;
         color: #0a1e36 !important;
         border-radius: 10px !important;
         border: none !important;
         font-weight: 700 !important;
         min-height: 46px !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.12) !important;
     }
 
     .stButton > button:hover {
@@ -182,10 +190,30 @@ st.markdown(
         color: #0a1e36 !important;
     }
 
+    .stButton > button p,
+    .stButton > button span,
+    .stButton > button div {
+        color: #0a1e36 !important;
+    }
+
+    .stButton > button:disabled {
+        background: #dfe7f1 !important;
+        color: #516070 !important;
+        opacity: 1 !important;
+    }
+
+    .stButton > button:disabled p,
+    .stButton > button:disabled span,
+    .stButton > button:disabled div {
+        color: #516070 !important;
+    }
+
+    /* Ligne */
     hr {
         border-color: rgba(255,255,255,0.12);
     }
 
+    /* Caption */
     .stCaption {
         color: rgba(255,255,255,0.72) !important;
     }
@@ -245,11 +273,11 @@ st.markdown(
 col1, col2 = st.columns(2)
 
 with col1:
-    if st.button("Découvrir comment ça marche"):
+    if st.button("Découvrir comment ça marche", key="home_how"):
         go_to_page("Comment_ca_marche.py")
 
 with col2:
-    if st.button("Créer un envoi sécurisé"):
+    if st.button("Créer un envoi sécurisé", key="home_create"):
         go_to_page("Creer_un_envoi_securise.py")
 
 # -----------------------------------------------------
@@ -344,16 +372,16 @@ st.markdown("<h2>Accès rapides</h2>", unsafe_allow_html=True)
 
 q1, q2, q3, q4 = st.columns(4)
 with q1:
-    if st.button("Qui sommes-nous"):
+    if st.button("Qui sommes-nous", key="quick_about"):
         go_to_page("Qui_sommes_nous.py")
 with q2:
-    if st.button("Nous contacter"):
+    if st.button("Nous contacter", key="quick_contact"):
         go_to_page("Nous_contacter.py")
 with q3:
-    if st.button("Informations légales"):
+    if st.button("Informations légales", key="quick_info_legal"):
         go_to_page("Informations_legales.py")
 with q4:
-    if st.button("Mentions légales"):
+    if st.button("Mentions légales", key="quick_mentions"):
         go_to_page("Mentions_legales.py")
 
 # -----------------------------------------------------
