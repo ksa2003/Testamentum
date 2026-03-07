@@ -1,17 +1,12 @@
 import streamlit as st
 
-# -----------------------------
-# Config
-# -----------------------------
 st.set_page_config(page_title="Témoignages", layout="centered")
 
-# -----------------------------
-# Helpers
-# -----------------------------
-def yt_id(url: str) -> str | None:
-    """
-    Extrait l'ID d'une URL YouTube (formats courants).
-    """
+BLUE_MAIN = "#0A66C2"
+BLUE_DARK = "#084C95"
+BLUE_SOFT = "#EAF4FF"
+
+def yt_id(url: str):
     try:
         if "youtu.be/" in url:
             return url.split("youtu.be/")[1].split("?")[0].split("&")[0]
@@ -23,14 +18,11 @@ def yt_id(url: str) -> str | None:
     except Exception:
         return None
 
-
 def yt_thumb(url: str) -> str:
     vid = yt_id(url)
     if not vid:
-        # fallback générique (image neutre si ID non parsé)
         return "https://i.imgur.com/8Q2QZ4B.png"
     return f"https://img.youtube.com/vi/{vid}/hqdefault.jpg"
-
 
 def video_card(title: str, subtitle: str, url: str):
     thumb = yt_thumb(url)
@@ -53,44 +45,54 @@ def video_card(title: str, subtitle: str, url: str):
         unsafe_allow_html=True,
     )
 
-
-# -----------------------------
-# Styles (look "site vitrine")
-# + suppression icône lien (🔗) à côté du titre
-# -----------------------------
 st.markdown(
-    """
+    f"""
     <style>
-      .block-container { max-width: 1000px; padding-top: 1.4rem; padding-bottom: 2.5rem; }
-      h1, h2 { letter-spacing: -0.02em; }
-      .subtle { color: rgba(0,0,0,0.6); font-size: 0.98rem; margin-top: -0.6rem; }
-
-      /* Supprime l’icône de lien (anchor/permalink) ajoutée par Streamlit */
-      a.anchor-link { display: none !important; }
-
-      .grid {
+      .block-container {{
+        max-width: 1040px;
+        padding-top: 1.4rem;
+        padding-bottom: 2.8rem;
+      }}
+      a.anchor-link {{
+        display: none !important;
+      }}
+      .subtle {{
+        color: rgba(0,0,0,0.65);
+        font-size: 0.98rem;
+        margin-top: -0.4rem;
+        margin-bottom: 1rem;
+      }}
+      .legal-box {{
+        border-left: 5px solid {BLUE_MAIN};
+        background: #f5faff;
+        padding: 14px 16px;
+        border-radius: 10px;
+        margin: 18px 0;
+      }}
+      .grid {{
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 18px;
         margin-top: 18px;
-      }
-
-      .card {
-        border: 1px solid rgba(0,0,0,0.08);
+      }}
+      .card {{
+        border: 1px solid rgba(10,102,194,0.14);
         border-radius: 14px;
         overflow: hidden;
         background: #fff;
         box-shadow: 0 8px 20px rgba(0,0,0,0.04);
-      }
-
-      .thumb-link { position: relative; display:block; }
-      .thumb {
+      }}
+      .thumb-link {{
+        position: relative;
+        display:block;
+      }}
+      .thumb {{
         width: 100%;
         height: 170px;
         object-fit: cover;
         display:block;
-      }
-      .play {
+      }}
+      .play {{
         position: absolute;
         inset: 0;
         display:flex;
@@ -99,110 +101,100 @@ st.markdown(
         font-size: 44px;
         color: rgba(255,255,255,0.92);
         text-shadow: 0 8px 20px rgba(0,0,0,0.35);
-        opacity: 0.92;
-      }
-
-      .card-body { padding: 14px 14px 16px 14px; }
-      .card-title { font-weight: 700; font-size: 1.02rem; margin-bottom: 6px; }
-      .card-subtitle { color: rgba(0,0,0,0.62); font-size: 0.92rem; line-height: 1.35; min-height: 44px; }
-
-      .card-actions { margin-top: 12px; }
-      .btn {
+      }}
+      .card-body {{
+        padding: 14px;
+      }}
+      .card-title {{
+        font-weight: 700;
+        color:{BLUE_DARK};
+        margin-bottom: 6px;
+      }}
+      .card-subtitle {{
+        color: rgba(0,0,0,0.62);
+        font-size: 0.92rem;
+        line-height: 1.35;
+        min-height: 44px;
+      }}
+      .btn {{
         display:inline-block;
+        margin-top: 10px;
         padding: 9px 12px;
         border-radius: 10px;
-        border: 1px solid rgba(0,0,0,0.14);
+        border: 1px solid rgba(10,102,194,0.18);
         text-decoration: none;
-        color: rgba(0,0,0,0.78);
+        color: {BLUE_DARK};
         font-weight: 600;
-        background: rgba(255,255,255,0.7);
-      }
-      .btn:hover { border-color: rgba(0,0,0,0.22); }
-
-      .section {
-        margin-top: 34px;
-        padding-top: 10px;
-        border-top: 1px solid rgba(0,0,0,0.06);
-      }
-
-      @media (max-width: 980px) {
-        .grid { grid-template-columns: repeat(2, 1fr); }
-        .thumb { height: 185px; }
-      }
-      @media (max-width: 640px) {
-        .grid { grid-template-columns: 1fr; }
-        .thumb { height: 200px; }
-      }
+        background: #f7fbff;
+      }}
+      @media (max-width: 980px) {{
+        .grid {{ grid-template-columns: repeat(2, 1fr); }}
+      }}
+      @media (max-width: 640px) {{
+        .grid {{ grid-template-columns: 1fr; }}
+      }}
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-# -----------------------------
-# Content
-# -----------------------------
 st.title("Témoignages")
 st.markdown(
-    '<div class="subtle">Des retours d’expérience autour de la transmission, des messages vidéo et de l’héritage numérique.</div>',
+    '<div class="subtle">Retours d’expérience autour de la transmission vidéo, de la mémoire audio, de la sécurité et du cadre notarial.</div>',
     unsafe_allow_html=True,
 )
 
-# Exemples "au hasard" — remplace par ta sélection.
+st.markdown(
+    """
+    <div class="legal-box">
+        <strong>Point juridique important</strong><br>
+        En France, une vidéo seule ne constitue pas un testament juridiquement valable.
+        Kidan Vid intègre le notaire comme pilier central pour sécuriser la transmission.
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 VIDEOS = [
     {
-        "title": "Transmettre un message vidéo dans le temps",
-        "subtitle": "Retour d’expérience sur les messages programmés et l’héritage numérique.",
-        "url": "https://youtu.be/RwQvEs_PkKA?is=IsEVaW19icHYNTVF",
+        "title": "Transmission vidéo",
+        "subtitle": "Message vidéo, temporalité et transmission personnelle.",
+        "url": "https://youtu.be/RwQvEs_PkKA",
     },
     {
-        "title": "Protéger l’accès à une vidéo privée",
-        "subtitle": "Témoignage sur la confidentialité, l’accès contrôlé et la sécurité.",
-        "url": "https://youtu.be/oRVvi5xWF1k?is=jp3m7ZNh0adm3xd3",
+        "title": "Souvenirs et voix",
+        "subtitle": "L’importance émotionnelle de la parole enregistrée.",
+        "url": "https://youtu.be/jr_mf05iJkE",
     },
     {
-        "title": "Mémoire familiale et transmission",
-        "subtitle": "Partager des souvenirs et documents avec un accès réservé.",
-        "url": "https://youtu.be/jr_mf05iJkE?is=s4Vtm3VJThW1QZ0H",
+        "title": "Protection et accès",
+        "subtitle": "Contrôle d’accès, confidentialité et identité.",
+        "url": "https://youtu.be/ZvaCqzKAy7U",
     },
     {
-        "title": "Préparer la succession numérique",
-        "subtitle": "Approche pratique : documents, bénéficiaires et organisation.",
-        "url": "https://youtu.be/bkOKj_hWCj4?is=-KzbtU_4nRh1zaVs",
+        "title": "Préparer la transmission",
+        "subtitle": "Documents, bénéficiaires et organisation.",
+        "url": "https://youtu.be/bkOKj_hWCj4",
     },
     {
-        "title": "Accès bénéficiaire sécurisé",
-        "subtitle": "Comment limiter l’accès dans le temps et tracer les ouvertures.",
-        "url": "https://youtu.be/qk4XuiQGAtw?is=aRGdwKJ7DIMVThuC",
+        "title": "Sécuriser un accès bénéficiaire",
+        "subtitle": "Limiter l’accès dans le temps et tracer les ouvertures.",
+        "url": "https://youtu.be/qk4XuiQGAtw",
     },
     {
-        "title": "KYC / Vérification d’identité simplifiée",
-        "subtitle": "Pourquoi vérifier l’identité renforce la sécurité globale.",
-        "url": "https://youtu.be/ZvaCqzKAy7U?is=0_6qavo5nZK5YGN3",
+        "title": "Cadre juridique",
+        "subtitle": "Pourquoi la transmission doit être encadrée.",
+        "url": "https://youtu.be/oRVvi5xWF1k",
     },
 ]
 
-# Grille 3 colonnes via HTML
 st.markdown('<div class="grid">', unsafe_allow_html=True)
 for v in VIDEOS:
-    st.markdown('<div>', unsafe_allow_html=True)
+    st.markdown("<div>", unsafe_allow_html=True)
     video_card(v["title"], v["subtitle"], v["url"])
     st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Section “Plus de témoignages”
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.subheader("Plus de témoignages")
-
-col1, col2 = st.columns(2)
-with col1:
-    st.video("https://youtu.be/DBzO5rDAVPw?is=1PhdxiKR2TbLBBMV")
-with col2:
-    st.video("https://youtu.be/6g0MA6tMlvU?is=avnHaWqL7_nIPIUw")
-
-st.markdown("</div>", unsafe_allow_html=True)
-
 st.markdown("---")
-if st.button("Retour accueil"):
+if st.button("Retour accueil", use_container_width=True):
     st.switch_page("app.py")
-
-st.caption("© Kidan Vid")
