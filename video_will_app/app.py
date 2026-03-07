@@ -38,15 +38,17 @@ def go_to_page(page_filename: str):
 
 
 # -----------------------------------------------------
-# STYLE GLOBAL BLEU
+# STYLE GLOBAL
 # -----------------------------------------------------
 st.markdown(
     """
     <style>
+    /* fond principal */
     .stApp {
-        background: linear-gradient(180deg,#0A66C2 0%,#084C95 100%);
+        background: linear-gradient(180deg, #0f2747 0%, #0a1e36 100%);
     }
 
+    /* texte global */
     html, body, [class*="css"] {
         color: white;
     }
@@ -54,77 +56,136 @@ st.markdown(
     .block-container {
         padding-top: 2rem;
         padding-bottom: 3rem;
-        max-width: 980px;
+        max-width: 1000px;
     }
 
     a.anchor-link {
         display: none !important;
     }
 
-    .card {
-        background: rgba(255,255,255,0.07);
-        border-radius: 18px;
-        padding: 24px;
-        border: 1px solid rgba(255,255,255,0.15);
+    /* sidebar */
+    section[data-testid="stSidebar"] {
+        background: #081b30;
     }
 
+    section[data-testid="stSidebar"] * {
+        color: white !important;
+    }
+
+    /* hero */
     .hero-box {
-        background: rgba(255,255,255,0.08);
+        background: #1c3d66;
         border-radius: 18px;
-        padding: 24px;
-        border: 1px solid rgba(255,255,255,0.20);
+        padding: 28px;
+        border: 1px solid rgba(255,255,255,0.14);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.18);
     }
 
+    /* bloc juridique */
     .legal-box {
-        border-left: 5px solid #ffffff;
-        background: rgba(255,255,255,0.08);
-        padding: 14px 16px;
+        background: #193a5f;
+        border-left: 5px solid #4da3ff;
+        padding: 16px;
         border-radius: 10px;
         margin: 18px 0;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
     }
 
+    /* cartes standards */
+    .card {
+        background: #204c7a;
+        border-radius: 14px;
+        padding: 18px;
+        border: 1px solid rgba(255,255,255,0.10);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.14);
+    }
+
+    /* cartes piliers */
     .pill-card {
-        background: rgba(255,255,255,0.08);
+        background: #244f80;
         border-radius: 16px;
         padding: 20px;
-        border: 1px solid rgba(255,255,255,0.14);
-        min-height: 170px;
+        border: 1px solid rgba(255,255,255,0.12);
+        min-height: 185px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
-    .stButton > button {
-        background: white;
-        color: #0A66C2;
-        border-radius: 10px;
-        border: none;
-        font-weight: 600;
+    .pill-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 30px rgba(0,0,0,0.28);
     }
 
-    .stButton > button:hover {
-        background: #eaf4ff;
-        color: #084C95;
+    .pill-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-top: 8px;
+        margin-bottom: 10px;
+        color: white;
     }
 
-    section[data-testid="stSidebar"] {
-        background: #063970;
+    .pill-text {
+        color: rgba(255,255,255,0.92);
+        line-height: 1.6;
+        font-size: 1rem;
     }
 
+    .small-stat {
+        background: #1b446d;
+        border-radius: 14px;
+        padding: 18px 12px;
+        border: 1px solid rgba(255,255,255,0.10);
+        text-align: center;
+        font-weight: 700;
+        color: white;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.14);
+        min-height: 82px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* champs */
     input, textarea {
-        background: rgba(255,255,255,0.10) !important;
+        background: #132c4a !important;
+        color: white !important;
+    }
+
+    label, .stTextInput label, .stTextArea label {
         color: white !important;
     }
 
     div[data-baseweb="select"] {
-        background: rgba(255,255,255,0.10);
+        background: #132c4a !important;
+        color: white !important;
     }
 
-    button[data-baseweb="tab"] {
-        color: white;
+    /* boutons */
+    .stButton > button {
+        background: white;
+        color: #0a1e36;
+        border-radius: 10px;
+        border: none;
+        font-weight: 700;
+        min-height: 44px;
     }
 
-    button[data-baseweb="tab"][aria-selected="true"] {
-        background: #0A66C2;
+    .stButton > button:hover {
+        background: #e5f1ff;
+        color: #0a1e36;
     }
 
+    /* hr */
+    hr {
+        border-color: rgba(255,255,255,0.12);
+    }
+
+    /* caption */
+    .stCaption {
+        color: rgba(255,255,255,0.70) !important;
+    }
+
+    /* masquer footer streamlit */
     footer {
         visibility: hidden;
     }
@@ -141,11 +202,11 @@ show_logo(LOGO_PATH, width=420)
 st.markdown(
     """
     <div class="hero-box">
-        <h1 style="margin-bottom:10px;">Kidan Vid</h1>
-        <div style="font-size:1.08rem; margin-bottom:12px;">
+        <h1 style="margin-bottom:10px; color:white;">Kidan Vid</h1>
+        <div style="font-size:1.08rem; margin-bottom:12px; color:white;">
             Plateforme de transmission vidéo, audio et documentaire sécurisée.
         </div>
-        <div style="font-size:1.02rem; line-height:1.6;">
+        <div style="font-size:1.02rem; line-height:1.7; color:rgba(255,255,255,0.95);">
             Envoyez des messages personnels en toute confidentialité.
             Vidéos, audios, documents et accès bénéficiaire sont organisés
             dans une logique humaine, technique et juridique.
@@ -183,47 +244,19 @@ with col2:
         go_to_page("Creer_un_envoi_securise.py")
 
 # -----------------------------------------------------
-# BLOCS RAPIDES
+# POINTS CLÉS
 # -----------------------------------------------------
 st.markdown("### Points clés")
-c1, c2, c3, c4 = st.columns(4)
+s1, s2, s3, s4 = st.columns(4)
 
-with c1:
-    st.markdown(
-        """
-        <div class="card" style="text-align:center;padding:16px;">
-            <b>100% sécurisé</b>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-with c2:
-    st.markdown(
-        """
-        <div class="card" style="text-align:center;padding:16px;">
-            <b>Accès unique et contrôlé</b>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-with c3:
-    st.markdown(
-        """
-        <div class="card" style="text-align:center;padding:16px;">
-            <b>Programmation possible</b>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-with c4:
-    st.markdown(
-        """
-        <div class="card" style="text-align:center;padding:16px;">
-            <b>Notaire intégré</b>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+with s1:
+    st.markdown('<div class="small-stat">100% sécurisé</div>', unsafe_allow_html=True)
+with s2:
+    st.markdown('<div class="small-stat">Accès unique et contrôlé</div>', unsafe_allow_html=True)
+with s3:
+    st.markdown('<div class="small-stat">Programmation possible</div>', unsafe_allow_html=True)
+with s4:
+    st.markdown('<div class="small-stat">Notaire intégré</div>', unsafe_allow_html=True)
 
 # -----------------------------------------------------
 # 4 PILIERS
@@ -235,20 +268,25 @@ with p1:
     st.markdown(
         """
         <div class="pill-card" title="Transmission vidéo sécurisée, messages programmés et consultation contrôlée.">
-            <div style="font-size:30px;">🎥</div>
-            <h4>Vidéo</h4>
-            <div>Messages vidéo personnels programmés et délivrés au bon moment.</div>
+            <div style="font-size:34px;">🎥</div>
+            <div class="pill-title">Vidéo</div>
+            <div class="pill-text">
+                Messages vidéo personnels programmés et délivrés au bon moment.
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
+
 with p2:
     st.markdown(
         """
         <div class="pill-card" title="Enregistrements vocaux, mémoire sonore et messages audio.">
-            <div style="font-size:30px;">🎙️</div>
-            <h4>Audio</h4>
-            <div>Souvenirs vocaux, témoignages sonores et compléments de transmission.</div>
+            <div style="font-size:34px;">🎙️</div>
+            <div class="pill-title">Audio</div>
+            <div class="pill-text">
+                Souvenirs vocaux, témoignages sonores et compléments de transmission.
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -259,20 +297,25 @@ with p3:
     st.markdown(
         """
         <div class="pill-card" title="Chiffrement, double authentification, OTP et traçabilité.">
-            <div style="font-size:30px;">🛡️</div>
-            <h4>Sécurisation</h4>
-            <div>Protection technique : chiffrement, double authentification et traçabilité.</div>
+            <div style="font-size:34px;">🛡️</div>
+            <div class="pill-title">Sécurisation</div>
+            <div class="pill-text">
+                Protection technique : chiffrement, double authentification et traçabilité.
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
+
 with p4:
     st.markdown(
         """
         <div class="pill-card" title="La vidéo seule n’a pas de valeur testamentaire en France. Le notaire structure juridiquement la transmission.">
-            <div style="font-size:30px;">⚖️</div>
-            <h4>Notaires</h4>
-            <div>Le pilier juridique central pour articuler la transmission avec le droit.</div>
+            <div style="font-size:34px;">⚖️</div>
+            <div class="pill-title">Notaires</div>
+            <div class="pill-text">
+                Le pilier juridique central pour articuler la transmission avec le droit.
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
