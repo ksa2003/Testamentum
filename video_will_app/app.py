@@ -19,15 +19,19 @@ LOGO_PATH = ASSETS_DIR / "logo_kidan_vid.png"
 # -----------------------------------------------------
 # HELPERS
 # -----------------------------------------------------
-def show_logo(path: Path, width: int = 900):
+def show_logo(path: Path):
     if not path.exists():
         st.warning(f"Logo introuvable : {path}")
         return
+
     try:
         img = Image.open(path)
-        col1, col2, col3 = st.columns([1, 10, 1])
+
+        # largeur alignée avec les blocs de contenu
+        col1, col2, col3 = st.columns([1, 6, 1])
         with col2:
-            st.image(img, width=width)
+            st.image(img, use_container_width=True)
+
     except Exception as e:
         st.error(f"Impossible de charger le logo : {e}")
 
@@ -55,7 +59,7 @@ st.markdown(
 
     .block-container {
         max-width: 1180px;
-        padding-top: 1.6rem;
+        padding-top: 1.4rem;
         padding-bottom: 3rem;
     }
 
@@ -81,14 +85,20 @@ st.markdown(
         color: #eef4fb !important;
     }
 
-    /* Logo */
+    /* Zone logo */
     .logo-wrap {
         background: #102c4f;
         border: 1px solid rgba(255,255,255,0.12);
         border-radius: 18px;
-        padding: 20px 12px 12px 12px;
+        padding: 18px 10px 10px 10px;
         margin-bottom: 22px;
         box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    }
+
+    /* arrondi visuel logo */
+    .logo-wrap img {
+        border-radius: 14px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.35);
     }
 
     /* Hero */
@@ -113,15 +123,6 @@ st.markdown(
 
     .legal-box b {
         color: white !important;
-    }
-
-    /* Cartes */
-    .card {
-        background: #204c7a;
-        border-radius: 14px;
-        padding: 18px;
-        border: 1px solid rgba(255,255,255,0.10);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.14);
     }
 
     /* Stats */
@@ -219,7 +220,7 @@ st.markdown(
 # LOGO
 # -----------------------------------------------------
 st.markdown('<div class="logo-wrap">', unsafe_allow_html=True)
-show_logo(LOGO_PATH, width=900)
+show_logo(LOGO_PATH)
 st.markdown("</div>", unsafe_allow_html=True)
 
 # -----------------------------------------------------
