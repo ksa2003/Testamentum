@@ -19,13 +19,15 @@ LOGO_PATH = ASSETS_DIR / "logo_kidan_vid.png"
 # -----------------------------------------------------
 # HELPERS
 # -----------------------------------------------------
-def show_logo(path: Path, width: int = 420):
+def show_logo(path: Path, width: int = 620):
     if not path.exists():
         st.warning(f"Logo introuvable : {path}")
         return
     try:
         img = Image.open(path)
-        st.image(img, width=width)
+        col1, col2, col3 = st.columns([1, 8, 1])
+        with col2:
+            st.image(img, width=width)
     except Exception as e:
         st.error(f"Impossible de charger le logo : {e}")
 
@@ -70,6 +72,16 @@ st.markdown(
 
     section[data-testid="stSidebar"] * {
         color: white !important;
+    }
+
+    /* zone logo */
+    .logo-wrap {
+        background: #102c4f;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 18px;
+        padding: 26px 18px 18px 18px;
+        margin-bottom: 22px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.18);
     }
 
     /* hero */
@@ -197,7 +209,9 @@ st.markdown(
 # -----------------------------------------------------
 # HEADER / LOGO
 # -----------------------------------------------------
-show_logo(LOGO_PATH, width=420)
+st.markdown('<div class="logo-wrap">', unsafe_allow_html=True)
+show_logo(LOGO_PATH, width=620)
+st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown(
     """
