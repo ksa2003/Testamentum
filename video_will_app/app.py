@@ -8,7 +8,7 @@ from PIL import Image
 # -----------------------------------------------------
 st.set_page_config(
     page_title="Kidan Vid",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="expanded",
 )
 
@@ -19,13 +19,13 @@ LOGO_PATH = ASSETS_DIR / "logo_kidan_vid.png"
 # -----------------------------------------------------
 # HELPERS
 # -----------------------------------------------------
-def show_logo(path: Path, width: int = 620):
+def show_logo(path: Path, width: int = 900):
     if not path.exists():
         st.warning(f"Logo introuvable : {path}")
         return
     try:
         img = Image.open(path)
-        col1, col2, col3 = st.columns([1, 8, 1])
+        col1, col2, col3 = st.columns([1, 10, 1])
         with col2:
             st.image(img, width=width)
     except Exception as e:
@@ -45,27 +45,25 @@ def go_to_page(page_filename: str):
 st.markdown(
     """
     <style>
-    /* fond principal */
     .stApp {
         background: linear-gradient(180deg, #0f2747 0%, #0a1e36 100%);
     }
 
-    /* texte global */
     html, body, [class*="css"] {
-        color: white;
+        color: white !important;
     }
 
     .block-container {
-        padding-top: 2rem;
+        max-width: 1180px;
+        padding-top: 1.6rem;
         padding-bottom: 3rem;
-        max-width: 1000px;
     }
 
     a.anchor-link {
         display: none !important;
     }
 
-    /* sidebar */
+    /* Sidebar */
     section[data-testid="stSidebar"] {
         background: #081b30;
     }
@@ -74,26 +72,36 @@ st.markdown(
         color: white !important;
     }
 
-    /* zone logo */
+    /* Titres et paragraphes */
+    h1, h2, h3, h4, h5, h6 {
+        color: white !important;
+    }
+
+    p, li, label, div, span {
+        color: #eef4fb !important;
+    }
+
+    /* Logo */
     .logo-wrap {
         background: #102c4f;
         border: 1px solid rgba(255,255,255,0.12);
         border-radius: 18px;
-        padding: 26px 18px 18px 18px;
+        padding: 20px 12px 12px 12px;
         margin-bottom: 22px;
         box-shadow: 0 8px 24px rgba(0,0,0,0.18);
     }
 
-    /* hero */
+    /* Hero */
     .hero-box {
         background: #1c3d66;
         border-radius: 18px;
         padding: 28px;
         border: 1px solid rgba(255,255,255,0.14);
         box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        margin-bottom: 18px;
     }
 
-    /* bloc juridique */
+    /* Bloc juridique */
     .legal-box {
         background: #193a5f;
         border-left: 5px solid #4da3ff;
@@ -103,7 +111,11 @@ st.markdown(
         box-shadow: 0 8px 20px rgba(0,0,0,0.12);
     }
 
-    /* cartes standards */
+    .legal-box b {
+        color: white !important;
+    }
+
+    /* Cartes */
     .card {
         background: #204c7a;
         border-radius: 14px;
@@ -112,15 +124,32 @@ st.markdown(
         box-shadow: 0 8px 20px rgba(0,0,0,0.14);
     }
 
-    /* cartes piliers */
+    /* Stats */
+    .small-stat {
+        background: #1b446d;
+        border-radius: 14px;
+        padding: 18px 12px;
+        border: 1px solid rgba(255,255,255,0.10);
+        text-align: center;
+        font-weight: 700;
+        color: white !important;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.14);
+        min-height: 82px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Piliers */
     .pill-card {
         background: #244f80;
         border-radius: 16px;
         padding: 20px;
         border: 1px solid rgba(255,255,255,0.12);
-        min-height: 185px;
+        min-height: 190px;
         box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         transition: transform 0.18s ease, box-shadow 0.18s ease;
+        margin-bottom: 12px;
     }
 
     .pill-card:hover {
@@ -129,41 +158,22 @@ st.markdown(
     }
 
     .pill-title {
-        font-size: 1.4rem;
+        font-size: 1.45rem;
         font-weight: 700;
         margin-top: 8px;
         margin-bottom: 10px;
-        color: white;
+        color: white !important;
     }
 
     .pill-text {
-        color: rgba(255,255,255,0.92);
+        color: rgba(255,255,255,0.95) !important;
         line-height: 1.6;
         font-size: 1rem;
     }
 
-    .small-stat {
-        background: #1b446d;
-        border-radius: 14px;
-        padding: 18px 12px;
-        border: 1px solid rgba(255,255,255,0.10);
-        text-align: center;
-        font-weight: 700;
-        color: white;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.14);
-        min-height: 82px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* champs */
+    /* Inputs */
     input, textarea {
         background: #132c4a !important;
-        color: white !important;
-    }
-
-    label, .stTextInput label, .stTextArea label {
         color: white !important;
     }
 
@@ -172,32 +182,31 @@ st.markdown(
         color: white !important;
     }
 
-    /* boutons */
+    /* Boutons */
     .stButton > button {
-        background: white;
-        color: #0a1e36;
-        border-radius: 10px;
-        border: none;
-        font-weight: 700;
-        min-height: 44px;
+        background: white !important;
+        color: #0a1e36 !important;
+        border-radius: 10px !important;
+        border: none !important;
+        font-weight: 700 !important;
+        min-height: 46px !important;
     }
 
     .stButton > button:hover {
-        background: #e5f1ff;
-        color: #0a1e36;
+        background: #e5f1ff !important;
+        color: #0a1e36 !important;
     }
 
-    /* hr */
+    /* Ligne */
     hr {
         border-color: rgba(255,255,255,0.12);
     }
 
-    /* caption */
+    /* Caption */
     .stCaption {
-        color: rgba(255,255,255,0.70) !important;
+        color: rgba(255,255,255,0.72) !important;
     }
 
-    /* masquer footer streamlit */
     footer {
         visibility: hidden;
     }
@@ -207,20 +216,23 @@ st.markdown(
 )
 
 # -----------------------------------------------------
-# HEADER / LOGO
+# LOGO
 # -----------------------------------------------------
 st.markdown('<div class="logo-wrap">', unsafe_allow_html=True)
-show_logo(LOGO_PATH, width=620)
+show_logo(LOGO_PATH, width=900)
 st.markdown("</div>", unsafe_allow_html=True)
 
+# -----------------------------------------------------
+# HERO
+# -----------------------------------------------------
 st.markdown(
     """
     <div class="hero-box">
-        <h1 style="margin-bottom:10px; color:white;">Kidan Vid</h1>
-        <div style="font-size:1.08rem; margin-bottom:12px; color:white;">
+        <h1 style="margin-bottom:10px;">Kidan Vid</h1>
+        <div style="font-size:1.1rem; margin-bottom:12px; color:white;">
             Plateforme de transmission vidéo, audio et documentaire sécurisée.
         </div>
-        <div style="font-size:1.02rem; line-height:1.7; color:rgba(255,255,255,0.95);">
+        <div style="font-size:1.03rem; line-height:1.75; color:rgba(255,255,255,0.96);">
             Envoyez des messages personnels en toute confidentialité.
             Vidéos, audios, documents et accès bénéficiaire sont organisés
             dans une logique humaine, technique et juridique.
@@ -260,9 +272,9 @@ with col2:
 # -----------------------------------------------------
 # POINTS CLÉS
 # -----------------------------------------------------
-st.markdown("### Points clés")
-s1, s2, s3, s4 = st.columns(4)
+st.markdown("<h2>Points clés</h2>", unsafe_allow_html=True)
 
+s1, s2, s3, s4 = st.columns(4)
 with s1:
     st.markdown('<div class="small-stat">100% sécurisé</div>', unsafe_allow_html=True)
 with s2:
@@ -275,7 +287,7 @@ with s4:
 # -----------------------------------------------------
 # 4 PILIERS
 # -----------------------------------------------------
-st.markdown("## Les 4 piliers Kidan Vid")
+st.markdown("<h2>Les 4 piliers Kidan Vid</h2>", unsafe_allow_html=True)
 
 p1, p2 = st.columns(2)
 with p1:
@@ -338,14 +350,14 @@ with p4:
 # -----------------------------------------------------
 # TEMOIGNAGES
 # -----------------------------------------------------
-st.markdown("## Témoignages")
+st.markdown("<h2>Témoignages</h2>", unsafe_allow_html=True)
 st.video("https://www.youtube.com/watch?v=oRVvi5xWF1k")
 
 # -----------------------------------------------------
 # ACCÈS RAPIDES
 # -----------------------------------------------------
 st.markdown("---")
-st.markdown("## Accès rapides")
+st.markdown("<h2>Accès rapides</h2>", unsafe_allow_html=True)
 
 q1, q2, q3, q4 = st.columns(4)
 with q1:
@@ -365,7 +377,7 @@ with q4:
 # CONNEXION EN BAS
 # -----------------------------------------------------
 st.markdown("---")
-st.markdown("## Connexion")
+st.markdown("<h2>Connexion</h2>", unsafe_allow_html=True)
 st.write("Accédez à votre espace sécurisé.")
 
 st.text_input("Adresse e-mail", placeholder="votre@email.com", key="home_email")
@@ -379,7 +391,7 @@ with b2:
         go_to_page("Acces_beneficiaire.py")
 
 # -----------------------------------------------------
-# FOOTER SIMPLE
+# FOOTER
 # -----------------------------------------------------
 st.markdown("---")
 st.caption("© Kidan Vid")
