@@ -26,9 +26,9 @@ def show_logo(path: Path):
 
     try:
         img = Image.open(path)
-        col1, col2, col3 = st.columns([1, 6, 1])
+        col1, col2, col3 = st.columns([1.2, 4.6, 1.2])
         with col2:
-            st.image(img, width=700)
+            st.image(img, width=560)
     except Exception as e:
         st.error(f"Impossible de charger le logo : {e}")
 
@@ -47,7 +47,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background: linear-gradient(180deg, #0f2747 0%, #0a1e36 100%);
+        background: linear-gradient(180deg, #0b2240 0%, #091a31 100%);
     }
 
     html, body, [class*="css"] {
@@ -55,8 +55,8 @@ st.markdown(
     }
 
     .block-container {
-        max-width: 1180px;
-        padding-top: 1.4rem;
+        max-width: 1100px;
+        padding-top: 1.3rem;
         padding-bottom: 3rem;
     }
 
@@ -66,115 +66,85 @@ st.markdown(
 
     /* Sidebar */
     section[data-testid="stSidebar"] {
-        background: #081b30;
+        background: #06162a;
     }
 
     section[data-testid="stSidebar"] * {
         color: white !important;
     }
 
-    /* Titres et texte */
+    /* Titres */
     h1, h2, h3, h4, h5, h6 {
-        color: white !important;
+        color: #ffffff !important;
     }
 
+    /* Paragraphes standard */
     p, li, label {
         color: #eef4fb !important;
+        font-size: 1rem !important;
+        line-height: 1.7 !important;
     }
 
-    /* Zone logo */
+    /* Logo */
     .logo-wrap {
-        background: #102c4f;
-        border: 1px solid rgba(255,255,255,0.12);
-        border-radius: 18px;
-        padding: 18px 10px 10px 10px;
-        margin-bottom: 22px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        margin-bottom: 24px;
+        padding-top: 4px;
+        padding-bottom: 2px;
     }
 
-    /* Hero */
+    /* Bloc principal */
     .hero-box {
-        background: #1c3d66;
+        background: #244472;
         border-radius: 18px;
         padding: 28px;
-        border: 1px solid rgba(255,255,255,0.14);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        border: 1px solid rgba(255,255,255,0.12);
+        box-shadow: 0 10px 24px rgba(0,0,0,0.18);
         margin-bottom: 18px;
     }
 
-    /* Bloc juridique */
+    .hero-box h1 {
+        font-size: 2.4rem !important;
+        margin-bottom: 12px !important;
+    }
+
+    .hero-box .hero-sub {
+        color: #ffffff !important;
+        font-size: 1.08rem !important;
+        margin-bottom: 12px !important;
+        font-weight: 600 !important;
+    }
+
+    .hero-box .hero-text {
+        color: #f4f8fc !important;
+        font-size: 1.02rem !important;
+        line-height: 1.8 !important;
+    }
+
+    /* Bloc juridique corrigé */
     .legal-box {
-        background: #193a5f;
-        border-left: 5px solid #4da3ff;
-        padding: 16px;
-        border-radius: 10px;
-        margin: 18px 0;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        background: #21406b;
+        border-left: 5px solid #58a6ff;
+        padding: 20px 18px;
+        border-radius: 12px;
+        margin: 18px 0 22px 0;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.14);
     }
 
-    .legal-box b {
-        color: white !important;
+    .legal-title {
+        color: #ffffff !important;
+        font-size: 1.08rem !important;
+        font-weight: 800 !important;
+        margin-bottom: 10px !important;
     }
 
-    /* Stats */
-    .small-stat {
-        background: #1b446d;
-        border-radius: 14px;
-        padding: 18px 12px;
-        border: 1px solid rgba(255,255,255,0.10);
-        text-align: center;
-        font-weight: 700;
-        color: white !important;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.14);
-        min-height: 82px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .legal-text {
+        color: #ffffff !important;
+        font-size: 1rem !important;
+        line-height: 1.75 !important;
+        font-weight: 500 !important;
     }
 
-    /* Piliers */
-    .pill-card {
-        background: #244f80;
-        border-radius: 16px;
-        padding: 20px;
-        border: 1px solid rgba(255,255,255,0.12);
-        min-height: 190px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        transition: transform 0.18s ease, box-shadow 0.18s ease;
-        margin-bottom: 12px;
-    }
-
-    .pill-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 14px 30px rgba(0,0,0,0.28);
-    }
-
-    .pill-title {
-        font-size: 1.45rem;
-        font-weight: 700;
-        margin-top: 8px;
-        margin-bottom: 10px;
-        color: white !important;
-    }
-
-    .pill-text {
-        color: rgba(255,255,255,0.95) !important;
-        line-height: 1.6;
-        font-size: 1rem;
-    }
-
-    /* Inputs */
-    input, textarea {
-        background: #132c4a !important;
-        color: white !important;
-    }
-
-    div[data-baseweb="select"] {
-        background: #132c4a !important;
-        color: white !important;
-    }
-
-    /* Boutons - correction lisibilité */
+    /* Boutons */
     .stButton > button {
         background: #ffffff !important;
         color: #0a1e36 !important;
@@ -186,26 +156,70 @@ st.markdown(
     }
 
     .stButton > button:hover {
-        background: #e5f1ff !important;
+        background: #e8f2ff !important;
         color: #0a1e36 !important;
     }
 
-    .stButton > button p,
-    .stButton > button span,
-    .stButton > button div {
+    .stButton > button * {
         color: #0a1e36 !important;
     }
 
-    .stButton > button:disabled {
-        background: #dfe7f1 !important;
-        color: #516070 !important;
-        opacity: 1 !important;
+    /* Points clés */
+    .small-stat {
+        background: #244472;
+        border-radius: 14px;
+        padding: 18px 12px;
+        border: 1px solid rgba(255,255,255,0.10);
+        text-align: center;
+        font-weight: 700;
+        color: white !important;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.14);
+        min-height: 82px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .stButton > button:disabled p,
-    .stButton > button:disabled span,
-    .stButton > button:disabled div {
-        color: #516070 !important;
+    /* Piliers */
+    .pill-card {
+        background: #31558b;
+        border-radius: 16px;
+        padding: 20px;
+        border: 1px solid rgba(255,255,255,0.12);
+        min-height: 205px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+        margin-bottom: 12px;
+    }
+
+    .pill-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 30px rgba(0,0,0,0.28);
+    }
+
+    .pill-title {
+        font-size: 1.55rem;
+        font-weight: 800;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        color: white !important;
+    }
+
+    .pill-text {
+        color: #f5f9ff !important;
+        line-height: 1.7;
+        font-size: 1.02rem;
+    }
+
+    /* Inputs */
+    input, textarea {
+        background: #112745 !important;
+        color: white !important;
+    }
+
+    div[data-baseweb="select"] {
+        background: #112745 !important;
+        color: white !important;
     }
 
     /* Ligne */
@@ -215,7 +229,7 @@ st.markdown(
 
     /* Caption */
     .stCaption {
-        color: rgba(255,255,255,0.72) !important;
+        color: rgba(255,255,255,0.78) !important;
     }
 
     footer {
@@ -239,11 +253,11 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown(
     """
     <div class="hero-box">
-        <h1 style="margin-bottom:10px;">Kidan Vid</h1>
-        <div style="font-size:1.1rem; margin-bottom:12px; color:white;">
+        <h1>Kidan Vid</h1>
+        <div class="hero-sub">
             Plateforme de transmission vidéo, audio et documentaire sécurisée.
         </div>
-        <div style="font-size:1.03rem; line-height:1.75; color:rgba(255,255,255,0.96);">
+        <div class="hero-text">
             Envoyez des messages personnels en toute confidentialité.
             Vidéos, audios, documents et accès bénéficiaire sont organisés
             dans une logique humaine, technique et juridique.
@@ -259,9 +273,11 @@ st.markdown(
 st.markdown(
     """
     <div class="legal-box">
-        <b>Point juridique important</b><br><br>
-        En France, une vidéo seule ne constitue pas un testament juridiquement valable.
-        Kidan Vid intègre le notaire comme pilier central pour sécuriser la transmission.
+        <div class="legal-title">Point juridique important</div>
+        <div class="legal-text">
+            En France, une vidéo seule ne constitue pas un testament juridiquement valable.
+            Kidan Vid intègre le notaire comme pilier central pour sécuriser la transmission.
+        </div>
     </div>
     """,
     unsafe_allow_html=True,
@@ -305,7 +321,7 @@ with p1:
     st.markdown(
         """
         <div class="pill-card" title="Transmission vidéo sécurisée, messages programmés et consultation contrôlée.">
-            <div style="font-size:34px;">🎥</div>
+            <div style="font-size:36px;">🎥</div>
             <div class="pill-title">Vidéo</div>
             <div class="pill-text">
                 Messages vidéo personnels programmés et délivrés au bon moment.
@@ -319,7 +335,7 @@ with p2:
     st.markdown(
         """
         <div class="pill-card" title="Enregistrements vocaux, mémoire sonore et messages audio.">
-            <div style="font-size:34px;">🎙️</div>
+            <div style="font-size:36px;">🎙️</div>
             <div class="pill-title">Audio</div>
             <div class="pill-text">
                 Souvenirs vocaux, témoignages sonores et compléments de transmission.
@@ -334,7 +350,7 @@ with p3:
     st.markdown(
         """
         <div class="pill-card" title="Chiffrement, double authentification, OTP et traçabilité.">
-            <div style="font-size:34px;">🛡️</div>
+            <div style="font-size:36px;">🛡️</div>
             <div class="pill-title">Sécurisation</div>
             <div class="pill-text">
                 Protection technique : chiffrement, double authentification et traçabilité.
@@ -348,7 +364,7 @@ with p4:
     st.markdown(
         """
         <div class="pill-card" title="La vidéo seule n’a pas de valeur testamentaire en France. Le notaire structure juridiquement la transmission.">
-            <div style="font-size:34px;">⚖️</div>
+            <div style="font-size:36px;">⚖️</div>
             <div class="pill-title">Notaires</div>
             <div class="pill-text">
                 Le pilier juridique central pour articuler la transmission avec le droit.
