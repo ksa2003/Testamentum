@@ -1,51 +1,76 @@
 import streamlit as st
 
-from theme import apply_theme
+st.set_page_config(page_title="Accès bénéficiaire", layout="centered")
 
-apply_theme()
+BLUE_MAIN = "#0A66C2"
+BLUE_SOFT = "#EAF4FF"
 
+st.markdown(
+    f"""
+    <style>
+      .block-container {{
+        max-width: 760px;
+        padding-top: 1.8rem;
+        padding-bottom: 3rem;
+      }}
+      a.anchor-link {{
+        display: none !important;
+      }}
+      .box {{
+        border: 1px solid rgba(10,102,194,0.16);
+        border-radius: 18px;
+        padding: 22px;
+        background: linear-gradient(180deg, #ffffff 0%, {BLUE_SOFT} 100%);
+      }}
+      .legal-box {{
+        border-left: 5px solid {BLUE_MAIN};
+        background: #f5faff;
+        padding: 14px 16px;
+        border-radius: 10px;
+        margin: 18px 0;
+      }}
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
-def sidebar_nav() -> None:
-    st.sidebar.markdown("### Navigation")
-    try:
-        st.sidebar.page_link("app.py", label="Accueil")
-        st.sidebar.page_link("pages/Connexion.py", label="Connexion")
-        st.sidebar.page_link("pages/Espace_Memoire.py", label="Espace Mémoire")
-        st.sidebar.page_link("pages/Acces_beneficiaire.py", label="Accès bénéficiaire")
-        st.sidebar.page_link("pages/00_Dossier_Kidan_Vid.py", label="Dossier PDF")
-    except Exception:
-        # Compat Streamlit Cloud / versions
-        pass
-
-
-sidebar_nav()
+st.title("Accès bénéficiaire")
 
 st.markdown(
     """
-<div class="tm-card">
-  <div class="tm-h3">Accès bénéficiaire</div>
-  <p class="tm-muted">Entrez un jeton d’accès temporaire. Sans jeton valide, aucun contenu n’est accessible.</p>
-</div>
-""",
+    <div class="box">
+        <h3 style="margin-top:0;">Accéder à un contenu qui vous est destiné</h3>
+        <div>
+            Saisissez les informations reçues pour consulter le contenu auquel vous avez été autorisé à accéder.
+        </div>
+    </div>
+    """,
     unsafe_allow_html=True,
 )
-
-st.write("")
-
-token = st.text_input("Jeton d’accès", placeholder="Ex : ABCD-1234-EFGH")
-
-st.markdown('<div class="tm-primary">', unsafe_allow_html=True)
-if st.button("Vérifier le jeton", use_container_width=True):
-    # MVP : pas de validation réelle tant que vous n'avez pas une table tokens + logique d'expiration
-    if not token.strip():
-        st.warning("Veuillez saisir un jeton.")
-    else:
-        st.error(
-            "Jeton invalide (MVP). Prochaine étape : mise en place des jetons sécurisés et expirables."
-        )
-st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown(
-    '<div class="tm-footnote">Remarque : cette page est volontairement bloquée tant que les jetons sécurisés ne sont pas implémentés.</div>',
+    """
+    <div class="legal-box">
+        <strong>Information importante</strong><br>
+        Certains contenus peuvent avoir une valeur émotionnelle forte, mais un testament vidéo seul n’a pas de valeur juridique en France.
+        Lorsque nécessaire, Kidan Vid prévoit l’intervention du notaire comme pilier central.
+    </div>
+    """,
     unsafe_allow_html=True,
 )
+
+with st.form("benef_form"):
+    lien_unique = st.text_input("Lien ou code d’accès")
+    email = st.text_input("Votre email")
+    otp = st.text_input("Code OTP", max_chars=6)
+    submitted = st.form_submit_button("Accéder au contenu", use_container_width=True)
+
+    if submitted:
+        if not lien_unique or not email or not otp:
+            st.warning("Veuillez compléter le lien/code, l’email et l’OTP.")
+        else:
+            st.success("Accès validé (prototype).")
+
+st.markdown("---")
+if st.button("Retour accueil"):
+    st.switch_page("app.py")
