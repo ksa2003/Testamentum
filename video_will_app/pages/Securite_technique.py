@@ -1,32 +1,132 @@
 import streamlit as st
 
-st.set_page_config(page_title="Sécurité technique", layout="wide")
+st.set_page_config(page_title="Sécurité technique", layout="centered")
 
-st.title("Sécurité technique indispensable")
+BLUE_MAIN = "#0A66C2"
+BLUE_DARK = "#084C95"
+BLUE_SOFT = "#EAF4FF"
+
+st.markdown(
+    f"""
+    <style>
+      .block-container {{
+        max-width: 920px;
+        padding-top: 1.5rem;
+        padding-bottom: 3rem;
+      }}
+      a.anchor-link {{
+        display: none !important;
+      }}
+      .hero-box {{
+        border: 1px solid rgba(10,102,194,0.16);
+        border-radius: 18px;
+        padding: 20px;
+        background: linear-gradient(180deg, #ffffff 0%, {BLUE_SOFT} 100%);
+        margin-bottom: 18px;
+      }}
+      .legal-box {{
+        border-left: 5px solid {BLUE_MAIN};
+        background: #f5faff;
+        padding: 14px 16px;
+        border-radius: 10px;
+        margin: 18px 0;
+      }}
+      .sec-card {{
+        border: 1px solid rgba(10,102,194,0.14);
+        border-radius: 14px;
+        padding: 16px;
+        background: #ffffff;
+        height: 100%;
+      }}
+      .sec-title {{
+        font-weight: 700;
+        color: {BLUE_DARK};
+        margin-bottom: 8px;
+      }}
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.title("Sécurité technique")
 
 st.markdown(
     """
-- Chiffrement AES-256 des vidéos  
-- Chiffrement SSL/TLS  
-- Hébergement européen (RGPD)  
-- Logs d’accès horodatés  
-- Suppression automatique après X jours dès le premier visionnage  
-- Blocage capture écran (si possible techniquement)  
-- Filigrane invisible personnalisé  
-"""
+    <div class="hero-box">
+        Kidan Vid protège la transmission avec une logique de sécurité multicouche :
+        chiffrement, accès limité, authentification forte, durée de consultation encadrée et traçabilité.
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
 
-st.warning(
-    "Note produit : la « non-téléchargeabilité » et le « blocage capture écran » ne sont jamais garantis à 100% "
-    "sur un appareil utilisateur. On peut fortement limiter (tokens courts, lecteur web, watermark, audit trail), "
-    "mais pas empêcher totalement l’enregistrement écran."
-)
-
-st.markdown("---")
 c1, c2 = st.columns(2)
 with c1:
-    if st.button("Informations sécurité maximale", use_container_width=True):
-        st.switch_page("pages/Infos_securite_maximale.py")
+    st.markdown(
+        """
+        <div class="sec-card">
+            <div class="sec-title">Protection du contenu</div>
+            - Chiffrement des vidéos et documents<br>
+            - Chiffrement SSL/TLS des échanges<br>
+            - Hébergement sécurisé selon l’infrastructure retenue
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 with c2:
-    if st.button("Retour accueil", use_container_width=True):
-        st.switch_page("app.py")
+    st.markdown(
+        """
+        <div class="sec-card">
+            <div class="sec-title">Contrôle d’accès</div>
+            - OTP<br>
+            - Double authentification (2FA)<br>
+            - Liens uniques et accès limités dans le temps
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+c3, c4 = st.columns(2)
+with c3:
+    st.markdown(
+        """
+        <div class="sec-card">
+            <div class="sec-title">Traçabilité</div>
+            - Logs d’accès horodatés<br>
+            - Historique des ouvertures<br>
+            - Option de visionnage unique
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+with c4:
+    st.markdown(
+        """
+        <div class="sec-card">
+            <div class="sec-title">Mesures avancées</div>
+            - Filigrane invisible personnalisé<br>
+            - Suppression automatique après délai<br>
+            - Restrictions techniques complémentaires si déployées
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+st.markdown(
+    """
+    <div class="legal-box">
+        <strong>Rappel juridique</strong><br>
+        La sécurité technique ne remplace pas la validité juridique.
+        En France, une vidéo seule ne constitue pas un testament juridiquement valable ;
+        l’intervention du notaire reste centrale.
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.subheader("Témoignage lié à la sécurité")
+st.video("https://www.youtube.com/watch?v=qk4XuiQGAtw")
+
+st.markdown("---")
+if st.button("Retour accueil", use_container_width=True):
+    st.switch_page("app.py")
