@@ -7,6 +7,9 @@ import secrets
 # -----------------------------
 st.set_page_config(page_title="Espace Mémoire", layout="centered")
 
+BLUE_MAIN = "#0A66C2"
+BLUE_SOFT = "#EAF4FF"
+
 # -----------------------------
 # Sécurité : accès protégé
 # -----------------------------
@@ -32,19 +35,18 @@ def gen_id() -> str:
     return secrets.token_hex(8)
 
 # -----------------------------
-# State init (prototype: session_state)
+# State init
 # -----------------------------
 if "beneficiaires" not in st.session_state:
-    st.session_state.beneficiaires = []  # liste de dict
+    st.session_state.beneficiaires = []
 
 if "uploads_videos" not in st.session_state:
-    st.session_state.uploads_videos = []  # liste de dict
+    st.session_state.uploads_videos = []
 
 if "uploads_docs" not in st.session_state:
-    st.session_state.uploads_docs = []  # liste de dict
+    st.session_state.uploads_docs = []
 
 if "abonnee_profile" not in st.session_state:
-    # Profil abonné (expéditeur) : mêmes infos que bénéficiaire + identité
     st.session_state.abonnee_profile = {
         "Nom": "",
         "Prénom": "",
@@ -64,12 +66,19 @@ if "abonnee_profile" not in st.session_state:
 # Styles
 # -----------------------------
 st.markdown(
-    """
+    f"""
     <style>
-      .block-container { max-width: 900px; padding-top: 1.25rem; }
-      hr { margin: 1.6rem 0; }
-      .kv-muted { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
-      .kv-card { border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 14px 14px; background: #fff; }
+      .block-container {{ max-width: 950px; padding-top: 1.25rem; }}
+      hr {{ margin: 1.6rem 0; }}
+      a.anchor-link {{ display:none !important; }}
+      .kv-muted {{ color: rgba(0,0,0,0.6); font-size: 0.95rem; }}
+      .legal-box {{
+        border-left: 5px solid {BLUE_MAIN};
+        background: #f5faff;
+        padding: 14px 16px;
+        border-radius: 10px;
+        margin: 18px 0;
+      }}
     </style>
     """,
     unsafe_allow_html=True,
@@ -80,6 +89,18 @@ st.markdown(
 # -----------------------------
 st.title("Espace Mémoire")
 st.caption(f"Connecté en tant que : {mask_email(st.session_state.get('user_email', ''))}")
+
+st.markdown(
+    """
+    <div class="legal-box">
+        <strong>Point juridique important</strong><br>
+        En France, une vidéo seule ne constitue pas un testament juridiquement valable.
+        Kidan Vid intègre le notaire comme pilier central pour sécuriser la transmission.
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.markdown("---")
 
 # -----------------------------
@@ -88,14 +109,13 @@ st.markdown("---")
 tab_videos, tab_docs, tab_benef, tab_params = st.tabs(["Vidéos", "Documents", "Bénéficiaires", "Paramètres"])
 
 # ============================================================
-# TAB: VIDEOS (contenu réel)
+# TAB: VIDEOS
 # ============================================================
 with tab_videos:
     st.subheader("Vidéos")
     st.markdown("<div class='kv-muted'>Déposez une vidéo, définissez le bénéficiaire, et programmez l’accès.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
-    # Choix bénéficiaire (si dispo)
     benef_labels = []
     benef_ids = []
     for b in st.session_state.beneficiaires:
@@ -124,11 +144,7 @@ with tab_videos:
         col3, col4 = st.columns(2)
         with col3:
             if benef_ids:
-                idx = st.selectbox(
-                    "Bénéficiaire destinataire",
-                    list(range(len(benef_ids))),
-                    format_func=lambda i: benef_labels[i],
-                )
+                idx = st.selectbox("Bénéficiaire destinataire", list(range(len(benef_ids))), format_func=lambda i: benef_labels[i])
                 benef_id = benef_ids[idx]
                 benef_display = benef_labels[idx]
             else:
@@ -139,7 +155,7 @@ with tab_videos:
         with col4:
             acces_mode = st.selectbox(
                 "Mode d’accès",
-                ["Accès immédiat", "Programmation (date/heure)", "Accès après validation (à implémenter)"],
+                ["Accès immédiat", "Programmation (date/heure)", "Accès après validation notariale"],
                 index=0,
             )
 
@@ -216,7 +232,7 @@ with tab_videos:
         st.info("Aucune vidéo enregistrée pour le moment.")
 
 # ============================================================
-# TAB: DOCUMENTS (upload + liste)
+# TAB: DOCUMENTS
 # ============================================================
 with tab_docs:
     st.subheader("Documents")
@@ -378,7 +394,7 @@ Ces informations servent à l’accès sécurisé et peuvent être utiles aux ac
         st.info("Aucun bénéficiaire enregistré.")
 
 # ============================================================
-# TAB: PARAMETRES (infos inscription abonné)
+# TAB: PARAMETRES
 # ============================================================
 with tab_params:
     st.subheader("Paramètres")
@@ -406,7 +422,6 @@ Ces informations servent à l’inscription, à la sécurité, et peuvent être 
             p_tel = st.text_input("Téléphone", value=p.get("Téléphone", ""))
         with col2:
             p_prenom = st.text_input("Prénom", value=p.get("Prénom", ""))
-            # email connecté : on laisse visible mais non modifiable ici
             _ = st.text_input("Email", value=p.get("Email", st.session_state.get("user_email", "")), disabled=True)
             p_adresse = st.text_area(
                 "Adresse complète",
@@ -449,9 +464,6 @@ Ces informations servent à l’inscription, à la sécurité, et peuvent être 
             }
             st.success("Informations abonné enregistrées (prototype).")
 
-# -----------------------------
-# Footer navigation
-# -----------------------------
 st.markdown("---")
 if st.button("Retour accueil"):
     st.switch_page("app.py")
