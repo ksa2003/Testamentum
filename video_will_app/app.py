@@ -27,10 +27,9 @@ def show_logo(path: Path):
     try:
         img = Image.open(path)
 
-        # largeur alignée avec les blocs de contenu
         col1, col2, col3 = st.columns([1, 6, 1])
         with col2:
-            st.image(img, use_container_width=True)
+            st.image(img, width=700)
 
     except Exception as e:
         st.error(f"Impossible de charger le logo : {e}")
@@ -67,7 +66,6 @@ st.markdown(
         display: none !important;
     }
 
-    /* Sidebar */
     section[data-testid="stSidebar"] {
         background: #081b30;
     }
@@ -76,7 +74,6 @@ st.markdown(
         color: white !important;
     }
 
-    /* Titres et paragraphes */
     h1, h2, h3, h4, h5, h6 {
         color: white !important;
     }
@@ -85,7 +82,6 @@ st.markdown(
         color: #eef4fb !important;
     }
 
-    /* Zone logo */
     .logo-wrap {
         background: #102c4f;
         border: 1px solid rgba(255,255,255,0.12);
@@ -95,13 +91,6 @@ st.markdown(
         box-shadow: 0 8px 24px rgba(0,0,0,0.18);
     }
 
-    /* arrondi visuel logo */
-    .logo-wrap img {
-        border-radius: 14px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-    }
-
-    /* Hero */
     .hero-box {
         background: #1c3d66;
         border-radius: 18px;
@@ -111,7 +100,6 @@ st.markdown(
         margin-bottom: 18px;
     }
 
-    /* Bloc juridique */
     .legal-box {
         background: #193a5f;
         border-left: 5px solid #4da3ff;
@@ -125,7 +113,6 @@ st.markdown(
         color: white !important;
     }
 
-    /* Stats */
     .small-stat {
         background: #1b446d;
         border-radius: 14px;
@@ -141,7 +128,6 @@ st.markdown(
         justify-content: center;
     }
 
-    /* Piliers */
     .pill-card {
         background: #244f80;
         border-radius: 16px;
@@ -172,7 +158,6 @@ st.markdown(
         font-size: 1rem;
     }
 
-    /* Inputs */
     input, textarea {
         background: #132c4a !important;
         color: white !important;
@@ -183,7 +168,6 @@ st.markdown(
         color: white !important;
     }
 
-    /* Boutons */
     .stButton > button {
         background: white !important;
         color: #0a1e36 !important;
@@ -198,12 +182,10 @@ st.markdown(
         color: #0a1e36 !important;
     }
 
-    /* Ligne */
     hr {
         border-color: rgba(255,255,255,0.12);
     }
 
-    /* Caption */
     .stCaption {
         color: rgba(255,255,255,0.72) !important;
     }
@@ -263,11 +245,11 @@ st.markdown(
 col1, col2 = st.columns(2)
 
 with col1:
-    if st.button("Découvrir comment ça marche", use_container_width=True):
+    if st.button("Découvrir comment ça marche"):
         go_to_page("Comment_ca_marche.py")
 
 with col2:
-    if st.button("Créer un envoi sécurisé", use_container_width=True):
+    if st.button("Créer un envoi sécurisé"):
         go_to_page("Creer_un_envoi_securise.py")
 
 # -----------------------------------------------------
@@ -362,16 +344,16 @@ st.markdown("<h2>Accès rapides</h2>", unsafe_allow_html=True)
 
 q1, q2, q3, q4 = st.columns(4)
 with q1:
-    if st.button("Qui sommes-nous", use_container_width=True):
+    if st.button("Qui sommes-nous"):
         go_to_page("Qui_sommes_nous.py")
 with q2:
-    if st.button("Nous contacter", use_container_width=True):
+    if st.button("Nous contacter"):
         go_to_page("Nous_contacter.py")
 with q3:
-    if st.button("Informations légales", use_container_width=True):
+    if st.button("Informations légales"):
         go_to_page("Informations_legales.py")
 with q4:
-    if st.button("Mentions légales", use_container_width=True):
+    if st.button("Mentions légales"):
         go_to_page("Mentions_legales.py")
 
 # -----------------------------------------------------
@@ -385,10 +367,10 @@ st.text_input("Adresse e-mail", placeholder="votre@email.com", key="home_email")
 
 b1, b2 = st.columns(2)
 with b1:
-    if st.button("Continuer", use_container_width=True, key="btn_continue_home"):
+    if st.button("Continuer", key="btn_continue_home"):
         go_to_page("Connexion.py")
 with b2:
-    if st.button("Accès bénéficiaire", use_container_width=True, key="btn_benef_home"):
+    if st.button("Accès bénéficiaire", key="btn_benef_home"):
         go_to_page("Acces_beneficiaire.py")
 
 # -----------------------------------------------------
