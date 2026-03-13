@@ -53,8 +53,10 @@ st.title("Sécurité technique")
 st.markdown(
     """
     <div class="hero-box">
-        Kidan Vid protège la transmission avec une logique de sécurité multicouche :
+        Kidanmemoris protège le coffre du patrimoine émotionnel avec une logique de sécurité multicouche :
         chiffrement, accès limité, authentification forte, durée de consultation encadrée et traçabilité.
+        La plateforme sécurise les messages vidéo, les souvenirs familiaux, les lettres numériques
+        et les contenus transmis pour des moments de vie importants.
     </div>
     """,
     unsafe_allow_html=True,
@@ -66,7 +68,7 @@ with c1:
         """
         <div class="sec-card">
             <div class="sec-title">Protection du contenu</div>
-            - Chiffrement des vidéos et documents<br>
+            - Chiffrement des vidéos, lettres numériques et documents<br>
             - Chiffrement SSL/TLS des échanges<br>
             - Hébergement sécurisé selon l’infrastructure retenue
         </div>
@@ -94,7 +96,7 @@ with c3:
             <div class="sec-title">Traçabilité</div>
             - Logs d’accès horodatés<br>
             - Historique des ouvertures<br>
-            - Option de visionnage unique
+            - Option de visionnage unique ou limité
         </div>
         """,
         unsafe_allow_html=True,
@@ -105,8 +107,8 @@ with c4:
         <div class="sec-card">
             <div class="sec-title">Mesures avancées</div>
             - Filigrane invisible personnalisé<br>
-            - Suppression automatique après délai<br>
-            - Restrictions techniques complémentaires si déployées
+            - Suppression automatique après délai si configurée<br>
+            - Restrictions techniques complémentaires selon les besoins de transmission
         </div>
         """,
         unsafe_allow_html=True,
@@ -118,7 +120,7 @@ st.markdown(
         <strong>Rappel juridique</strong><br>
         La sécurité technique ne remplace pas la validité juridique.
         En France, une vidéo seule ne constitue pas un testament juridiquement valable ;
-        l’intervention du notaire reste centrale.
+        l’intervention du notaire reste centrale pour toute transmission successorale.
     </div>
     """,
     unsafe_allow_html=True,
@@ -128,5 +130,5 @@ st.subheader("Témoignage lié à la sécurité")
 st.video("https://www.youtube.com/watch?v=qk4XuiQGAtw")
 
 st.markdown("---")
-if st.button("Retour accueil", use_container_width=True):
+if st.button("Retour accueil"):
     st.switch_page("app.py")
