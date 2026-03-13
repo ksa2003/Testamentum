@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.set_page_config(page_title="Connexion", layout="centered")
+st.set_page_config(page_title="Créer mon coffre Kidanmemoris", layout="centered")
 
 BLUE_MAIN = "#0A66C2"
 BLUE_DARK = "#084C95"
@@ -35,14 +35,15 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title("Connexion")
+st.title("Créer mon coffre Kidanmemoris")
 
 st.markdown(
     """
     <div class="login-wrap">
-        <h3 style="margin-top:0;color:#084C95;">Bienvenue dans votre espace Kidan Vid</h3>
+        <h3 style="margin-top:0;color:#084C95;">Le coffre du patrimoine émotionnel</h3>
         <div style="color:#23476a;">
-            Connectez-vous pour accéder à vos vidéos, documents, bénéficiaires et paramètres de sécurité.
+            Créez votre coffre sécurisé pour transmettre des messages, souvenirs familiaux,
+            lettres numériques et contenus programmés pour des moments de vie futurs.
         </div>
     </div>
     """,
@@ -54,23 +55,28 @@ st.markdown(
     <div class="legal-box">
         <strong>Point juridique important</strong><br>
         En France, une vidéo seule ne constitue pas un testament juridiquement valable.
-        Kidan Vid intègre le notaire comme pilier central pour sécuriser la transmission.
+        Kidanmemoris intègre le notaire comme pilier central pour sécuriser la transmission successorale.
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-with st.form("login_form"):
-    email = st.text_input("Adresse e-mail", placeholder="votre@email.com")
-    password = st.text_input("Mot de passe", type="password", placeholder="Votre mot de passe")
-    submitted = st.form_submit_button("Se connecter", use_container_width=True)
+with st.form("coffre_form"):
+    nom = st.text_input("Nom")
+    email = st.text_input("Email", placeholder="votre@email.com")
+    verification = st.selectbox("Vérification identité", ["À compléter", "Pièce d’identité", "Passeport", "Autre"])
+    contact_confiance = st.text_input("Contact de confiance (confirmation du décès)")
+    submitted = st.form_submit_button("Activer le coffre", use_container_width=True)
 
     if submitted:
-        if not email or not password:
-            st.warning("Veuillez compléter l’adresse e-mail et le mot de passe.")
+        if not nom or not email:
+            st.warning("Veuillez compléter au minimum le nom et l’email.")
         else:
+            st.session_state["user_name"] = nom.strip()
             st.session_state["user_email"] = email.strip()
-            st.success("Connexion réussie.")
+            st.session_state["verification_identite"] = verification
+            st.session_state["contact_confiance"] = contact_confiance.strip()
+            st.success("Votre coffre Kidanmemoris est activé.")
             st.switch_page("pages/Espace_Memoire.py")
 
 st.markdown("---")
