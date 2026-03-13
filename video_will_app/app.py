@@ -2,11 +2,8 @@ import streamlit as st
 from pathlib import Path
 from PIL import Image
 
-# -----------------------------------------------------
-# CONFIG
-# -----------------------------------------------------
 st.set_page_config(
-    page_title="Kidan Vid",
+    page_title="Kidanmemoris",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -20,17 +17,13 @@ BLUE_DARK = "#123C73"
 BLUE_SOFT = "#EAF4FF"
 CARD_BG = "#F7FAFE"
 
-# -----------------------------------------------------
-# HELPERS
-# -----------------------------------------------------
+
 def show_logo(path: Path):
     if not path.exists():
         st.warning(f"Logo introuvable : {path}")
         return
-
     try:
         img = Image.open(path)
-        # grande largeur, sans use_container_width pour compatibilité
         st.image(img, width=1200)
     except Exception as e:
         st.error(f"Impossible de charger le logo : {e}")
@@ -43,9 +36,6 @@ def go_to_page(page_filename: str):
         st.info("Utilisez le menu à gauche pour naviguer.")
 
 
-# -----------------------------------------------------
-# STYLE
-# -----------------------------------------------------
 st.markdown(
     f"""
     <style>
@@ -82,10 +72,17 @@ st.markdown(
     }}
 
     .hero-title {{
-        font-size: 2.2rem;
+        font-size: 2.3rem;
         font-weight: 800;
         color: {BLUE_DARK};
         margin-bottom: 10px;
+    }}
+
+    .hero-sub {{
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: {BLUE_DARK};
+        margin-bottom: 12px;
     }}
 
     .hero-text {{
@@ -128,13 +125,8 @@ st.markdown(
         border-radius: 18px;
         background: {CARD_BG};
         padding: 22px;
-        min-height: 220px;
+        min-height: 240px;
         box-shadow: 0 8px 22px rgba(10,102,194,0.06);
-        transition: transform 0.15s ease;
-    }}
-
-    .pillar-card:hover {{
-        transform: translateY(-2px);
     }}
 
     .pillar-icon {{
@@ -150,7 +142,7 @@ st.markdown(
     }}
 
     .pillar-title {{
-        font-size: 1.45rem;
+        font-size: 1.4rem;
         font-weight: 800;
         color: {BLUE_DARK};
         margin-bottom: 10px;
@@ -162,96 +154,92 @@ st.markdown(
         line-height: 1.7;
     }}
 
-    .section-space {{
-        margin-top: 8px;
-        margin-bottom: 10px;
+    .example-box {{
+        border: 1px solid rgba(10,102,194,0.12);
+        border-radius: 16px;
+        background: #ffffff;
+        padding: 18px;
+        box-shadow: 0 6px 18px rgba(10,102,194,0.04);
+        height: 100%;
+    }}
+
+    .example-title {{
+        font-weight: 800;
+        color: {BLUE_DARK};
+        margin-bottom: 8px;
     }}
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-# -----------------------------------------------------
-# LOGO
-# -----------------------------------------------------
 show_logo(LOGO_PATH)
 
-# -----------------------------------------------------
-# HERO
-# -----------------------------------------------------
 st.markdown(
-    f"""
+    """
     <div class="hero-box">
-        <div class="hero-title">Kidan Vid</div>
+        <div class="hero-title">Kidanmemoris</div>
+        <div class="hero-sub">Les mots les plus importants sont parfois ceux que l’on laisse.</div>
         <div class="hero-text">
-            Plateforme de transmission vidéo, audio et documentaire sécurisée.<br><br>
-            Envoyez des messages personnels en toute confidentialité. Vidéos, audios,
-            documents et accès bénéficiaire sont organisés dans une logique humaine,
-            technique et juridique.
+            Kidanmemoris est le coffre du patrimoine émotionnel.
+            La plateforme permet de transmettre des messages vidéo, des souvenirs familiaux,
+            des lettres numériques et des messages pour des moments de vie futurs :
+            mariage, naissance, baptême, anniversaire important, réussite scolaire
+            ou après-décès.
         </div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# -----------------------------------------------------
-# LEGAL
-# -----------------------------------------------------
 st.markdown(
-    f"""
+    """
     <div class="legal-box">
         <div class="legal-title">Point juridique important</div>
         <div>
             En France, une vidéo seule ne constitue pas un testament juridiquement valable.
-            Kidan Vid intègre le notaire comme pilier central pour sécuriser la transmission.
+            Kidanmemoris intègre le notaire comme pilier central pour sécuriser toute transmission
+            à portée successorale.
         </div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# -----------------------------------------------------
-# ACTIONS
-# -----------------------------------------------------
 c1, c2 = st.columns(2)
 with c1:
-    if st.button("Découvrir comment ça marche", use_container_width=True):
-        go_to_page("Comment_ca_marche.py")
+    if st.button("Créer mon coffre Kidanmemoris", use_container_width=True):
+        go_to_page("Connexion.py")
 with c2:
-    if st.button("Créer un envoi sécurisé", use_container_width=True):
-        go_to_page("Creer_un_envoi_securise.py")
+    if st.button("Se connecter", use_container_width=True):
+        go_to_page("Connexion.py")
 
-# -----------------------------------------------------
-# POINTS CLES
-# -----------------------------------------------------
-st.markdown("<div class='section-space'></div>", unsafe_allow_html=True)
+st.markdown("---")
 st.subheader("Points clés")
 
 s1, s2, s3, s4 = st.columns(4)
 with s1:
-    st.markdown('<div class="stat-box">100% sécurisé</div>', unsafe_allow_html=True)
+    st.markdown('<div class="stat-box">Coffre numérique sécurisé</div>', unsafe_allow_html=True)
 with s2:
-    st.markdown('<div class="stat-box">Accès unique et contrôlé</div>', unsafe_allow_html=True)
+    st.markdown('<div class="stat-box">Transmission par moment de vie</div>', unsafe_allow_html=True)
 with s3:
-    st.markdown('<div class="stat-box">Programmation possible</div>', unsafe_allow_html=True)
+    st.markdown('<div class="stat-box">Famille et destinataires</div>', unsafe_allow_html=True)
 with s4:
-    st.markdown('<div class="stat-box">Notaire intégré</div>', unsafe_allow_html=True)
+    st.markdown('<div class="stat-box">Intégration notariale</div>', unsafe_allow_html=True)
 
-# -----------------------------------------------------
-# 4 PILIERS
-# -----------------------------------------------------
-st.markdown("<div class='section-space'></div>", unsafe_allow_html=True)
-st.subheader("Les 4 piliers Kidan Vid")
+st.markdown("---")
+st.subheader("Les 4 piliers Kidanmemoris")
 
 p1, p2 = st.columns(2)
 with p1:
     st.markdown(
         """
-        <div class="pillar-card" title="Messages vidéo personnels, programmés et délivrés au bon moment.">
+        <div class="pillar-card">
             <div class="pillar-icon">🎥</div>
-            <div class="pillar-title">Vidéo</div>
+            <div class="pillar-title">Messages vidéo</div>
             <div class="pillar-text">
-                Messages vidéo personnels programmés et délivrés au bon moment.
+                Enregistrez un message pour un enfant, un partenaire ou toute la famille.
+                Il peut être enregistré maintenant, téléversé, ou reprogrammé.
             </div>
         </div>
         """,
@@ -261,11 +249,13 @@ with p1:
 with p2:
     st.markdown(
         """
-        <div class="pillar-card" title="Souvenirs vocaux, témoignages sonores et compléments de transmission.">
-            <div class="pillar-icon">🎙️</div>
-            <div class="pillar-title">Audio</div>
+        <div class="pillar-card">
+            <div class="pillar-icon">⏳</div>
+            <div class="pillar-title">Moments de vie</div>
             <div class="pillar-text">
-                Souvenirs vocaux, témoignages sonores et compléments de transmission.
+                Programmez une transmission pour un mariage, une naissance,
+                un baptême, un anniversaire important, une réussite scolaire
+                ou après confirmation de décès.
             </div>
         </div>
         """,
@@ -276,11 +266,12 @@ p3, p4 = st.columns(2)
 with p3:
     st.markdown(
         """
-        <div class="pillar-card" title="Protection technique : chiffrement, double authentification et traçabilité.">
-            <div class="pillar-icon">🛡️</div>
-            <div class="pillar-title">Sécurisation</div>
+        <div class="pillar-card">
+            <div class="pillar-icon">🌳</div>
+            <div class="pillar-title">Arbre de mémoire familiale</div>
             <div class="pillar-text">
-                Protection technique : chiffrement, double authentification et traçabilité.
+                Chaque famille peut créer un arbre familial et associer des messages
+                pour chaque génération afin de construire une mémoire familiale numérique.
             </div>
         </div>
         """,
@@ -290,27 +281,58 @@ with p3:
 with p4:
     st.markdown(
         """
-        <div class="pillar-card" title="Le pilier juridique central pour articuler la transmission avec le droit.">
+        <div class="pillar-card">
             <div class="pillar-icon">⚖️</div>
-            <div class="pillar-title">Notaires</div>
+            <div class="pillar-title">Patrimoine émotionnel et juridique</div>
             <div class="pillar-text">
-                Le pilier juridique central pour articuler la transmission avec le droit.
+                Le coffre peut intégrer une logique de succession :
+                notaire partenaire, dossier patrimonial, ou vidéo associée
+                à un testament.
             </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-# -----------------------------------------------------
-# TEMOIGNAGE
-# -----------------------------------------------------
-st.markdown("<div class='section-space'></div>", unsafe_allow_html=True)
+st.markdown("---")
+st.subheader("Exemples de transmissions")
+
+e1, e2, e3 = st.columns(3)
+with e1:
+    st.markdown(
+        """
+        <div class="example-box">
+            <div class="example-title">Pour les 18 ans d’un enfant</div>
+            Un message à découvrir le jour de sa majorité.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+with e2:
+    st.markdown(
+        """
+        <div class="example-box">
+            <div class="example-title">Pour un mariage futur</div>
+            “À regarder le jour de ton mariage.”
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+with e3:
+    st.markdown(
+        """
+        <div class="example-box">
+            <div class="example-title">Pour après-décès</div>
+            Une transmission émotionnelle sécurisée avec confirmation.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+st.markdown("---")
 st.subheader("Témoignage")
 st.video("https://www.youtube.com/watch?v=oRVvi5xWF1k")
 
-# -----------------------------------------------------
-# ACCES RAPIDES
-# -----------------------------------------------------
 st.markdown("---")
 st.subheader("Accès rapides")
 
@@ -325,25 +347,8 @@ with q3:
     if st.button("Informations légales", use_container_width=True, key="quick_info"):
         go_to_page("Informations_legales.py")
 with q4:
-    if st.button("Mentions légales", use_container_width=True, key="quick_mentions"):
-        go_to_page("Mentions_legales.py")
-
-# -----------------------------------------------------
-# CONNEXION
-# -----------------------------------------------------
-st.markdown("---")
-st.subheader("Connexion")
-st.write("Accédez à votre espace sécurisé.")
-
-st.text_input("Adresse e-mail", placeholder="votre@email.com", key="home_email")
-
-b1, b2 = st.columns(2)
-with b1:
-    if st.button("Continuer", use_container_width=True, key="btn_continue_home"):
-        go_to_page("Connexion.py")
-with b2:
-    if st.button("Accès bénéficiaire", use_container_width=True, key="btn_benef_home"):
-        go_to_page("Acces_beneficiaire.py")
+    if st.button("Notaire en ligne", use_container_width=True, key="quick_notaire"):
+        go_to_page("Notaire_en_ligne.py")
 
 st.markdown("---")
-st.caption("© Kidan Vid")
+st.caption("© Kidanmemoris")
