@@ -23,32 +23,33 @@ st.title("Qui sommes-nous ?")
 
 st.write(
     """
-Kidan Vid est une plateforme pensée pour la transmission humaine, technique et juridique
-de messages personnels, souvenirs audio/vidéo et documents sensibles.
-Notre ambition est de permettre une transmission plus claire, plus protégée et mieux encadrée.
+Kidanmemoris est une capsule temporelle familiale numérique.
+La plateforme permet de transmettre des messages vidéo, des souvenirs familiaux,
+des lettres numériques et des contenus destinés à des moments de vie futurs.
 """
 )
 
 st.subheader("Notre fonctionnement")
 st.markdown(
     """
-- Création d’un espace abonné sécurisé  
-- Dépôt de vidéos, audios et documents  
-- Désignation de bénéficiaires  
-- Mise en place d’un accès contrôlé  
-- Double authentification et journalisation  
-- Articulation avec le notaire pour les sujets juridiques  
+- Création d’un coffre numérique sécurisé  
+- Vérification d’identité et contact de confiance  
+- Enregistrement ou téléversement de vidéos  
+- Désignation de destinataires individuels ou familiaux  
+- Transmission après décès, date programmée ou événement spécifique  
+- Construction d’un arbre de mémoire familiale  
+- Articulation avec un notaire partenaire pour les sujets successoraux  
 """
 )
 
-st.subheader("Notre approche")
+st.subheader("Notre vision")
 st.markdown(
     """
-Kidan Vid repose sur quatre piliers :
-- la **vidéo**
-- l’**audio**
-- la **sécurisation des données**
-- le **notaire comme pilier central**
+Kidanmemoris repose sur quatre piliers :
+- les **messages vidéo**
+- les **moments de vie**
+- la **mémoire familiale**
+- le **cadre émotionnel, sécurisé et notarial**
 """
 )
 
@@ -57,7 +58,7 @@ st.markdown(
     <div class="legal-box">
         <strong>Information juridique centrale</strong><br>
         En France, une vidéo seule ne constitue pas un testament juridiquement valable.
-        Kidan Vid ne remplace pas le droit : la plateforme intègre le notaire pour sécuriser la transmission.
+        Kidanmemoris ne remplace pas le droit : la plateforme intègre le notaire pour sécuriser la transmission.
     </div>
     """,
     unsafe_allow_html=True,
@@ -66,9 +67,10 @@ st.markdown(
 st.subheader("Pourquoi ce positionnement ?")
 st.write(
     """
-Parce que la valeur émotionnelle d’un message transmis peut être immense,
-mais sa valeur juridique ne peut pas être improvisée.
-La plateforme cherche donc à unir mémoire, sécurité et encadrement notarial.
+Parce qu’un message important ne concerne pas uniquement l’après-décès.
+Il peut aussi être destiné à un mariage, une naissance, un anniversaire,
+ou une étape essentielle d’une vie familiale.
+Kidanmemoris unit émotion, mémoire, famille, sécurité et patrimoine.
 """
 )
 
