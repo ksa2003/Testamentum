@@ -24,14 +24,14 @@ st.title("Informations légales")
 st.write(
     """
 Cette page rassemble les éléments d’information juridique, réglementaire et fonctionnelle
-du service Kidan Vid.
+du service Kidanmemoris.
 """
 )
 
 st.subheader("Nature du service")
 st.markdown(
     """
-Kidan Vid est un service numérique de transmission sécurisée de contenus :
+Kidanmemoris est un service numérique de transmission sécurisée de contenus :
 - vidéos
 - audios
 - documents
