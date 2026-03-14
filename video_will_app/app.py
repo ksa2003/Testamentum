@@ -18,14 +18,14 @@ BLUE_SOFT = "#EAF4FF"
 CARD_BG = "#F7FAFE"
 
 
-# ✅ LOGO FIX RESPONSIVE
+# LOGO UNIVERSAL FIX (toutes versions streamlit)
 def show_logo(path: Path):
     if not path.exists():
         st.warning(f"Logo introuvable : {path}")
         return
     try:
         img = Image.open(path)
-        st.image(img, use_column_width=True)
+        st.image(img, width=1100)
     except Exception as e:
         st.error(f"Impossible de charger le logo : {e}")
 
@@ -227,37 +227,5 @@ with s3:
     st.markdown('<div class="stat-box">Famille et destinataires</div>', unsafe_allow_html=True)
 with s4:
     st.markdown('<div class="stat-box">Intégration notariale</div>', unsafe_allow_html=True)
-
-st.markdown("---")
-st.subheader("Les 4 piliers Kidanmemoris")
-
-p1, p2 = st.columns(2)
-with p1:
-    st.markdown(
-        """
-        <div class="pillar-card">
-            <div class="pillar-icon">🎥</div>
-            <div class="pillar-title">Messages vidéo</div>
-            <div class="pillar-text">
-                Enregistrez un message pour un enfant, un partenaire ou toute la famille.
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-with p2:
-    st.markdown(
-        """
-        <div class="pillar-card">
-            <div class="pillar-icon">⏳</div>
-            <div class="pillar-title">Moments de vie</div>
-            <div class="pillar-text">
-                Programmez une transmission pour les moments importants de la vie.
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
 
 st.caption("© Kidanmemoris")
