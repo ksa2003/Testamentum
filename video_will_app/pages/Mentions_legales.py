@@ -22,7 +22,7 @@ st.title("Mentions légales")
 st.markdown("### Éditeur du site")
 st.write(
     """
-Kidan Vid  
+Kidanmemoris  
 Projet / service numérique de transmission sécurisée  
 Les coordonnées exactes de l’éditeur, du responsable de publication et de l’hébergeur doivent être complétées avant mise en production publique.
 """
