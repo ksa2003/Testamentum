@@ -53,7 +53,7 @@ st.markdown(
     <div class="legal-box">
         <strong>Information importante</strong><br>
         Certains contenus peuvent avoir une valeur émotionnelle forte, mais un testament vidéo seul n’a pas de valeur juridique en France.
-        Lorsque nécessaire, Kidan Vid prévoit l’intervention du notaire comme pilier central.
+        Lorsque nécessaire, Kidanmemoris prévoit l’intervention du notaire comme pilier central.
     </div>
     """,
     unsafe_allow_html=True,
