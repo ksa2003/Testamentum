@@ -18,14 +18,18 @@ BLUE_SOFT = "#EAF4FF"
 CARD_BG = "#F7FAFE"
 
 
-# LOGO UNIVERSAL FIX (toutes versions streamlit)
 def show_logo(path: Path):
     if not path.exists():
         st.warning(f"Logo introuvable : {path}")
         return
     try:
         img = Image.open(path)
-        st.image(img, width=1100)
+
+        # Affichage centré et plus petit, compatible anciennes versions Streamlit
+        left, center, right = st.columns([1, 6, 1])
+        with center:
+            st.image(img, width=760)
+
     except Exception as e:
         st.error(f"Impossible de charger le logo : {e}")
 
@@ -169,6 +173,47 @@ st.markdown(
         color: {BLUE_DARK};
         margin-bottom: 8px;
     }}
+
+    @media (max-width: 900px) {{
+        .hero-title {{
+            font-size: 2rem;
+        }}
+
+        .hero-sub {{
+            font-size: 1.08rem;
+        }}
+
+        .hero-box {{
+            padding: 20px;
+        }}
+    }}
+
+    @media (max-width: 640px) {{
+        .hero-title {{
+            font-size: 1.75rem;
+            line-height: 1.2;
+        }}
+
+        .hero-sub {{
+            font-size: 1rem;
+            line-height: 1.5;
+        }}
+
+        .hero-text {{
+            font-size: 0.98rem;
+        }}
+
+        .hero-box {{
+            padding: 18px;
+            border-radius: 16px;
+        }}
+
+        .stat-box,
+        .pillar-card,
+        .example-box {{
+            min-height: auto;
+        }}
+    }}
     </style>
     """,
     unsafe_allow_html=True,
@@ -228,4 +273,128 @@ with s3:
 with s4:
     st.markdown('<div class="stat-box">Intégration notariale</div>', unsafe_allow_html=True)
 
+st.markdown("---")
+st.subheader("Les 4 piliers Kidanmemoris")
+
+p1, p2 = st.columns(2)
+with p1:
+    st.markdown(
+        """
+        <div class="pillar-card">
+            <div class="pillar-icon">🎥</div>
+            <div class="pillar-title">Messages vidéo</div>
+            <div class="pillar-text">
+                Enregistrez un message pour un enfant, un partenaire ou toute la famille.
+                Il peut être enregistré maintenant, téléversé, ou reprogrammé.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+with p2:
+    st.markdown(
+        """
+        <div class="pillar-card">
+            <div class="pillar-icon">⏳</div>
+            <div class="pillar-title">Moments de vie</div>
+            <div class="pillar-text">
+                Programmez une transmission pour un mariage, une naissance,
+                un baptême, un anniversaire important, une réussite scolaire
+                ou après confirmation de décès.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+p3, p4 = st.columns(2)
+with p3:
+    st.markdown(
+        """
+        <div class="pillar-card">
+            <div class="pillar-icon">🌳</div>
+            <div class="pillar-title">Arbre de mémoire familiale</div>
+            <div class="pillar-text">
+                Chaque famille peut créer un arbre familial et associer des messages
+                pour chaque génération afin de construire une mémoire familiale numérique.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+with p4:
+    st.markdown(
+        """
+        <div class="pillar-card">
+            <div class="pillar-icon">⚖️</div>
+            <div class="pillar-title">Patrimoine émotionnel et juridique</div>
+            <div class="pillar-text">
+                Le coffre peut intégrer une logique de succession :
+                notaire partenaire, dossier patrimonial, ou vidéo associée
+                à un testament.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+st.markdown("---")
+st.subheader("Exemples de transmissions")
+
+e1, e2, e3 = st.columns(3)
+with e1:
+    st.markdown(
+        """
+        <div class="example-box">
+            <div class="example-title">Pour les 18 ans d’un enfant</div>
+            Un message à découvrir le jour de sa majorité.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+with e2:
+    st.markdown(
+        """
+        <div class="example-box">
+            <div class="example-title">Pour un mariage futur</div>
+            “À regarder le jour de ton mariage.”
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+with e3:
+    st.markdown(
+        """
+        <div class="example-box">
+            <div class="example-title">Pour après-décès</div>
+            Une transmission émotionnelle sécurisée avec confirmation.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+st.markdown("---")
+st.subheader("Témoignage")
+st.video("https://www.youtube.com/watch?v=oRVvi5xWF1k")
+
+st.markdown("---")
+st.subheader("Accès rapides")
+
+q1, q2, q3, q4 = st.columns(4)
+with q1:
+    if st.button("Qui sommes-nous", use_container_width=True, key="quick_about"):
+        go_to_page("Qui_sommes_nous.py")
+with q2:
+    if st.button("Nous contacter", use_container_width=True, key="quick_contact"):
+        go_to_page("Nous_contacter.py")
+with q3:
+    if st.button("Informations légales", use_container_width=True, key="quick_info"):
+        go_to_page("Informations_legales.py")
+with q4:
+    if st.button("Notaire en ligne", use_container_width=True, key="quick_notaire"):
+        go_to_page("Notaire_en_ligne.py")
+
+st.markdown("---")
 st.caption("© Kidanmemoris")
