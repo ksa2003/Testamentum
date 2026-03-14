@@ -1,6 +1,5 @@
 import streamlit as st
 from pathlib import Path
-from PIL import Image
 
 st.set_page_config(
     page_title="Kidanmemoris",
@@ -22,11 +21,16 @@ def show_logo(path: Path):
     if not path.exists():
         st.warning(f"Logo introuvable : {path}")
         return
-    try:
-        img = Image.open(path)
-        st.image(img, width=1200)
-    except Exception as e:
-        st.error(f"Impossible de charger le logo : {e}")
+
+    logo_bytes = path.read_bytes()
+    st.markdown(
+        """
+        <div class="hero-logo-wrap">
+            <img src="data:image/png;base64,{}" class="hero-logo" alt="Logo Kidanmemoris">
+        </div>
+        """.format(__import__("base64").b64encode(logo_bytes).decode()),
+        unsafe_allow_html=True,
+    )
 
 
 def go_to_page(page_filename: str):
@@ -60,6 +64,24 @@ st.markdown(
     p, li, label {{
         color: #1f2937 !important;
         line-height: 1.7 !important;
+    }}
+
+    .hero-logo-wrap {{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 0 1.25rem 0;
+        overflow: hidden;
+    }}
+
+    .hero-logo {{
+        display: block;
+        width: 100%;
+        max-width: 980px;
+        height: auto;
+        object-fit: contain;
+        border-radius: 18px;
     }}
 
     .hero-box {{
@@ -167,6 +189,70 @@ st.markdown(
         font-weight: 800;
         color: {BLUE_DARK};
         margin-bottom: 8px;
+    }}
+
+    @media (max-width: 900px) {{
+        .block-container {{
+            padding-top: 0.8rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }}
+
+        .hero-logo {{
+            max-width: 100%;
+            border-radius: 14px;
+        }}
+
+        .hero-title {{
+            font-size: 2rem;
+        }}
+
+        .hero-sub {{
+            font-size: 1.08rem;
+        }}
+
+        .hero-box {{
+            padding: 20px;
+        }}
+    }}
+
+    @media (max-width: 640px) {{
+        .hero-logo-wrap {{
+            margin-bottom: 0.9rem;
+        }}
+
+        .hero-logo {{
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 12px;
+        }}
+
+        .hero-title {{
+            font-size: 1.75rem;
+            line-height: 1.2;
+        }}
+
+        .hero-sub {{
+            font-size: 1rem;
+            line-height: 1.5;
+        }}
+
+        .hero-text {{
+            font-size: 0.98rem;
+        }}
+
+        .hero-box {{
+            padding: 18px;
+            border-radius: 16px;
+        }}
+
+        .stat-box,
+        .pillar-card,
+        .example-box {{
+            min-height: auto;
+        }}
     }}
     </style>
     """,
